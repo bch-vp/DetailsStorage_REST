@@ -9,3 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface DetailinfoRepository extends JpaRepository<DetailInfo,Long> {
     DetailInfo findById(IdDetailInfo idDetailInfo);
 }
+
+

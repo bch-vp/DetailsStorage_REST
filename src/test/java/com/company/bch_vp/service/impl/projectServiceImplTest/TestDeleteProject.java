@@ -43,14 +43,14 @@ public class TestDeleteProject {
         Project project=new Project("prpject_1","type" , 1,"storage");
         Long idProject=projectServiceImpl.saveProject(project).getId();
 
-        detailInfoServiceImpl.addDetail(30, idDetail_1, idProject);
-        detailInfoServiceImpl.addDetail(20, idDetail_2, idProject);
+        detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
+        detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
 
         Project project_2=new Project("prpject_2","type" , 1,"storage");
         Long idProject_2=projectServiceImpl.saveProject(project_2).getId();
 
-        detailInfoServiceImpl.addDetail(30,idDetail_1,idProject_2);
-        detailInfoServiceImpl.addDetail(20,idDetail_2,idProject_2);
+        detailInfoServiceImpl.joinDetailAndProject(30,idDetail_1,idProject_2);
+        detailInfoServiceImpl.joinDetailAndProject(20,idDetail_2,idProject_2);
     }
 
     @Test

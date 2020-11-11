@@ -10,9 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DetailInfoService {
-    void addDetail(Integer countOfDetail, Long idDetail, Long idProject);
+    boolean joinDetailAndProject(Integer countOfDetail, Long idDetail, Long idProject);
     List<DetailInfo> findAll();
-    void deleteProjectInDetail(Long idDetail, Long idProject);
     void addQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject);
     DetailInfo findById(Long idDetail, Long idProject);
     void subtractQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject);

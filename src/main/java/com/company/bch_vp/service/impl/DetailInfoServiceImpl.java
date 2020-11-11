@@ -38,15 +38,9 @@ public class DetailInfoServiceImpl implements DetailInfoService {
     }
 
     @Override
-    public void deleteProjectInDetail(Long idDetail, Long idProject){
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject));
-        detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
-        detailinfoRepository.delete(detailInfo);
-        flushAllRepositories();
-    }
+    public boolean joinDetailAndProject(Integer quantityDetailsUsed, Long idDetail, Long idProject) {
 
-    @Override
-    public void addDetail(Integer quantityDetailsUsed, Long idDetail, Long idProject) {
+
         Project project=projectRepository.findById(idProject).get();
         Detail detail=detailRepository.findById(idDetail).get();
         if(quantityDetailsUsed<=detail.getQuantityOfAvailable()){
@@ -55,6 +49,9 @@ public class DetailInfoServiceImpl implements DetailInfoService {
            detailinfoRepository.save(detailInfo);
         }
         flushAllRepositories();
+
+        //rewrite
+        return true;
     }
 
     @Override

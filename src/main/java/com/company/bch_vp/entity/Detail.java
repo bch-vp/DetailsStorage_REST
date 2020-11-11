@@ -84,4 +84,22 @@ public class Detail {
         this.quantityOfAvailable-=quantityOfAvailable;
     }
 
+    public void updateDetail(Detail detail){
+        if(!detail.detailName.isEmpty()){
+            this.detailName=detail.getDetailName();
+        }
+        if(!detail.type.isEmpty()){
+            this.type=detail.getType();
+        }
+        if (!detail.production.isEmpty()) {
+            this.production=detail.getProduction();
+        }
+        if(detail.price!=null){
+            this.price=detail.getPrice();
+        }
+        if(!detail.storage.isEmpty()){
+            this.storage=detail.getStorage();
+        }
+
+    }
 }
