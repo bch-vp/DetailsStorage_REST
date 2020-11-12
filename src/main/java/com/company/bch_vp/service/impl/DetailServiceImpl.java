@@ -2,7 +2,10 @@ package com.company.bch_vp.service.impl;
 
 import com.company.bch_vp.entity.Detail;
 import com.company.bch_vp.entity.DetailInfo;
-import com.company.bch_vp.entity.ExceptionHandler.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
 import com.company.bch_vp.entity.IdDetailInfo;
 import com.company.bch_vp.entity.Project;
 import com.company.bch_vp.repository.DetailRepository;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DetailServiceImpl implements DetailService {
@@ -37,7 +39,7 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public boolean deleteDetailById(Long id) {
+    public boolean deleteDetailById(Long id) throws EntityNotFoundException {
 //        Optional<Detail> optionalDetail=detailRepository.findById(id);
 //        if(!optionalDetail.isPresent()){
 //            return;
@@ -64,12 +66,8 @@ public class DetailServiceImpl implements DetailService {
 //                });
 //        detailRepository.deleteById(id);
 
-
-        Optional<Detail> detailOptional=detailRepository.findById(id);
-        if(!detailOptional.isPresent()){
-            return false;
-        }
-        Detail detail= detailOptional.get();
+        Detail detail= detailRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
         detail.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {
@@ -77,41 +75,76 @@ public class DetailServiceImpl implements DetailService {
                 });
         detailRepository.delete(detail);
         flushAllRepositories();
-        return true;
-    }
-
-    @Override
-    public void addAvailableDetails(Long id, Integer quantity) {
-        detailRepository.save(detailRepository.findById(id).get().addAvailableDetails(quantity));
-        flushAllRepositories();
-    }
-
-    @Override
-    public void addQuantityOfDetails(Long id, Integer quantity) {
-        detailRepository.save(detailRepository.findById(id).get().addQuantityOfDetails(quantity));
-        flushAllRepositories();
-    }
-
-    @Override
-    public void deleteProjectInDetail(Long idDetail, Long idProject){
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject));
-        detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
-        detailinfoRepository.delete(detailInfo);
-        flushAllRepositories();
-    }
-
-    @Override
-    public boolean deleteAllProjectsFromDetail(Long id) throws EntityNotFoundException  {
-       Detail detail = detailRepository.findById(id)
-               .orElseThrow(EntityNotFoundException::new);
-      detail.getDetailsInfo()
-               .stream()
-               .forEach(detailInfo -> {detailinfoRepository.delete(detailInfo);});
-       entityManager.clear(); // need to clear persistence context(cache 1st level),
+        entityManager.clear();
+        /*
+        // need to clear persistence context(cache 1st level),
         // because we want to take info from dataBase(not from cache)
         // because info, which getting from the cache isn't correct, because we update some info
         // and it isn't reflected in cache
-       return detail.getDetailsInfo().isEmpty();
+        */
+        return !detailRepository.findById(id).isPresent();
+    }
+
+    @Override
+    public Detail addAvailableDetails(Long id, Integer quantity) throws DetailNotFoundException {
+        Detail detail = detailRepository.findById(id)
+                .orElseThrow(DetailNotFoundException::new);
+        detail=detailRepository.save(detail.addAvailableDetails(quantity));
+        flushAllRepositories();
+        return detail;
+    }
+
+    @Override
+    public Detail addQuantityOfDetails(Long id, Integer quantity) throws DetailNotFoundException {
+        Detail detail = detailRepository.findById(id)
+                .orElseThrow(DetailNotFoundException::new);
+        detail=detailRepository.save(detail.addQuantityOfDetails(quantity));
+        flushAllRepositories();
+        return detail;
+    }
+
+    @Override
+    public Detail deleteProjectInDetail(Long idDetail, Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
+        Detail detail = detailRepository.findById(idDetail)
+                .orElseThrow(DetailNotFoundException::new);
+        Project project=projectRepository.findById(idProject)
+                .orElseThrow(ProjectNotFoundException::new);
+        DetailInfo detailInfo= detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+                .orElseThrow(DetailInfoNotFoundException::new);
+        detail.addAvailableDetails(detailInfo.getQuantityDetailsUsed());
+        detailinfoRepository.delete(detailInfo);
+        flushAllRepositories();
+        entityManager.clear();
+        /*
+        // need to clear persistence context(cache 1st level),
+        // because we want to take info from dataBase(not from cache)
+        // because info, which getting from the cache isn't correct, because we update some info
+        // and it isn't reflected in cache
+        */
+        return detailRepository.findById(idDetail)
+                .orElseThrow(DetailNotFoundException::new);
+    }
+
+    @Override
+    public Detail deleteAllProjectsFromDetail(Long id) throws DetailNotFoundException {
+        Project project = projectRepository.save(new Project("projetc", "a", 2, "d"));
+        Detail detail = detailRepository.findById(id)
+                .orElseThrow(DetailNotFoundException::new);
+        detailinfoRepository.save(new DetailInfo(30, detail, project));
+        detail.getDetailsInfo()
+                .stream()
+                .forEach(detailInfo -> {
+                    detailinfoRepository.delete(detailInfo);
+                });
+        entityManager.clear();
+        /*
+        // need to clear persistence context(cache 1st level),
+        // because we want to take info from dataBase(not from cache)
+        // because info, which getting from the cache isn't correct, because we update some info
+        // and it isn't reflected in cache
+        */
+        return detailRepository.findById(id)
+                .orElseThrow(DetailNotFoundException::new);
     }
 
     @Override
@@ -119,32 +152,26 @@ public class DetailServiceImpl implements DetailService {
         detailRepository.deleteAll();
         flushAllRepositories();
         entityManager.clear();
+        /*
+        // need to clear persistence context(cache 1st level),
+        // because we want to take info from dataBase(not from cache)
+        // because info, which getting from the cache isn't correct, because we update some info
+        // and it isn't reflected in cache
+        */
         return detailRepository.findAll().isEmpty();
     }
 
     @Override
-    public boolean updateDetail(Long id, Detail detailNew) {
-        return detailRepository.findById(id)
-                .map(detail -> {
-                    detail.updateDetail(detailNew);
-                    return true;
-                })
-                .orElseGet(()->{return false;});
-
-//        Optional<Detail> detail= detailRepository.findById(id);
-//        if(detail.isPresent()){
-//            detail.get().updateDetail(detailNew);
-//            return true;
-//        }
-//        return false;
+    public Detail updateDetail(Long id, Detail detailNew) throws DetailNotFoundException {
+        Detail detail=detailRepository.findById(id)
+                .orElseThrow(DetailNotFoundException::new);
+        return detail.updateDetail(detailNew);
     }
 
     @Override
-    public Detail findDetailById(Long id) {
+    public Detail findDetailById(Long id) throws DetailNotFoundException {
         return detailRepository.findById(id)
-                .orElseGet(()->{
-                    return null;
-                });
+                .orElseThrow(DetailNotFoundException::new);
     }
 
     @Override

@@ -84,7 +84,7 @@ public class Detail {
         this.quantityOfAvailable-=quantityOfAvailable;
     }
 
-    public void updateDetail(Detail detail){
+    public Detail updateDetail(Detail detail){
         if(!detail.detailName.isEmpty()){
             this.detailName=detail.getDetailName();
         }
@@ -100,6 +100,6 @@ public class Detail {
         if(!detail.storage.isEmpty()){
             this.storage=detail.getStorage();
         }
-
+        return this;
     }
 }

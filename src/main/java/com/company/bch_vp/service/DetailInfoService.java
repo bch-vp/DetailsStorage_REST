@@ -8,6 +8,7 @@ import com.company.bch_vp.repository.DetailRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DetailInfoService {
     boolean joinDetailAndProject(Integer countOfDetail, Long idDetail, Long idProject);

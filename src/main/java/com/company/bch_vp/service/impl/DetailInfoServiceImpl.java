@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transaction;
@@ -31,7 +32,8 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public void addQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) {
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject));
+        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+                .orElseThrow(EntityNotFoundException::new);
         detailInfo.getDetail().subtractAvailableDetails(quantity);
         detailInfo.addQuantityofDetailsUsed(quantity);
         flushAllRepositories();
@@ -61,12 +63,14 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public DetailInfo findById(Long idDetail, Long idProject) {
-        return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject));
+        return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject))
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public void subtractQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) {
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject));
+        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+                .orElseThrow(EntityNotFoundException::new);
         detailInfo.getDetail().addAvailableDetails(quantity);
         detailInfo.subtractQuantityofDetailsUsed(quantity);
         flushAllRepositories();

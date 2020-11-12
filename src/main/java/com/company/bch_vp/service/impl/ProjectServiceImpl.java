@@ -2,6 +2,7 @@ package com.company.bch_vp.service.impl;
 
 import com.company.bch_vp.entity.Detail;
 import com.company.bch_vp.entity.DetailInfo;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
 import com.company.bch_vp.entity.IdDetailInfo;
 import com.company.bch_vp.entity.Project;
 import com.company.bch_vp.repository.DetailRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
@@ -83,13 +85,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project findById(Long id) {
-        return projectRepository.findById(id).get();
+    public Project findById(Long id) throws ProjectNotFoundException {
+        return projectRepository.findById(id)
+                .orElseThrow(ProjectNotFoundException::new);
     }
 
     @Override
     public void deleteDetailInProject(Long idDetail, Long idProject) {
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject));
+        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+                .orElseThrow(EntityNotFoundException::new);
         detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
         detailinfoRepository.delete(detailInfo);
         flushAllRepositories();

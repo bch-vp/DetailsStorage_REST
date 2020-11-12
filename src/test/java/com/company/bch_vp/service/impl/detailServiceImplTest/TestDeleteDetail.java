@@ -2,6 +2,8 @@ package com.company.bch_vp.service.impl.detailServiceImplTest;
 
 import com.company.bch_vp.entity.Detail;
 import com.company.bch_vp.entity.DetailInfo;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
 import com.company.bch_vp.entity.Project;
 import com.company.bch_vp.service.impl.DetailInfoServiceImpl;
 import com.company.bch_vp.service.impl.DetailServiceImpl;
@@ -58,7 +60,7 @@ public class TestDeleteDetail {
 
     @Test
     @Transactional
-    public void test1(){
+    public void test1() throws EntityNotFoundException, ProjectNotFoundException {
         //delete 1 detail from 2
         detailServiceImpl.deleteDetailById((long)1);
 
@@ -73,6 +75,5 @@ public class TestDeleteDetail {
         Assert.assertEquals(1, projectServiceImpl.findAll().size());
 
         Assert.assertEquals(1, projectServiceImpl.findById((long)1).getDetailsInfo().size());
-        Assert.assertEquals(1,  projectServiceImpl.findById((long)2).getDetailsInfo().size());
     }
 }

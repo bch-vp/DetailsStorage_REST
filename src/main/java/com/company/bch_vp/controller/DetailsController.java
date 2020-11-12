@@ -2,7 +2,8 @@ package com.company.bch_vp.controller;
 
 import com.company.bch_vp.entity.Detail;
 import com.company.bch_vp.entity.DetailInfo;
-import com.company.bch_vp.entity.ExceptionHandler.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import com.company.bch_vp.entity.Project;
 import com.company.bch_vp.service.impl.DetailInfoServiceImpl;
 import com.company.bch_vp.service.impl.DetailServiceImpl;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,21 +37,34 @@ endPoint:
 */
     @GetMapping("/details")
     public ResponseEntity<?> getDetails() {
-        List<Detail> details = detailServiceImpl.findAll();
-        return details != null && !details.isEmpty()
-                ? new ResponseEntity<>(details, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        /*
+        If everything is OK:
+            - API will send array(which contains details), HttpStatus.OK
+            - If there are no Details - API will send JSON of empty array
+        In other cases API will send:
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        return new ResponseEntity<>(detailServiceImpl.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/details")
     public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) {
-        return Optional.ofNullable(detailServiceImpl.saveDetail(detail))
-                .map(detail1 -> {return new ResponseEntity<>(HttpStatus.CREATED);})
-                .orElseGet(()->{return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);});
+        /*
+        If everything is OK: API will save detail and return JSON(of this detail), HttpStatus.OK
+        In other cases: API will send HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        detail =detailServiceImpl.saveDetail(detail);
+        return detail!=null
+                ? new ResponseEntity<>(detail,HttpStatus.CREATED)
+                : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/details")
     public ResponseEntity<?> deleteAllDetails() {
+        /*
+        if everything is okay: API will delete detail and return HttpStatus.OK
+        In other cases: API will send INTERNAL_SERVER_ERROR(500)
+        */
         return detailServiceImpl.deleteAllDetails()
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -62,21 +75,42 @@ endPoint:
 ../details/{id}
 */
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
-        return Optional.ofNullable(detailServiceImpl.findDetailById(id))
-                .map(detail -> {return new ResponseEntity<>(detail, HttpStatus.OK);})
-                .orElseThrow(EntityNotFoundException::new);
+    public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+        /*
+        If everything is OK: API will return JSON(of this detail), HttpStatus.OK
+        In other cases API will send:
+            - HttpStatus.INTERNAL_SERVER_ERROR(500)
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        return new ResponseEntity<>(detailServiceImpl.findDetailById(id), HttpStatus.OK);
+
     }
 
     @PutMapping(value = "/details/{id}")
-    public ResponseEntity<?> updateDetail(@RequestBody Detail detail, @PathVariable("id") Long id) {
-        return detailServiceImpl.updateDetail(id, detail)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<?> updateDetail(@RequestBody @Valid Detail detail, @PathVariable("id") Long id) throws DetailNotFoundException {
+        /*
+        If everything is OK: API will update detail and return JSON(of this updated detail), HttpStatus.OK
+        In other cases API will send:
+            - HttpStatus.INTERNAL_SERVER_ERROR(500)
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: @Valid detail, BAD_REQUEST(404)
+            - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        return new ResponseEntity<>(detailServiceImpl.updateDetail(id, detail),HttpStatus.OK);
     }
 
     @DeleteMapping("/details/{id}")
-    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+        /*
+        If everything is OK: API will delete detail and return HttpStatus.OK
+        In other cases API will send:
+            - HttpStatus.NOT_MODIFIED(304)
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
         return detailServiceImpl.deleteDetailById(id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
@@ -87,11 +121,17 @@ endPoint:
 ../details/{id}/projects
  */
     @GetMapping("/details/{id}/projects")
-    public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
-        List<DetailInfo> detailsInfo = Optional.ofNullable(detailServiceImpl.findDetailById(id))
-                .map(detail -> {return detail.getDetailsInfo();})
-                .orElseThrow(EntityNotFoundException::new);
-        List<Project> projects=detailsInfo
+    public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+        /*
+        If everything is OK: API will send JSON of array(also it can be empty array), which contains projects from detail with {id}, HttpStatus.OK
+        In other cases API will send:
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        List<Project> projects=detailServiceImpl
+                .findDetailById(id)
+                .getDetailsInfo()
                 .stream()
                 .map(DetailInfo::getProject)
                 .collect(Collectors.toList());
@@ -99,10 +139,15 @@ endPoint:
     }
 
     @DeleteMapping("/details/{id}/projects")
-    public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
-       return detailServiceImpl.deleteAllProjectsFromDetail(id)
-               ? new ResponseEntity<>(HttpStatus.OK)
-               : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+        /*
+        If everything is OK: API will send JSON of detail with empty array of projects, HttpStatus.OK
+        In other cases API will send:
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        throw new NullPointerException();
     }
 
 /*
@@ -110,9 +155,8 @@ endPoint:
 ../details/{idDetail}/projects/{idProject}
  */
     @PostMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> addProjectToDetail(@PathVariable("idDetail") Long idDetail,
+    public ResponseEntity<?> addProjectToDetail(@PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject){
-       Optional.ofNullable(detailServiceImpl.findDetailById(idDetail));
        return null;
     }
 }

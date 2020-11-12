@@ -2,8 +2,10 @@ package com.company.bch_vp.entity.ExceptionHandler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import com.company.bch_vp.entity.ExceptionHandler.ApiError;
-import com.company.bch_vp.entity.ExceptionHandler.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +62,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFoundEx(EntityNotFoundException ex,
                                                             WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Entity not found", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DetailNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(DetailNotFoundException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Detail not found", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(ProjectNotFoundException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Project not found", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DetailInfoNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(DetailInfoNotFoundException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "DetailInfo not found", ex);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
