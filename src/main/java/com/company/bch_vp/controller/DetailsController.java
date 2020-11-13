@@ -30,7 +30,6 @@ public class DetailsController {
     private DetailServiceImpl detailServiceImpl;
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceIml;
-
 /*
 endPoint:
 ../details
@@ -69,7 +68,6 @@ endPoint:
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 /*
 endPoint:
 ../details/{id}
@@ -102,7 +100,7 @@ endPoint:
     }
 
     @DeleteMapping("/details/{id}")
-    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
         /*
         If everything is OK: API will delete detail and return HttpStatus.OK
         In other cases API will send:
@@ -115,7 +113,6 @@ endPoint:
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
 /*
 endPoint:
 ../details/{id}/projects
@@ -147,7 +144,10 @@ endPoint:
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        throw new NullPointerException();
+        Detail detail = detailServiceImpl.deleteAllProjectsFromDetail(id);
+        return detail.getDetailsInfo().isEmpty()
+                ? new ResponseEntity<>(detail, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
 /*

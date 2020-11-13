@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface DetailService {
     Detail saveDetail(Detail detail);
-    boolean deleteDetailById(Long id) throws EntityNotFoundException;
+    boolean deleteDetailById(Long id) throws DetailNotFoundException;
     List<Detail> findAll();
     Detail findDetailById(Long id) throws DetailNotFoundException;
     Detail addAvailableDetails(Long id, Integer quantity) throws DetailNotFoundException;

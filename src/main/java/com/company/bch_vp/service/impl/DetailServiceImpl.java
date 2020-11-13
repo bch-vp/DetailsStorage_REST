@@ -39,7 +39,7 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public boolean deleteDetailById(Long id) throws EntityNotFoundException {
+    public boolean deleteDetailById(Long id) throws DetailNotFoundException {
 //        Optional<Detail> optionalDetail=detailRepository.findById(id);
 //        if(!optionalDetail.isPresent()){
 //            return;
@@ -67,7 +67,7 @@ public class DetailServiceImpl implements DetailService {
 //        detailRepository.deleteById(id);
 
         Detail detail= detailRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(DetailNotFoundException::new);
         detail.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {
