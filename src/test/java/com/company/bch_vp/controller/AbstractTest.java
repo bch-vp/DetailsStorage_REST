@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-package com.company.bch_vp.controller;public class AbstractTest {
-}
-=======
 package com.company.bch_vp.controller;
 
 import java.io.IOException;
@@ -41,4 +37,3 @@ public abstract class AbstractTest {
         return objectMapper.readValue(json, clazz);
     }
 }
->>>>>>> Stashed changes

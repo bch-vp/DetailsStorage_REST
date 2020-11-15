@@ -2,11 +2,7 @@ package com.company.bch_vp.service.impl.detailServiceImplTest;
 
 import com.company.bch_vp.entity.Detail;
 import com.company.bch_vp.entity.DetailInfo;
-<<<<<<< Updated upstream
-=======
 import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
->>>>>>> Stashed changes
-import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
 import com.company.bch_vp.entity.Project;
 import com.company.bch_vp.service.impl.DetailInfoServiceImpl;
@@ -64,11 +60,7 @@ public class TestDeleteDetail {
 
     @Test
     @Transactional
-<<<<<<< Updated upstream
-    public void test1() throws EntityNotFoundException, ProjectNotFoundException {
-=======
     public void test1() throws ProjectNotFoundException, DetailNotFoundException {
->>>>>>> Stashed changes
         //delete 1 detail from 2
         detailServiceImpl.deleteDetailById((long)1);
 
