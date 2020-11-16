@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -17,7 +18,7 @@ import java.util.List;
 public class Detail {
 
     @Id
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -98,5 +99,23 @@ public class Detail {
             this.storage=detail.getStorage();
         }
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Detail)) return false;
+        Detail detailInfo = (Detail) o;
+        return Objects.equals(getDetailName(), detailInfo.getDetailName()) &&
+                Objects.equals(getType(), detailInfo.getType()) &&
+                Objects.equals(getQuantityOfAll(), detailInfo.getQuantityOfAll()) &&
+                Objects.equals(getQuantityOfAvailable(), detailInfo.getQuantityOfAvailable()) &&
+                Objects.equals(getPrice(), detailInfo.getPrice()) &&
+                Objects.equals(getStorage(), detailInfo.getStorage());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

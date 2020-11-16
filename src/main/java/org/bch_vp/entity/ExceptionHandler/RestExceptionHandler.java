@@ -89,7 +89,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IdNotValid.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValid ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Id must be not presented for POST", ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Id mustn't be presented for POST", ex);
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
