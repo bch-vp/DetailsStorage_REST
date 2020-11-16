@@ -2,10 +2,7 @@ package org.bch_vp.entity.ExceptionHandler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +10,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -84,6 +83,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                                             WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "DetailInfo not found", ex);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(IdNotValid.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValid ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Id must be not presented for POST", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

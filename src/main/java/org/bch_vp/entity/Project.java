@@ -1,5 +1,6 @@
 package org.bch_vp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,7 +34,8 @@ public class Project {
     private String storage;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
 
     public void addDetailInfo(DetailInfo detailInfo){

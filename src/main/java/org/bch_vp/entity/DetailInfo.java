@@ -22,13 +22,13 @@ public class DetailInfo {
     @Getter @Setter
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="detail_id",insertable = false, updatable = false)
-    @JsonBackReference(value="user-movement")
+  //  @JsonBackReference(value="user-movement")
     private Detail detail;
 
     @Getter @Setter
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="project_id", insertable = false, updatable = false)
-    @JsonBackReference
+  //  @JsonBackReference
     private Project project;
 
     public DetailInfo(Integer quantityDetailsUsed, Detail detail, Project project) {

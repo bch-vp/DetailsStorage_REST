@@ -1,5 +1,6 @@
 package org.bch_vp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -35,8 +36,8 @@ public class Detail {
     private String storage;
 
     @OneToMany(mappedBy = "detail", fetch = FetchType.EAGER)
-    @JsonManagedReference(value="user-movement")
-   // @JsonIgnore
+    //@JsonManagedReference(value="user-movement")
+    @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
 
     //delete!
@@ -44,8 +45,8 @@ public class Detail {
         this.detailName = detailName;
     }
 
-    public Detail(String detailNamem, Integer quantityOfAll){
-        this.detailName=detailNamem;
+    public Detail(String detailName, Integer quantityOfAll){
+        this.detailName=detailName;
         this.quantityOfAll=quantityOfAll;
         this.quantityOfAvailable=quantityOfAll;
     }

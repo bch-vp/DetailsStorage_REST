@@ -3,6 +3,7 @@ package org.bch_vp.controller;
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.IdNotValid;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -45,11 +46,14 @@ endPoint:
     }
 
     @PostMapping("/details")
-    public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) {
+    public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) throws IdNotValid {
         /*
         If everything is OK: API will save detail and return JSON(of this detail), HttpStatus.OK
         In other cases: API will send HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
+        if(detail.getId()!=null){
+            throw new IdNotValid();
+        }
         detail =detailServiceImpl.saveDetail(detail);
         return detail!=null
                 ? new ResponseEntity<>(detail,HttpStatus.CREATED)
