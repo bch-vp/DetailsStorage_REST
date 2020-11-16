@@ -126,10 +126,8 @@ public class DetailServiceImpl implements DetailService {
 
     @Override
     public Detail deleteAllProjectsFromDetail(Long id) throws DetailNotFoundException {
-        Project project = projectRepository.save(new Project("projetc", "a", 2, "d"));
         Detail detail = detailRepository.findById(id)
                 .orElseThrow(DetailNotFoundException::new);
-        detailinfoRepository.save(new DetailInfo(30, detail, project));
         detail.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {

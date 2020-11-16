@@ -46,9 +46,7 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return new ResponseEntity<>(detailServiceImpl.updateDetail(id, detail),HttpStatus.OK);
-
-
+        return new ResponseEntity<>(detailServiceImpl.updateDetail(id, detail), HttpStatus.OK);
     }
 
     @DeleteMapping("/details/{id}")
