@@ -103,7 +103,18 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public Detail deleteProjectInDetail(Long idDetail, Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
+    public Project findProjectInDetail(Long idDetail, Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
+        Detail detail = detailRepository.findById(idDetail)
+                .orElseThrow(DetailNotFoundException::new);
+        Project project=projectRepository.findById(idProject)
+                .orElseThrow(ProjectNotFoundException::new);
+        DetailInfo detailInfo= detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+                .orElseThrow(DetailInfoNotFoundException::new);
+        return detailInfo.getProject();
+    }
+
+    @Override
+    public boolean deleteProjectInDetail(Long idDetail, Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
         Detail detail = detailRepository.findById(idDetail)
                 .orElseThrow(DetailNotFoundException::new);
         Project project=projectRepository.findById(idProject)
@@ -120,12 +131,11 @@ public class DetailServiceImpl implements DetailService {
         // because info, which getting from the cache isn't correct, because we update some info
         // and it isn't reflected in cache
         */
-        return detailRepository.findById(idDetail)
-                .orElseThrow(DetailNotFoundException::new);
+        return !detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject)).isPresent();
     }
 
     @Override
-    public Detail deleteAllProjectsFromDetail(Long id) throws DetailNotFoundException {
+    public boolean deleteAllProjectsFromDetail(Long id) throws DetailNotFoundException {
         Detail detail = detailRepository.findById(id)
                 .orElseThrow(DetailNotFoundException::new);
         detail.getDetailsInfo()
@@ -140,8 +150,7 @@ public class DetailServiceImpl implements DetailService {
         // because info, which getting from the cache isn't correct, because we update some info
         // and it isn't reflected in cache
         */
-        return detailRepository.findById(id)
-                .orElseThrow(DetailNotFoundException::new);
+        return detailRepository.findById(id).get().getDetailsInfo().isEmpty();
     }
 
     @Override

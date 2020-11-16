@@ -46,15 +46,14 @@ public class Controller {
     @DeleteMapping("/details/{id}/projects")
     public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
         /*
-        If everything is OK: API will send JSON of detail with empty array of projects, HttpStatus.OK
+        If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        Detail detail = detailServiceImpl.deleteAllProjectsFromDetail(id);
-        return detail.getDetailsInfo().isEmpty()
-                ? new ResponseEntity<>(detail, HttpStatus.OK)
+        return detailServiceImpl.deleteAllProjectsFromDetail(id)
+                ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }

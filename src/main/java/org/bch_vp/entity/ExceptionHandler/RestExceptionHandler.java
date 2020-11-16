@@ -81,7 +81,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DetailInfoNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(DetailInfoNotFoundException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "DetailInfo not found", ex);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Detail and project didn't join", ex);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 

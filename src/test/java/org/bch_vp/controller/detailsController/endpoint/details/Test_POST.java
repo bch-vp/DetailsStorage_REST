@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class TestPOST extends AbstractTest {
+public class Test_POST extends AbstractTest {
 
     @Override
     @Before

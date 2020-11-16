@@ -34,8 +34,6 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public boolean joinDetailAndProject(Integer quantityDetailsUsed, Long idDetail, Long idProject) {
-
-
         Project project=projectRepository.findById(idProject).get();
         Detail detail=detailRepository.findById(idDetail).get();
         if(quantityDetailsUsed<=detail.getQuantityOfAvailable()){

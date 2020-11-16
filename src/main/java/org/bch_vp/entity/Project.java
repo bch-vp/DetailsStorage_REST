@@ -68,4 +68,20 @@ public class Project {
         this.quantity = quantity;
         this.storage = storage;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(projectName, project.projectName) &&
+                Objects.equals(type, project.type) &&
+                Objects.equals(quantity, project.quantity) &&
+                Objects.equals(storage, project.storage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

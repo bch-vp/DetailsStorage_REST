@@ -1,4 +1,4 @@
-package org.bch_vp.controller.detailsController.endpoint.details;
+package org.bch_vp.controller.detailsController.endpoint.details_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
@@ -11,9 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.assertEquals;
-
-public class TestDELETE extends AbstractTest {
+public class Test_PUT extends AbstractTest{
 
     @Autowired
     private DetailServiceImpl detailServiceImpl;
@@ -24,14 +22,17 @@ public class TestDELETE extends AbstractTest {
         super.setUp();
     }
 
-    @Test
-    public void deleteAllDetails() throws Exception {
-        Detail detail1 = new Detail("det-1","type","prod",23,2.0,"stor");
-        Detail detail2 = new Detail("det-2","type","prod",23,2.0,"stor");
+    @Before
+    public void fillDataBase() {
+        Detail detail1 = new Detail("det-1", "type", "prod", 23, 2.0, "stor");
+        Detail detail2 = new Detail("det-2", "type", "prod", 23, 2.0, "stor");
         detailServiceImpl.saveDetail(detail1);
         detailServiceImpl.saveDetail(detail2);
+    }
 
-        String uri = "/details";
+    @Test
+    public void testDeleteDetailByCorrectId() throws Exception {
+        String uri = "/details/1";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
