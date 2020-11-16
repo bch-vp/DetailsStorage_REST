@@ -1,25 +1,18 @@
-package com.company.bch_vp.service.impl;
+package org.bch_vp.service.impl;
 
-import com.company.bch_vp.entity.Detail;
-import com.company.bch_vp.entity.DetailInfo;
-import com.company.bch_vp.entity.IdDetailInfo;
-import com.company.bch_vp.entity.Project;
-import com.company.bch_vp.repository.DetailRepository;
-import com.company.bch_vp.repository.DetailinfoRepository;
-import com.company.bch_vp.repository.ProjectRepository;
-import com.company.bch_vp.service.DetailInfoService;
-import com.company.bch_vp.service.DetailService;
+import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.DetailInfo;
+import org.bch_vp.entity.IdDetailInfo;
+import org.bch_vp.entity.Project;
+import org.bch_vp.repository.DetailRepository;
+import org.bch_vp.repository.DetailinfoRepository;
+import org.bch_vp.repository.ProjectRepository;
+import org.bch_vp.service.DetailInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transaction;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DetailInfoServiceImpl implements DetailInfoService {

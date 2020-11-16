@@ -1,17 +1,16 @@
-package com.company.bch_vp.service.impl;
+package org.bch_vp.service.impl;
 
-import com.company.bch_vp.entity.Detail;
-import com.company.bch_vp.entity.DetailInfo;
-import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
-import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
-import com.company.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
-import com.company.bch_vp.entity.IdDetailInfo;
-import com.company.bch_vp.entity.Project;
-import com.company.bch_vp.repository.DetailRepository;
-import com.company.bch_vp.repository.DetailinfoRepository;
-import com.company.bch_vp.repository.ProjectRepository;
-import com.company.bch_vp.service.DetailService;
+import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.DetailInfo;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
+import org.bch_vp.entity.IdDetailInfo;
+import org.bch_vp.entity.Project;
+import org.bch_vp.repository.DetailRepository;
+import org.bch_vp.repository.DetailinfoRepository;
+import org.bch_vp.repository.ProjectRepository;
+import org.bch_vp.service.DetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
