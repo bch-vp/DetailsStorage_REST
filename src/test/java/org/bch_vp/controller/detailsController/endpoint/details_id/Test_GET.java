@@ -2,6 +2,7 @@ package org.bch_vp.controller.detailsController.endpoint.details_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,11 +26,12 @@ public class Test_GET extends AbstractTest {
     }
 
     @Before
-    public void fillDataBase(){
+    public void fillDataBase() throws EntityNotFoundException {
         Detail detail1 = new Detail("det-1", "type", "prod", 23, 2.0, "stor");
         Detail detail2 = new Detail("det-2", "type", "prod", 23, 2.0, "stor");
-        detailServiceImpl.saveDetail(detail1);
-        detailServiceImpl.saveDetail(detail2);
+        detailServiceImpl.saveEntity(detail1);
+        detailServiceImpl.saveEntity(detail2);
+       Detail detail= detailServiceImpl.findEntityById(1L);
     }
 
     @Test

@@ -1,7 +1,6 @@
 package org.bch_vp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +16,12 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Project {
+public class Project extends AbstractEntity {
 
     @Id
-    @Setter(AccessLevel.NONE)
+    //  @Setter(AccessLevel.NONE)
+    @Getter
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -33,8 +34,8 @@ public class Project {
     @NotBlank(message = "Storage is required")
     private String storage;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "detail", fetch = FetchType.EAGER)
+    //@JsonManagedReference(value="user-movement")
     @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
 
@@ -48,8 +49,8 @@ public class Project {
 //            .sum();
 
     public Double calculatePriceOfProject(){
-        if(!detailsInfo.isEmpty()){
-           return detailsInfo
+        if(!getDetailsInfo().isEmpty()){
+           return getDetailsInfo()
                    .stream()
                    .mapToDouble(detailInfo -> detailInfo.getDetail().getPrice() * detailInfo.getQuantityDetailsUsed())
                    .sum();
@@ -83,5 +84,11 @@ public class Project {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+
+    @Override// rewrite
+    public Object update(Object objectDetail) {
+        return null;
     }
 }

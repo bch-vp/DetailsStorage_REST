@@ -28,8 +28,8 @@ public class Test_DELETE extends AbstractTest {
     public void fillDataBase(){
         Detail detail1 = new Detail("det-1", "type", "prod", 23, 2.0, "stor");
         Detail detail2 = new Detail("det-2", "type", "prod", 23, 2.0, "stor");
-        detailServiceImpl.saveDetail(detail1);
-        detailServiceImpl.saveDetail(detail2);
+        detailServiceImpl.saveEntity(detail1);
+        detailServiceImpl.saveEntity(detail2);
     }
 
     @Test

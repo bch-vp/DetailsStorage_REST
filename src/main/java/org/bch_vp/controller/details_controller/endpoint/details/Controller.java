@@ -19,8 +19,6 @@ endPoint:
 public class Controller {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
-    @Autowired
-    private DetailInfoServiceImpl detailInfoServiceIml;
 
     @GetMapping("/details")
     public ResponseEntity<?> getDetails() {
@@ -42,10 +40,15 @@ public class Controller {
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
             - JSON about exception: IdNotValid , HttpStatus.BAD_REQUEST(400)
         */
-        if(detail.getId()!=null){
+
+        if(detail.getQuantityOfAvailable() == null){  //rewrite
+            detail.setQuantityOfAvailable(detail.getQuantityOfAll());
+        }
+
+        if(detail.getId()!=null){ // rewrite
             throw new IdNotValid();
         }
-        detail =detailServiceImpl.saveDetail(detail);
+        detail = (Detail) detailServiceImpl.saveEntity(detail);
         return detail!=null
                 ? new ResponseEntity<>(detail,HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -57,7 +60,7 @@ public class Controller {
         if everything is okay: API will delete detail and return HttpStatus.OK
         In other cases: API will send INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteAllDetails()
+        return detailServiceImpl.deleteAllEntities()
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }

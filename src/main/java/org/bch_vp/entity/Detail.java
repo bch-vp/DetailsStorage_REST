@@ -1,7 +1,6 @@
 package org.bch_vp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,10 +14,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Detail {
+public class Detail extends AbstractEntity {
 
     @Id
-//    @Setter(AccessLevel.NONE)
+    //  @Setter(AccessLevel.NONE)
+    @Getter
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -40,6 +41,10 @@ public class Detail {
     //@JsonManagedReference(value="user-movement")
     @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
+
+    public void addDetailInfo(DetailInfo detailInfo){
+        detailsInfo.add(detailInfo);
+    }
 
     //delete!
     public Detail(String detailName) {
@@ -63,9 +68,7 @@ public class Detail {
         this.storage = storage;
     }
 
-    public void addDetailInfo(DetailInfo detailInfo){
-        detailsInfo.add(detailInfo);
-    }
+
 
     public Detail addAvailableDetails(Integer quantityOfAvailable){
         this.quantityOfAvailable+=quantityOfAvailable;
@@ -81,8 +84,9 @@ public class Detail {
     public void subtractAvailableDetails(Integer quantityOfAvailable){
         this.quantityOfAvailable-=quantityOfAvailable;
     }
-
-    public Detail updateDetail(Detail detail){
+    @Override
+    public Object update(Object objectDetail){
+        Detail detail=(Detail)objectDetail;
         if(!detail.detailName.isEmpty()){
             this.detailName=detail.getDetailName();
         }

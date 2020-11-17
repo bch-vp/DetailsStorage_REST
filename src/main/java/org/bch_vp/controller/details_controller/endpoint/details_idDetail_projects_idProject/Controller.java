@@ -1,9 +1,7 @@
 package org.bch_vp.controller.details_controller.endpoint.details_idDetail_projects_idProject;
 
-import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -21,12 +19,10 @@ public class Controller {
 
     @Autowired
     private DetailServiceImpl detailServiceImpl;
-    @Autowired
-    private DetailInfoServiceImpl detailInfoServiceIml;
 
     @GetMapping("/details/{idDetail}/projects/{idProject}")
     public ResponseEntity<?> getProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
+                                                @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
         /*
         If everything is OK: API will send JSON of project and HttpStatus.OK
         In other cases API will send:
@@ -37,7 +33,7 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        Project project = detailServiceImpl.findProjectInDetail(idDetail,idProject);
+        Project project = (Project) detailServiceImpl.findInnerEntityFromEntity(idDetail,idProject);
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
@@ -55,7 +51,7 @@ public class Controller {
 
     @DeleteMapping("/details/{idDetail}/projects/{idProject}")
     public ResponseEntity<?> deleteProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject) throws DetailNotFoundException, ProjectNotFoundException, DetailInfoNotFoundException {
+                                                @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
@@ -66,7 +62,7 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteProjectInDetail(idDetail, idProject)
+        return detailServiceImpl.deleteInnerEntityFromEntity(idDetail, idProject)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }

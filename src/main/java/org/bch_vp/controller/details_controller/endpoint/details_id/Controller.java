@@ -1,7 +1,7 @@
 package org.bch_vp.controller.details_controller.endpoint.details_id;
 
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,10 @@ endPoint:
 public class Controller {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
-    @Autowired
-    private DetailInfoServiceImpl detailInfoServiceIml;
+
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+    public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will return JSON(of this detail), HttpStatus.OK
         In other cases API will send:
@@ -32,12 +31,12 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return new ResponseEntity<>(detailServiceImpl.findDetailById(id), HttpStatus.OK);
+        return new ResponseEntity<>((Detail)detailServiceImpl.findEntityById(id), HttpStatus.OK);
 
     }
 
     @PutMapping(value = "/details/{id}")
-    public ResponseEntity<?> updateDetail(@RequestBody @Valid Detail detail, @PathVariable("id") Long id) throws DetailNotFoundException {
+    public ResponseEntity<?> updateDetail(@RequestBody @Valid Detail detail, @PathVariable("id") Long id) throws  EntityNotFoundException{
         /*
         If everything is OK: API will update detail and return JSON(of this updated detail), HttpStatus.OK
         In other cases API will send:
@@ -47,11 +46,11 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return new ResponseEntity<>(detailServiceImpl.updateDetail(id, detail), HttpStatus.OK);
+        return new ResponseEntity<>(detailServiceImpl.updateEntity(id, detail), HttpStatus.OK);
     }
 
     @DeleteMapping("/details/{id}")
-    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will delete detail and return HttpStatus.OK
         In other cases API will send:
@@ -60,7 +59,7 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteDetailById(id)
+        return detailServiceImpl.deleteEntityById(id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }

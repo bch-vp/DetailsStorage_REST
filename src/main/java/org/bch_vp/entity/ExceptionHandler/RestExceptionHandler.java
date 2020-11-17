@@ -60,23 +60,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(EntityNotFoundException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Entity not found", ex);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getClassName()+" not found", ex);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(DetailNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(DetailNotFoundException ex,
-                                                            WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Detail not found", ex);
-        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ProjectNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(ProjectNotFoundException ex,
-                                                            WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Project not found", ex);
-        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(DetailInfoNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(DetailInfoNotFoundException ex,

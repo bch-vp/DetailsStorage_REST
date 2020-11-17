@@ -1,8 +1,7 @@
 package org.bch_vp.controller.details_controller.endpoint.details_id_projects;
 
-import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -26,7 +25,7 @@ public class Controller {
     private DetailInfoServiceImpl detailInfoServiceIml;
 
     @GetMapping("/details/{id}/projects")
-    public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+    public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send JSON of array(also it can be empty array), which contains projects from detail with {id}, HttpStatus.OK
         In other cases API will send:
@@ -35,7 +34,7 @@ public class Controller {
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
         List<Project> projects=detailServiceImpl
-                .findDetailById(id)
+                .findEntityById(id)
                 .getDetailsInfo()
                 .stream()
                 .map(DetailInfo::getProject)
@@ -44,7 +43,7 @@ public class Controller {
     }
 
     @DeleteMapping("/details/{id}/projects")
-    public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws DetailNotFoundException {
+    public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
@@ -52,7 +51,7 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteAllProjectsFromDetail(id)
+        return detailServiceImpl.deleteAllInnerEntitiesFromEntity(id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }

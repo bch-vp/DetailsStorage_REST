@@ -2,8 +2,7 @@ package org.bch_vp.service.impl.detailServiceImplTest;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.ProjectNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -42,13 +41,13 @@ public class TestDeleteDetail {
     @Transactional
     public void fillDB(){
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
-        Long idDetail_1=detailServiceImpl.saveDetail(detail_1).getId();
+        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 
         Detail detail_2=new Detail("detail_2", "type","production",200, (double)40, "storage");
-        Long idDetail_2=detailServiceImpl.saveDetail(detail_2).getId();
+        Long idDetail_2=detailServiceImpl.saveEntity(detail_2).getId();
 
         Project project=new Project("prpject_1","type" , 1,"storage");
-        Long idProject=projectServiceImpl.saveProject(project).getId();
+        Long idProject=projectServiceImpl.saveEntity(project).getId();
 
         detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
@@ -56,9 +55,9 @@ public class TestDeleteDetail {
 
     @Test
     @Transactional
-    public void test1() throws ProjectNotFoundException, DetailNotFoundException {
+    public void test1() throws EntityNotFoundException {
         //delete 1 detail from 2
-        detailServiceImpl.deleteDetailById((long)1);
+        detailServiceImpl.deleteEntityById((long)1);
 
         entityManager.clear();
 
@@ -69,7 +68,7 @@ public class TestDeleteDetail {
         Assert.assertEquals(1, detailServiceImpl.findAll().size());
         Assert.assertEquals(1, detailInfoServiceImpl.findAll().size());
         Assert.assertEquals(1, projectServiceImpl.findAll().size());
-
-        Assert.assertEquals(1, projectServiceImpl.findById((long)1).getDetailsInfo().size());
+        Project project=projectServiceImpl.findEntityById((long)1);
+        Assert.assertEquals(1, projectServiceImpl.findEntityById((long)1).getDetailsInfo().size());
     }
 }

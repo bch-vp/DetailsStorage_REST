@@ -28,8 +28,8 @@ public class Test_GET extends AbstractTest {
     public void getDetailsListFromDBWhereTwoDetails() throws Exception {
         Detail detail1 = new Detail("det-1","type","prod",23,2.0,"stor");
         Detail detail2 = new Detail("det-2","type","prod",23,2.0,"stor");
-        detailServiceImpl.saveDetail(detail1);
-        detailServiceImpl.saveDetail(detail2);
+        detailServiceImpl.saveEntity(detail1);
+        detailServiceImpl.saveEntity(detail2);
 
         String uri = "/details";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -58,7 +58,7 @@ public class Test_GET extends AbstractTest {
     @Test
     public void getDetailsListFromDBWhereOneDetails() throws Exception {
         Detail detail = new Detail("det-1","type","prod",23,2.0,"stor");
-        detailServiceImpl.saveDetail(detail);
+        detailServiceImpl.saveEntity(detail);
 
         String uri = "/details";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)

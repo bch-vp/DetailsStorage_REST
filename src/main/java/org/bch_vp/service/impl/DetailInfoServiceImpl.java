@@ -4,9 +4,8 @@ import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.IdDetailInfo;
 import org.bch_vp.entity.Project;
-import org.bch_vp.repository.DetailRepository;
 import org.bch_vp.repository.DetailinfoRepository;
-import org.bch_vp.repository.ProjectRepository;
+import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.DetailInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,9 @@ import java.util.List;
 @Service
 public class DetailInfoServiceImpl implements DetailInfoService {
     @Autowired
-    private ProjectRepository projectRepository;
+    private StorageRepository<Project> projectRepository;
     @Autowired
-    private DetailRepository detailRepository;
+    private StorageRepository<Detail> detailRepository;
     @Autowired
     private DetailinfoRepository detailinfoRepository;
 
