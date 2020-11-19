@@ -1,5 +1,4 @@
 package org.bch_vp.entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -20,15 +20,15 @@ public class DetailInfo {
     private Integer quantityDetailsUsed;
 
     @Getter @Setter
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch= FetchType.EAGER,optional = false)
     @JoinColumn(name="detail_id",insertable = false, updatable = false)
-  //  @JsonBackReference(value="user-movement")
+    @JsonBackReference(value="user-movement")
     private Detail detail;
 
     @Getter @Setter
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name="project_id", insertable = false, updatable = false)
-  //  @JsonBackReference
+    @JsonBackReference
     private Project project;
 
     public DetailInfo(Integer quantityDetailsUsed, Detail detail, Project project) {
@@ -68,5 +68,15 @@ public class DetailInfo {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "DetailInfo{" +
+                "id=" + id +
+                ", quantityDetailsUsed=" + quantityDetailsUsed +
+                ", detail=" + detail +
+                ", project=" + project +
+                '}';
     }
 }

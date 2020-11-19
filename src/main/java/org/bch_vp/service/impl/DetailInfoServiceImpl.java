@@ -4,12 +4,14 @@ import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.IdDetailInfo;
 import org.bch_vp.entity.Project;
-import org.bch_vp.repository.DetailinfoRepository;
+import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.DetailInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -20,7 +22,9 @@ public class DetailInfoServiceImpl implements DetailInfoService {
     @Autowired
     private StorageRepository<Detail> detailRepository;
     @Autowired
-    private DetailinfoRepository detailinfoRepository;
+    private DetailInfoRepository detailinfoRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public void addQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) {
@@ -39,9 +43,11 @@ public class DetailInfoServiceImpl implements DetailInfoService {
             detail.subtractAvailableDetails(quantityDetailsUsed);
             DetailInfo detailInfo=new DetailInfo(quantityDetailsUsed,detail,project);
            detailinfoRepository.save(detailInfo);
+           detailRepository.save(detail);//delete
+           projectRepository.save(project);//delete
         }
         flushAllRepositories();
-
+        entityManager.clear();
         //rewrite
         return true;
     }

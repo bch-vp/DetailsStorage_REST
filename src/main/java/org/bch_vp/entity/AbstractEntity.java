@@ -15,5 +15,5 @@ import java.util.List;
 public abstract class AbstractEntity{
     public abstract Long getId();
     public abstract List<DetailInfo> getDetailsInfo();
-    public abstract Object update(Object objectDetail);
+    public abstract AbstractEntity update(AbstractEntity objectDetail);
 }

@@ -3,13 +3,14 @@ package org.bch_vp.service.impl;
 import org.bch_vp.entity.*;
 import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
-import org.bch_vp.repository.DetailinfoRepository;
+import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +26,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     @Autowired
     private InnerEntityRepository innerEntityRepository;
     @Autowired
-    private DetailinfoRepository detailinfoRepository;
+    private DetailInfoRepository detailinfoRepository;
     @Autowired
     private EntityManager entityManager;
 
@@ -67,24 +68,20 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
 ////                    projectRepository.delete(project);
 ////                });
 ////        detailRepository.deleteById(id);
-        InnerEntity innerEntity= innerEntityRepository.findById(1L)
-                .orElseThrow(()->new EntityNotFoundException(typeParameterClass.getClass().getName()));
         Entity entity= entityRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException(typeParameterClass.getClass().getName()));
         entity.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {
-                    detailinfoRepository.delete(detailInfo);
+                   detailinfoRepository.delete(detailInfo);
                     //rewrite
-//                    if(entity instanceof Project){
-//                        detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
-//                    }
+                    if(entity instanceof Project){
+                        detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
+                    }
                 });
         entityRepository.delete(entity);
         flushAllRepositories();
         entityManager.clear();
-         innerEntity= innerEntityRepository.findById(1L)
-                .orElseThrow(()->new EntityNotFoundException(typeParameterClass.getClass().getName()));
         /*
         // need to clear persistence context(cache 1st level),
         // because we want to take info from dataBase(not from cache)

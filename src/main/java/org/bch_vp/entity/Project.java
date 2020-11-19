@@ -34,7 +34,7 @@ public class Project extends AbstractEntity {
     @NotBlank(message = "Storage is required")
     private String storage;
 
-    @OneToMany(mappedBy = "detail", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     //@JsonManagedReference(value="user-movement")
     @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
@@ -88,7 +88,18 @@ public class Project extends AbstractEntity {
 
 
     @Override// rewrite
-    public Object update(Object objectDetail) {
+    public AbstractEntity update(AbstractEntity objectDetail) {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", projectName='" + projectName + '\'' +
+                ", type='" + type + '\'' +
+                ", quantity=" + quantity +
+                ", storage='" + storage + '\'' +
+                '}';
     }
 }

@@ -67,7 +67,7 @@ public class Test_DELETE extends AbstractTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        Assert.assertEquals(404, status);
+        Assert.assertEquals(304, status);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class Test_DELETE extends AbstractTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        Assert.assertEquals(404, status);
+        Assert.assertEquals(304, status);
     }
 
     @Test

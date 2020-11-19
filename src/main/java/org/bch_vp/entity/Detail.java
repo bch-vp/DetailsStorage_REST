@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Detail extends AbstractEntity {
 
     @Id
-    //  @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     @Getter
     @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,8 +84,9 @@ public class Detail extends AbstractEntity {
     public void subtractAvailableDetails(Integer quantityOfAvailable){
         this.quantityOfAvailable-=quantityOfAvailable;
     }
+
     @Override
-    public Object update(Object objectDetail){
+    public AbstractEntity update(AbstractEntity objectDetail){
         Detail detail=(Detail)objectDetail;
         if(!detail.detailName.isEmpty()){
             this.detailName=detail.getDetailName();
@@ -121,5 +122,19 @@ public class Detail extends AbstractEntity {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Detail{" +
+                "id=" + id +
+                ", detailName='" + detailName + '\'' +
+                ", type='" + type + '\'' +
+                ", production='" + production + '\'' +
+                ", quantityOfAll=" + quantityOfAll +
+                ", quantityOfAvailable=" + quantityOfAvailable +
+                ", price=" + price +
+                ", storage='" + storage + '\'' +
+                '}';
     }
 }

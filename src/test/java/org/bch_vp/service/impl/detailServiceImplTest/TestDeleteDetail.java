@@ -1,5 +1,6 @@
 package org.bch_vp.service.impl.detailServiceImplTest;
 
+import org.bch_vp.Application;
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
@@ -10,17 +11,22 @@ import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,7 +45,7 @@ public class TestDeleteDetail {
 
     @Before
     @Transactional
-    public void fillDB(){
+    public void fillDB() throws EntityNotFoundException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 
@@ -51,6 +57,7 @@ public class TestDeleteDetail {
 
         detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
+        //detailServiceImpl.deleteEntityById((long)1);
     }
 
     @Test

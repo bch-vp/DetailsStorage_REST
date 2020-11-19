@@ -65,7 +65,7 @@ public class Test_DELETE extends AbstractTest {
     @Test
     public void testDelete1ProjectFromDetailByIncorrectIdDetail() throws Exception {
         String uri = "/details/3/projects/1";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
@@ -75,7 +75,7 @@ public class Test_DELETE extends AbstractTest {
     @Test
     public void testDelete2ProjectFromDetailByIncorrectIdDetail() throws Exception {
         String uri = "/details/1a/projects/1";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
@@ -85,7 +85,7 @@ public class Test_DELETE extends AbstractTest {
     @Test
     public void testDelete1ProjectFromDetailByIncorrectIdProject() throws Exception {
         String uri = "/details/1/projects/3";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
@@ -95,7 +95,7 @@ public class Test_DELETE extends AbstractTest {
     @Test
     public void testDelete2ProjectFromDetailByIncorrectIdProject() throws Exception {
         String uri = "/details/1/projects/1q";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();

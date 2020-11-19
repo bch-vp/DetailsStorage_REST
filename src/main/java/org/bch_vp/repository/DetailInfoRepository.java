@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DetailinfoRepository extends JpaRepository<DetailInfo,Long> {
+public interface DetailInfoRepository extends JpaRepository<DetailInfo, IdDetailInfo> {
     Optional<DetailInfo> findById(IdDetailInfo idDetailInfo);
 }
 
