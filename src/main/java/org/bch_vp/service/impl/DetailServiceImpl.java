@@ -11,19 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DetailServiceImpl extends AbstractStorageServiceImpl<Detail, Project, DetailRepository, ProjectRepository> implements DetailService {
+public class DetailServiceImpl
+        extends AbstractStorageServiceImpl<Detail, Project, DetailRepository, ProjectRepository>
+        implements DetailService {
 
     @Autowired
     private StorageRepository<Detail> detailRepository;
 
     private DetailServiceImpl() {
-        super(Detail.class);
+        super(Detail.class, Project.class);
     }
 
     @Override
     public Detail addAvailableDetails(Long id, Integer quantity) throws EntityNotFoundException {
         Detail detail = detailRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(Detail.class.getName()));
+                .orElseThrow(()->new EntityNotFoundException(Detail.class));
         detail=detailRepository.save(detail.addAvailableDetails(quantity));
         detailRepository.flush();
         return detail;
@@ -32,7 +34,7 @@ public class DetailServiceImpl extends AbstractStorageServiceImpl<Detail, Projec
     @Override
     public Detail addQuantityOfDetails(Long id, Integer quantity) throws EntityNotFoundException {
         Detail detail = detailRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(Detail.class.getName()));
+                .orElseThrow(()->new EntityNotFoundException(Detail.class));
         detail=detailRepository.save(detail.addQuantityOfDetails(quantity));
         detailRepository.flush();
         return detail;

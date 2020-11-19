@@ -46,9 +46,6 @@ public class Test_DELETE extends AbstractTest {
 
         detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
-        project=projectServiceImpl.findEntityById(1L);
-        detail_1=detailServiceImpl.findEntityById(1L);
-        List<DetailInfo> detailInfos=detailInfoServiceImpl.findAll();
     }
 
     @Test

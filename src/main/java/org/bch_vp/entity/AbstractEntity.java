@@ -13,7 +13,15 @@ import java.util.List;
 
 @MappedSuperclass
 public abstract class AbstractEntity{
-    public abstract Long getId();
+
+    @Id
+    //  @Setter(AccessLevel.NONE)
+    @Getter
+    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+//    public abstract Long getId();
     public abstract List<DetailInfo> getDetailsInfo();
     public abstract AbstractEntity update(AbstractEntity objectDetail);
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class ProjectServiceImpl extends AbstractStorageServiceImpl<Project, Detail, ProjectRepository, DetailRepository> implements ProjectService {
 
     private ProjectServiceImpl() {
-        super(Project.class);
+        super(Project.class, Detail.class);
     }
 
 

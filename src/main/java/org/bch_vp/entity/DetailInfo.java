@@ -20,13 +20,13 @@ public class DetailInfo {
     private Integer quantityDetailsUsed;
 
     @Getter @Setter
-    @ManyToOne(fetch= FetchType.EAGER,optional = false)
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="detail_id",insertable = false, updatable = false)
     @JsonBackReference(value="user-movement")
     private Detail detail;
 
     @Getter @Setter
-    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="project_id", insertable = false, updatable = false)
     @JsonBackReference
     private Project project;
@@ -41,6 +41,11 @@ public class DetailInfo {
 
         project.getDetailsInfo().add(this);
         detail.getDetailsInfo().add(this);
+    }
+
+    public void breakRelations(DetailInfo detailInfo){
+        detailInfo.getProject().getDetailsInfo().remove(this);
+        detailInfo.getDetail().getDetailsInfo().remove(this);
     }
 
     public DetailInfo addQuantityofDetailsUsed(Integer quantity){

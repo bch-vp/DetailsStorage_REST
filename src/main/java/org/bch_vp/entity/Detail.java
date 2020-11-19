@@ -16,12 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Detail extends AbstractEntity {
 
-    @Id
-    //@Setter(AccessLevel.NONE)
-    @Getter
-    @Setter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     @NotBlank(message="Detail Name is required")
     private String detailName;
@@ -127,7 +122,7 @@ public class Detail extends AbstractEntity {
     @Override
     public String toString() {
         return "Detail{" +
-                "id=" + id +
+                "id=" +
                 ", detailName='" + detailName + '\'' +
                 ", type='" + type + '\'' +
                 ", production='" + production + '\'' +

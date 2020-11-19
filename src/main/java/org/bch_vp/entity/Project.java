@@ -18,12 +18,7 @@ import java.util.*;
 @NoArgsConstructor
 public class Project extends AbstractEntity {
 
-    @Id
-    //  @Setter(AccessLevel.NONE)
-    @Getter
-    @Setter
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 
     @NotBlank(message = "Project name is required")
     private String projectName;
@@ -95,7 +90,7 @@ public class Project extends AbstractEntity {
     @Override
     public String toString() {
         return "Project{" +
-                "id=" + id +
+                "id=" +
                 ", projectName='" + projectName + '\'' +
                 ", type='" + type + '\'' +
                 ", quantity=" + quantity +

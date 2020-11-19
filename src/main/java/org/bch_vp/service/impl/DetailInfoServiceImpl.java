@@ -52,6 +52,7 @@ public class DetailInfoServiceImpl implements DetailInfoService {
         return true;
     }
 
+
     @Override
     public List<DetailInfo> findAll() {
         return detailinfoRepository.findAll();

@@ -16,5 +16,5 @@ public interface StorageService<Entity extends AbstractEntity, InnerEntity exten
     Entity updateEntity(Long id, Entity entity) throws EntityNotFoundException;
     boolean deleteAllInnerEntitiesFromEntity(Long id) throws  EntityNotFoundException;
     boolean deleteInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException;
-    InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity);
+    InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException;
 }
