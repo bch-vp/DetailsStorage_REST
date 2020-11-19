@@ -1,7 +1,8 @@
 package org.bch_vp.controller.details_controller.endpoint.details_id_projects;
 
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -22,7 +23,7 @@ public class Controller {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
     @Autowired
-    private DetailInfoServiceImpl detailInfoServiceIml;
+    private DetailInfoServiceImpl detailInfoServiceImpl;
 
     @GetMapping("/details/{id}/projects")
     public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
@@ -40,6 +41,15 @@ public class Controller {
                 .map(DetailInfo::getProject)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(projects, HttpStatus.OK);
+    }
+
+    @PostMapping("/details/{idDetail}/projects/{idProject}")
+    public ResponseEntity<?> addProjectToDetail(@RequestBody Integer quantityOfDetails,
+                                                @PathVariable(value = "idDetail") Long idDetail,
+                                                @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException {
+        return detailInfoServiceImpl.joinDetailAndProject(quantityOfDetails, idDetail, idProject)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/details/{id}/projects")

@@ -1,7 +1,7 @@
 package org.bch_vp.controller.details_controller.endpoint.details_idDetail_projects_idProject;
 
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -19,6 +19,8 @@ public class Controller {
 
     @Autowired
     private DetailServiceImpl detailServiceImpl;
+    @Autowired
+    private DetailInfoServiceImpl detailInfoServiceImpl;
 
     @GetMapping("/details/{idDetail}/projects/{idProject}")
     public ResponseEntity<?> getProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
@@ -35,12 +37,6 @@ public class Controller {
         */
         Project project = (Project) detailServiceImpl.findInnerEntityFromEntity(idDetail,idProject);
         return new ResponseEntity<>(project, HttpStatus.OK);
-    }
-
-    @PostMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> addProjectToDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject){
-        return null;
     }
 
     @PutMapping("/details/{idDetail}/projects/{idProject}")

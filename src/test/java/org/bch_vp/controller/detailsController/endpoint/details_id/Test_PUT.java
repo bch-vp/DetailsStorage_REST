@@ -2,19 +2,15 @@ package org.bch_vp.controller.detailsController.endpoint.details_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
-import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +30,7 @@ public class Test_PUT extends AbstractTest{
     }
 
     @Before
-    public void fillDataBase() throws EntityNotFoundException {
+    public void fillDataBase() throws EntityNotFoundException, QuantityOfDetailsException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 

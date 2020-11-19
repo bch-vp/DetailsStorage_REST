@@ -2,7 +2,7 @@ package org.bch_vp.entity.ExceptionHandler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.*;
+import org.bch_vp.entity.ExceptionHandler.entity.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +10,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -72,9 +70,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(QuantityOfDetailsException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(QuantityOfDetailsException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Malformed JSON request. Quantity of details is not correct", ex);
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
+    }
 
-    @ExceptionHandler(IdNotValid.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValid ex,
+    @ExceptionHandler(AlreadyHasRelationsException.class)
+    protected ResponseEntity<Object> alreadyHasRelationsException(AlreadyHasRelationsException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Entities already have relations", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ExceptionHandler(IdNotValidException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValidException ex,
                                                             WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Id mustn't be presented for POST", ex);
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);

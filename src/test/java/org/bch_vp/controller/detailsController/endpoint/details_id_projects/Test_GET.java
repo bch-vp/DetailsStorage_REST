@@ -2,6 +2,8 @@ package org.bch_vp.controller.detailsController.endpoint.details_id_projects;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -32,7 +34,7 @@ public class Test_GET extends AbstractTest {
     }
 
     @Before
-    public void fillDataBase(){
+    public void fillDataBase() throws QuantityOfDetailsException, EntityNotFoundException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 

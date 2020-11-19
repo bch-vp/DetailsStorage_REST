@@ -1,9 +1,8 @@
 package org.bch_vp.service;
 
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.AbstractEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -16,5 +15,5 @@ public interface StorageService<Entity extends AbstractEntity, InnerEntity exten
     Entity updateEntity(Long id, Entity entity) throws EntityNotFoundException;
     boolean deleteAllInnerEntitiesFromEntity(Long id) throws  EntityNotFoundException;
     boolean deleteInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException;
-    InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException;
+    InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException;
 }

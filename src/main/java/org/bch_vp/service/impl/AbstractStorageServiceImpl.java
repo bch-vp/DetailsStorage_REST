@@ -1,18 +1,15 @@
 package org.bch_vp.service.impl;
 
-import lombok.NoArgsConstructor;
 import org.bch_vp.entity.*;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,10 +113,10 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
         DetailInfo detailInfo;
         if (entity instanceof Detail && innerEntity instanceof Project) {
             detailInfo = detailinfoRepository.findById(new IdDetailInfo(entity.getId(), innerEntity.getId()))
-                    .orElseThrow(javax.persistence.EntityNotFoundException::new);
+                    .orElseThrow(DetailInfoNotFoundException::new);
         } else {
             detailInfo = detailinfoRepository.findById(new IdDetailInfo(innerEntity.getId(), entity.getId()))
-                    .orElseThrow(javax.persistence.EntityNotFoundException::new);
+                    .orElseThrow(DetailInfoNotFoundException::new);
         }
         detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
         detailinfoRepository.delete(detailInfo);
@@ -128,7 +125,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     }
 
     @Override
-    public InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException {
+    public InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException {
         Entity entity = entityRepository.findById(idEntity)
                 .orElseThrow(() -> new EntityNotFoundException(entityClass));
         InnerEntity innerEntity = innerEntityRepository.findById(idInnerEntity)
@@ -136,12 +133,13 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
         DetailInfo detailInfo;
         if (entity instanceof Detail && innerEntity instanceof Project) {
             detailInfo = detailinfoRepository.findById(new IdDetailInfo(entity.getId(), innerEntity.getId()))
-                    .orElseThrow(javax.persistence.EntityNotFoundException::new);
+                    .orElseThrow(DetailInfoNotFoundException::new);
+            return (InnerEntity) detailInfo.getProject();
         } else {
             detailInfo = detailinfoRepository.findById(new IdDetailInfo(innerEntity.getId(), entity.getId()))
-                    .orElseThrow(javax.persistence.EntityNotFoundException::new);
+                    .orElseThrow(DetailInfoNotFoundException::new);
+            return (InnerEntity) detailInfo.getDetail();
         }
-        return null;
     }
 
     private void flushAndClear(){

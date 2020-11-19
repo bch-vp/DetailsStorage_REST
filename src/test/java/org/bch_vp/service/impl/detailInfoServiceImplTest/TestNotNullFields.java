@@ -2,6 +2,8 @@ package org.bch_vp.service.impl.detailInfoServiceImplTest;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -35,7 +37,7 @@ public class TestNotNullFields {
 
     @Before
     @Transactional
-    public void fillDB(){
+    public void fillDB() throws QuantityOfDetailsException, EntityNotFoundException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 

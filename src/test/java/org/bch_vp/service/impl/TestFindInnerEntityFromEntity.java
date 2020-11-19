@@ -21,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties ="classpath:application.properties")
 @Transactional
-public class TestDeleteInnerEntityFromEntity {
-
+public class TestFindInnerEntityFromEntity {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
     @Autowired
@@ -50,28 +49,34 @@ public class TestDeleteInnerEntityFromEntity {
         detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject_2);
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject_2);
     }
+
     @Test
     public void test1() throws EntityNotFoundException, DetailInfoNotFoundException {
-        Long idDetail=1L;
-        Long idProject=1L;
-        detailServiceImpl.deleteInnerEntityFromEntity(idDetail,idProject);
-        Assert.assertEquals(1, detailServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
-        Assert.assertEquals(1, projectServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
-        Assert.assertEquals(3, detailInfoServiceImpl.findAll().size());
-        Assert.assertEquals(2, detailServiceImpl.findAll().size());
-        Assert.assertEquals(2, projectServiceImpl.findAll().size());
-
+        Project projectExpected = new Project("prpject_1", "type", 1, "storage");
+        Project projectActual=detailServiceImpl.findInnerEntityFromEntity(1L,1L);
+        Assert.assertEquals(projectExpected, projectActual);
     }
 
     @Test
     public void test2() throws EntityNotFoundException, DetailInfoNotFoundException {
-        Long idDetail=1L;
-        Long idProject=1L;
-        projectServiceImpl.deleteInnerEntityFromEntity(idDetail,idProject);
-        Assert.assertEquals(1, detailServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
-        Assert.assertEquals(1, projectServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
-        Assert.assertEquals(3, detailInfoServiceImpl.findAll().size());
-        Assert.assertEquals(2, detailServiceImpl.findAll().size());
-        Assert.assertEquals(2, projectServiceImpl.findAll().size());
+        Project projectExpected = new Project("prpject_2", "type", 1, "storage");
+        Project projectActual=detailServiceImpl.findInnerEntityFromEntity(1L,2L);
+        Assert.assertEquals(projectExpected, projectActual);
+    }
+
+    @Test
+    public void test3() throws EntityNotFoundException, DetailInfoNotFoundException {
+        Detail detailExpected = new Detail("detail_1", "type", "production", 100, (double) 40, "storage");
+        detailExpected.subtractAvailableDetails(60);
+        Detail detailActual=projectServiceImpl.findInnerEntityFromEntity(1L,1L);
+        Assert.assertEquals(detailExpected, detailActual);
+    }
+
+    @Test
+    public void test4() throws EntityNotFoundException, DetailInfoNotFoundException {
+        Detail detailExpected =  new Detail("detail_2", "type", "production", 200, (double) 40, "storage");
+        detailExpected.subtractAvailableDetails(40);
+        Detail detailActual=projectServiceImpl.findInnerEntityFromEntity(1L,2L);
+        Assert.assertEquals(detailExpected, detailActual);
     }
 }

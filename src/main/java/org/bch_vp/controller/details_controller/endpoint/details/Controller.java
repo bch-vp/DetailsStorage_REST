@@ -1,8 +1,7 @@
 package org.bch_vp.controller.details_controller.endpoint.details;
 
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.IdNotValid;
-import org.bch_vp.service.impl.DetailInfoServiceImpl;
+import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ public class Controller {
     }
 
     @PostMapping("/details")
-    public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) throws IdNotValid {
+    public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) throws IdNotValidException {
         /*
         If everything is OK: API will save detail and return JSON(of this detail), HttpStatus.CREATED(201)
         In other cases API will send:
@@ -46,7 +45,7 @@ public class Controller {
         }
 
         if(detail.getId()!=null){ // rewrite
-            throw new IdNotValid();
+            throw new IdNotValidException();
         }
         detail = (Detail) detailServiceImpl.saveEntity(detail);
         return detail!=null

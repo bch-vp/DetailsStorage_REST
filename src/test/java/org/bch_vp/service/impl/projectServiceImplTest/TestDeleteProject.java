@@ -2,7 +2,8 @@ package org.bch_vp.service.impl.projectServiceImplTest;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entityNotFound.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -34,7 +35,7 @@ public class TestDeleteProject {
 
     @Before
     @Transactional
-    public void fillDB(){
+    public void fillDB() throws QuantityOfDetailsException, EntityNotFoundException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 
@@ -63,9 +64,9 @@ public class TestDeleteProject {
         Assert.assertEquals(2,detailInfoServiceImpl.findAll().size());
         Assert.assertEquals(2,detailServiceImpl.findAll().size());
         Detail detail= (Detail) detailServiceImpl.findAll().get(0);
-        Assert.assertEquals(70,(int) detail.getQuantityOfAvailable());
+        Assert.assertEquals(180,(int) detail.getQuantityOfAvailable());
         detail= (Detail) detailServiceImpl.findAll().get(1);
-        Assert.assertEquals(180, (int)detail.getQuantityOfAvailable());
+        Assert.assertEquals(70, (int)detail.getQuantityOfAvailable());
         List<DetailInfo> detailInfos=detailInfoServiceImpl.findAll();
         List<Detail> details=detailServiceImpl.findAll();
 
