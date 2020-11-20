@@ -1,11 +1,13 @@
-package org.bch_vp.controller.details_controller.endpoint.details_idDetail_projects_idProject;
+package org.bch_vp.controller.projects_controller.projects_idProject_details_idDetail;
 
+import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
+import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,21 +19,21 @@ import java.util.HashMap;
 
 /*
 endPoint:
-    ../details/{idDetail}/projects/{idProject}
+    ../projects/{idProject}/details/{idDetail}
  */
 @RestController(value = "/details/idDetail/projects/idProject")
 public class Controller {
 
     @Autowired
-    private DetailServiceImpl detailServiceImpl;
+    private ProjectServiceImpl projectServiceImpl;
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
-    @GetMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> getProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
+    @GetMapping("/projects/{idProject}/details/{idDetail}")
+    public ResponseEntity<?> getDetailFromProject(@PathVariable(value = "idDetail") Long idDetail,
+                                                  @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
         /*
-        If everything is OK: API will send JSON of project from detail and HttpStatus.OK
+        If everything is OK: API will send JSON of detail from project and HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {idDetail}, HttpStatus.NOT_FOUND(404)
             - JSON about exception: EntityNotFound(project) with {idProject}, HttpStatus.NOT_FOUND(404)
@@ -40,16 +42,16 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        Project project = (Project) detailServiceImpl.findInnerEntityFromEntity(idDetail,idProject);
-        return new ResponseEntity<>(project, HttpStatus.OK);
+        Detail detail = (Detail) projectServiceImpl.findInnerEntityFromEntity(idProject,idDetail);
+        return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
-    @PostMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> addProjectToDetail(@RequestBody String jsonQuantityOfDetails,
+    @PostMapping("/projects/{idProject}/details/{idDetail}")
+    public ResponseEntity<?> addDetailToProject(@RequestBody String jsonQuantityOfDetails,
                                                 @PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException, IOException {
         /*
-        Method where you can add project to detail(which already exists) with quantity of detail...
+        Method where you can add detail to project(which already exists) with quantity of details...
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
@@ -65,9 +67,9 @@ public class Controller {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> deleteProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
+    @DeleteMapping("/projects/{idProject}/details/{idDetail}")
+    public ResponseEntity<?> deleteDetailFromProject(@PathVariable(value = "idDetail") Long idDetail,
+                                                     @PathVariable("idProject") Long idProject) throws EntityNotFoundException, DetailInfoNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
@@ -78,8 +80,9 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteInnerEntityFromEntity(idDetail, idProject)
+        return projectServiceImpl.deleteInnerEntityFromEntity(idProject, idDetail)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
+

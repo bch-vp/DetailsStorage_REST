@@ -1,4 +1,4 @@
-package org.bch_vp.controller.details_controller.endpoint.details_id;
+package org.bch_vp.controller.projects_controller.projects_id;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
@@ -21,9 +21,9 @@ import java.util.Map;
 
 /*
 endPoint:
-    ../details/{id}
+    ../projects/{id}
  */
-@RestController(value = "/details/id")
+@RestController(value = "/projects/id")
 public class Controller {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
@@ -32,48 +32,48 @@ public class Controller {
     @Autowired
     private ProjectServiceImpl projectServiceImpl;
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<?> getProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
-        If everything is OK: API will return JSON(of this detail), HttpStatus.OK
+        If everything is OK: API will return JSON(of this project), HttpStatus.OK
         In other cases API will send:
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
-            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return new ResponseEntity<>((Detail)detailServiceImpl.findEntityById(id), HttpStatus.OK);
+        return new ResponseEntity<>((Project)projectServiceImpl.findEntityById(id), HttpStatus.OK);
 
     }
 
-    @PutMapping(value = "/details/{id}")
-    public ResponseEntity<?> updateDetail (@PathVariable("id") Long id,
+    @PutMapping(value = "/projects/{id}")
+    public ResponseEntity<?> updateProject(@PathVariable("id") Long id,
                                            @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException {
         /*
-        If everything is OK: API will update detail and return JSON(of this updated detail), HttpStatus.OK
+        If everything is OK: API will update project and return JSON(of this updated project), HttpStatus.OK
         In other cases API will send:
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
-            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
-            - JSON about exception: @Valid detail, BAD_REQUEST(404)
+            - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: @Valid project, BAD_REQUEST(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-
-        return new ResponseEntity<>(detailServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
+        return new ResponseEntity<>(projectServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
     }
 
-    @DeleteMapping("/details/{id}")
-    public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+    @DeleteMapping("/projects/{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
-        If everything is OK: API will delete detail and return HttpStatus.OK
+        If everything is OK: API will delete project and return HttpStatus.OK
         In other cases API will send:
             - HttpStatus.NOT_MODIFIED(304)
-            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailServiceImpl.deleteEntityById(id)
+        return projectServiceImpl.deleteEntityById(id)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
+
