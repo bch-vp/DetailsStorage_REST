@@ -11,6 +11,12 @@ import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,26 +50,26 @@ public class Test_PUT extends AbstractTest{
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
     }
 
-    //
-    ///write more tests
-    ///
-    ///
-    //
-
     @Test
     public void testUpdateDetailByCorrectId() throws Exception {
-//        String uri = "/details/1";
-//        Detail detail = new Detail("det","type","prod",23,2.0,"stor");
-//        String inputJson = super.mapToJson(detail);
-//        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .content(inputJson)).andReturn();
-//
-//        int status = mvcResult.getResponse().getStatus();
-//        assertEquals(200, status);
-//        String content = mvcResult.getResponse().getContentAsString();
-//        Detail detailFromResponse = super.mapFromJson(content, Detail.class);
-//        assertEquals(detail.getQuantityOfAll(), detailFromResponse.getQuantityOfAll());
-//        assertEquals(detail.getQuantityOfAvailable(), detailFromResponse.getQuantityOfAvailable());
+        String uri = "/details/1";
+        Map<String, String> mapRequestBody=new HashMap<>();
+        Detail detail = new Detail("det","type","prod", 100,2.0,"stor");
+        mapRequestBody.put("detailName", "det");
+        mapRequestBody.put("type", "type");
+        mapRequestBody.put("production", "prod");
+        mapRequestBody.put("price", "2.0");
+        mapRequestBody.put("storage", "stor");
+
+        String inputJson = super.mapToJson(mapRequestBody);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        Detail detailMapFromResponse = super.mapFromJson(content, Detail.class);
+        assertEquals(detail, detailMapFromResponse);
     }
 }

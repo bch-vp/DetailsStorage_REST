@@ -30,7 +30,6 @@ public class TestDeleteAllInnerEntitiesFromEntity {
     private ProjectServiceImpl projectServiceImpl;
 
     @Before
-
     public void fillDataBase() throws QuantityOfDetailsException, EntityNotFoundException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
@@ -56,6 +55,8 @@ public class TestDeleteAllInnerEntitiesFromEntity {
         Long idDetail=1L;
         detailServiceImpl.deleteAllInnerEntitiesFromEntity(idDetail);
         Assert.assertEquals(0, detailServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
+        Assert.assertEquals(Integer.valueOf(100), detailServiceImpl.findEntityById(idDetail).getQuantityOfAvailable());
+        Assert.assertEquals(Integer.valueOf(160), detailServiceImpl.findEntityById(2L).getQuantityOfAvailable());
     }
 
     @Test
@@ -63,6 +64,8 @@ public class TestDeleteAllInnerEntitiesFromEntity {
         Long idDetail=2L;
         detailServiceImpl.deleteAllInnerEntitiesFromEntity(idDetail);
         Assert.assertEquals(0, detailServiceImpl.findEntityById(idDetail).getDetailsInfo().size());
+        Assert.assertEquals(Integer.valueOf(200), detailServiceImpl.findEntityById(idDetail).getQuantityOfAvailable());
+        Assert.assertEquals(Integer.valueOf(40), detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
     }
 
     @Test
@@ -70,6 +73,8 @@ public class TestDeleteAllInnerEntitiesFromEntity {
         Long idProject=1L;
         projectServiceImpl.deleteAllInnerEntitiesFromEntity(idProject);
         Assert.assertEquals(0, projectServiceImpl.findEntityById(idProject).getDetailsInfo().size());
+        Assert.assertEquals(Integer.valueOf(70), detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
+        Assert.assertEquals(Integer.valueOf(180), detailServiceImpl.findEntityById(2L).getQuantityOfAvailable());
     }
 
     @Test
@@ -77,5 +82,7 @@ public class TestDeleteAllInnerEntitiesFromEntity {
         Long idProject=2L;
         projectServiceImpl.deleteAllInnerEntitiesFromEntity(idProject);
         Assert.assertEquals(0, projectServiceImpl.findEntityById(idProject).getDetailsInfo().size());
+        Assert.assertEquals(Integer.valueOf(70), detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
+        Assert.assertEquals(Integer.valueOf(180), detailServiceImpl.findEntityById(2L).getQuantityOfAvailable());
     }
 }

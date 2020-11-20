@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @MappedSuperclass
 public abstract class AbstractEntity{
@@ -23,5 +24,5 @@ public abstract class AbstractEntity{
 
 //    public abstract Long getId();
     public abstract List<DetailInfo> getDetailsInfo();
-    public abstract AbstractEntity update(AbstractEntity objectDetail);
+    public abstract AbstractEntity update(Map<String, Object> mapRequestBody);
 }

@@ -34,71 +34,14 @@ public class Test_DELETE extends AbstractTest {
 
     @Test
     public void testUpdateDetailWithCorrectRequestBody() throws Exception {
-        String uri = "/details/1";
+        String uri = "/details";
         Detail detail = new Detail("det","type","prod",23,2.0,"stor");
         String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Detail detailFromResponse = super.mapFromJson(content, Detail.class);
-        assertEquals(detail, detailFromResponse);
-    }
-
-    @Test
-    public void test1UpdateDetailWithNotCorrectRequestBody() throws Exception {
-        String uri = "/details/1";
-        Detail detail = new Detail("","type","prod",23,2.0,"stor");
-        String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
-    }
-
-    @Test
-    public void test2UpdateDetailWithNotCorrectRequestBody() throws Exception {
-        String uri = "/details/1";
-        Detail detail = new Detail("det");
-        String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
-    }
-
-    @Test
-    public void test3UpdateDetailWithNotCorrectRequestBody() throws Exception {
-        String uri = "/details/3";
-        Detail detail = new Detail("det","type","prod",23,2.0,"stor");
-        String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(404, status);
-    }
-
-    @Test
-    public void test4UpdateDetailWithNotCorrectRequestBody() throws Exception {
-        String uri = "/details/3a";
-        Detail detail = new Detail("det","type","prod",23,2.0,"stor");
-        String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(400, status);
     }
 }

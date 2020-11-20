@@ -2,13 +2,18 @@ package org.bch_vp.controller.details_controller.endpoint.details_idDetail_proje
 
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
+import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 /*
 endPoint:
@@ -39,10 +44,25 @@ public class Controller {
         return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
-    @PutMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> updateProjectFromDetail(@PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject){
-        return null;
+    @PostMapping("/details/{idDetail}/projects/{idProject}")
+    public ResponseEntity<?> addProjectToDetail(@RequestBody String jsonQuantityOfDetails,
+                                                @PathVariable(value = "idDetail") Long idDetail,
+                                                @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException, IOException {
+        /*
+        Method where you can add detail to project with quantity of detail...
+        If everything is OK: API will send HttpStatus.OK
+        In other cases API will send:
+            - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
+            - JSON about exception: AlreadyHasRelations, HttpStatus.NOT_FOUND(400). It means, that detail alredy contains this project
+            - jSON about exception: QuantityOfDetails, HttpStatus.NOT_FOUND(400)
+            - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
+        */
+        Integer quantityOfDetails= (Integer) JsonUtil.mapFromJson(jsonQuantityOfDetails, HashMap.class).get("quantityOfDetails");
+        return detailInfoServiceImpl.joinDetailAndProject(quantityOfDetails, idDetail, idProject)
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/details/{idDetail}/projects/{idProject}")

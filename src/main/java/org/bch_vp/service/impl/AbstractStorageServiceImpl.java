@@ -6,11 +6,15 @@ import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;
+import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
@@ -30,37 +34,30 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     @Autowired
     private EntityManager entityManager;
 
-     protected AbstractStorageServiceImpl(Class<?> entityClass, Class<?> innerEntityClass) {
+    protected AbstractStorageServiceImpl(Class<?> entityClass, Class<?> innerEntityClass) {
         this.entityClass = entityClass;
-        this.innerEntityClass=innerEntityClass;
+        this.innerEntityClass = innerEntityClass;
     }
 
     @Override
     public Entity saveEntity(Entity entity) {
+        flushAndClear();
         return entityRepository.save(entity);
     }
 
     @Override
     public boolean deleteEntityById(Long id) throws EntityNotFoundException {
-        Entity entity= entityRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(entityClass));
+        flushAndClear();
+        Entity entity = entityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(entityClass));
         entity.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {
-                   //detailInfo.breakRelations(detailInfo);
-                   detailinfoRepository.delete(detailInfo);
-                    //rewrite
-                    if(entity instanceof Project){
+                    if (entity instanceof Project) {
                         detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
                     }
+                    detailinfoRepository.delete(detailInfo);
                 });
-//        List<DetailInfo> detailsInfo=entity.getDetailsInfo();
-//        DetailInfo detailInfo=detailsInfo.get(0);
-//        detailInfo.getProject().getDetailsInfo().remove(detailInfo);
-//        detailInfo.getDetail().getDetailsInfo().remove(detailInfo);
-//        detailinfoRepository.delete(detailInfo);
-//        detailinfoRepository.flush();
-
         entityRepository.delete(entity);
         flushAndClear();
         return !entityRepository.findById(id).isPresent();
@@ -68,36 +65,45 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
 
     @Override
     public List<Entity> findAll() {
+        flushAndClear();
         return entityRepository.findAll();
     }
 
     @Override
     public Entity findEntityById(Long id) throws EntityNotFoundException {
+        flushAndClear();
         return entityRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(entityClass));
+                .orElseThrow(() -> new EntityNotFoundException(entityClass));
     }
 
     @Override
     public boolean deleteAllEntities() {
+        flushAndClear();
         entityRepository.deleteAll();
         flushAndClear();
         return entityRepository.findAll().isEmpty();
     }
 
     @Override //rewrite!!!!!!!
-    public Entity updateEntity(Long id, Entity newEntity) throws EntityNotFoundException {
-        Entity entity=entityRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(entityClass));
-        return (Entity) entity.update(newEntity);
+    public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException {
+        flushAndClear();
+        HashMap mapRequestBody= JsonUtil.mapFromJson(jsonRequestBody, HashMap.class);
+        Entity entity = entityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(entityClass));
+        entity=(Entity)entity.update(mapRequestBody);
+        flushAndClear();
+        return entity;
     }
 
     @Override
     public boolean deleteAllInnerEntitiesFromEntity(Long id) throws EntityNotFoundException {
-        Entity entity=entityRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(entityClass));
+        flushAndClear();
+        Entity entity = entityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(entityClass));
         entity.getDetailsInfo()
                 .stream()
                 .forEach(detailInfo -> {
+                    detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
                     detailinfoRepository.delete(detailInfo);
                 });
         flushAndClear();
@@ -106,6 +112,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
 
     @Override
     public boolean deleteInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException {
+        flushAndClear();
         Entity entity = entityRepository.findById(idEntity)
                 .orElseThrow(() -> new EntityNotFoundException(entityClass));
         InnerEntity innerEntity = innerEntityRepository.findById(idInnerEntity)
@@ -126,6 +133,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
 
     @Override
     public InnerEntity findInnerEntityFromEntity(Long idEntity, Long idInnerEntity) throws EntityNotFoundException, DetailInfoNotFoundException {
+        flushAndClear();
         Entity entity = entityRepository.findById(idEntity)
                 .orElseThrow(() -> new EntityNotFoundException(entityClass));
         InnerEntity innerEntity = innerEntityRepository.findById(idInnerEntity)
@@ -142,7 +150,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
         }
     }
 
-    private void flushAndClear(){
+    private void flushAndClear() {
         detailinfoRepository.flush();
         entityRepository.flush();
         innerEntityRepository.flush();

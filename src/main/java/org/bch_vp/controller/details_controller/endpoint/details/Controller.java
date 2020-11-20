@@ -31,7 +31,7 @@ public class Controller {
         return new ResponseEntity<>(detailServiceImpl.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/details")
+    @PostMapping(value = "/details")
     public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) throws IdNotValidException {
         /*
         If everything is OK: API will save detail and return JSON(of this detail), HttpStatus.CREATED(201)

@@ -4,13 +4,18 @@ import static org.junit.Assert.assertEquals;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
+import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class Test_POST extends AbstractTest {
+
+    @Autowired
+    private DetailServiceImpl detailServiceImpl;
 
     @Override
     @Before
@@ -32,6 +37,7 @@ public class Test_POST extends AbstractTest {
         String content = mvcResult.getResponse().getContentAsString();
         Detail detailFromResponse = super.mapFromJson(content, Detail.class);
         assertEquals(detail, detailFromResponse);
+        assertEquals(1, detailServiceImpl.findAll().size());
     }
 
     @Test

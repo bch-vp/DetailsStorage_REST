@@ -83,7 +83,7 @@ public class Project extends AbstractEntity {
 
 
     @Override// rewrite
-    public AbstractEntity update(AbstractEntity objectDetail) {
+    public AbstractEntity update(Map<String, Object> mapRequestBody) {
         return null;
     }
 

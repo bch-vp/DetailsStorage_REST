@@ -64,9 +64,9 @@ public class TestDeleteProject {
         Assert.assertEquals(2,detailInfoServiceImpl.findAll().size());
         Assert.assertEquals(2,detailServiceImpl.findAll().size());
         Detail detail= (Detail) detailServiceImpl.findAll().get(0);
-        Assert.assertEquals(180,(int) detail.getQuantityOfAvailable());
+        Assert.assertEquals(70,(int) detail.getQuantityOfAvailable());
         detail= (Detail) detailServiceImpl.findAll().get(1);
-        Assert.assertEquals(70, (int)detail.getQuantityOfAvailable());
+        Assert.assertEquals(180, (int)detail.getQuantityOfAvailable());
         List<DetailInfo> detailInfos=detailInfoServiceImpl.findAll();
         List<Detail> details=detailServiceImpl.findAll();
 

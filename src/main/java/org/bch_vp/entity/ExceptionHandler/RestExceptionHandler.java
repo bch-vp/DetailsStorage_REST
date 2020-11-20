@@ -73,15 +73,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(QuantityOfDetailsException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(QuantityOfDetailsException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Malformed JSON request. Quantity of details is not correct", ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Malformed JSON request. Quantity of details is not correct", ex);
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
     @ExceptionHandler(AlreadyHasRelationsException.class)
     protected ResponseEntity<Object> alreadyHasRelationsException(AlreadyHasRelationsException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Entities already have relations", ex);
-        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+        ApiError apiError = new ApiError(BAD_REQUEST, "Entities already have relations", ex);
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
 

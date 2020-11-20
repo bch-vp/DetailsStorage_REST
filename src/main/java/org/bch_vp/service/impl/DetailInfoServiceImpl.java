@@ -29,6 +29,7 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public void addQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) throws EntityNotFoundException {
+        flushAndClear();
         DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
                 .orElseThrow(()->new EntityNotFoundException(DetailInfo.class));
         detailInfo.getDetail().subtractAvailableDetails(quantity);
@@ -38,6 +39,7 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public boolean joinDetailAndProject(Integer quantityDetailsUsed, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException {
+        flushAndClear();
         Project project = projectRepository.findById(idProject)
                 .orElseThrow(()->new EntityNotFoundException(Project.class));
         Detail detail = detailRepository.findById(idDetail)
@@ -55,17 +57,20 @@ public class DetailInfoServiceImpl implements DetailInfoService {
 
     @Override
     public List<DetailInfo> findAll() {
+        flushAndClear();
         return detailinfoRepository.findAll();
     }
 
     @Override
     public DetailInfo findById(Long idDetail, Long idProject) throws EntityNotFoundException {
+        flushAndClear();
         return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject))
                 .orElseThrow(()->new EntityNotFoundException(DetailInfo.class));
     }
 
     @Override
     public void subtractQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) throws EntityNotFoundException {
+        flushAndClear();
         DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
                 .orElseThrow(()->new EntityNotFoundException(Project.class));
         detailInfo.getDetail().addAvailableDetails(quantity);

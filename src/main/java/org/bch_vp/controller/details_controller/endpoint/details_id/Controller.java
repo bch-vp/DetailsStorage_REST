@@ -7,12 +7,17 @@ import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
+import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 endPoint:
@@ -59,7 +64,8 @@ public class Controller {
     }
 
     @PutMapping(value = "/details/{id}")
-    public ResponseEntity<?> updateDetail(@RequestBody @Valid Detail detail, @PathVariable("id") Long id) throws  EntityNotFoundException{
+    public ResponseEntity<?> updateDetail (@PathVariable("id") Long id,
+                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException {
         /*
         If everything is OK: API will update detail and return JSON(of this updated detail), HttpStatus.OK
         In other cases API will send:
@@ -69,7 +75,8 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return new ResponseEntity<>(detailServiceImpl.updateEntity(id, detail), HttpStatus.OK);
+
+        return new ResponseEntity<>(detailServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
     }
 
     @DeleteMapping("/details/{id}")

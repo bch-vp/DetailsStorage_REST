@@ -43,14 +43,6 @@ public class Controller {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @PostMapping("/details/{idDetail}/projects/{idProject}")
-    public ResponseEntity<?> addProjectToDetail(@RequestBody Integer quantityOfDetails,
-                                                @PathVariable(value = "idDetail") Long idDetail,
-                                                @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException {
-        return detailInfoServiceImpl.joinDetailAndProject(quantityOfDetails, idDetail, idProject)
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-    }
 
     @DeleteMapping("/details/{id}/projects")
     public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {

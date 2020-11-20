@@ -60,7 +60,7 @@ public class TestDeleteInnerEntityFromEntity {
         Assert.assertEquals(3, detailInfoServiceImpl.findAll().size());
         Assert.assertEquals(2, detailServiceImpl.findAll().size());
         Assert.assertEquals(2, projectServiceImpl.findAll().size());
-
+        Assert.assertEquals(Integer.valueOf(70),detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
     }
 
     @Test
@@ -73,5 +73,6 @@ public class TestDeleteInnerEntityFromEntity {
         Assert.assertEquals(3, detailInfoServiceImpl.findAll().size());
         Assert.assertEquals(2, detailServiceImpl.findAll().size());
         Assert.assertEquals(2, projectServiceImpl.findAll().size());
+        Assert.assertEquals(Integer.valueOf(70),detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
     }
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -63,8 +64,6 @@ public class Detail extends AbstractEntity {
         this.storage = storage;
     }
 
-
-
     public Detail addAvailableDetails(Integer quantityOfAvailable){
         this.quantityOfAvailable+=quantityOfAvailable;
         return this;
@@ -76,27 +75,32 @@ public class Detail extends AbstractEntity {
         return this;
     }
 
-    public void subtractAvailableDetails(Integer quantityOfAvailable){
-        this.quantityOfAvailable-=quantityOfAvailable;
+    public void subtractAvailableDetails(Integer quantityOfAvailable) {
+        this.quantityOfAvailable -= quantityOfAvailable;
     }
 
     @Override
-    public AbstractEntity update(AbstractEntity objectDetail){
-        Detail detail=(Detail)objectDetail;
-        if(!detail.detailName.isEmpty()){
-            this.detailName=detail.getDetailName();
+    public AbstractEntity update(Map<String, Object> mapRequestBody) {
+        String detailName = (String) mapRequestBody.get("detailName");
+        if (!detailName.isEmpty()) {
+            this.detailName = detailName;
         }
-        if(!detail.type.isEmpty()){
-            this.type=detail.getType();
+        String type = (String) mapRequestBody.get("type");
+        if (!type.isEmpty()) {
+            this.type = type;
         }
-        if (!detail.production.isEmpty()) {
-            this.production=detail.getProduction();
+        String production = (String) mapRequestBody.get("production");
+        if (!production.isEmpty()) {
+            this.production = production;
         }
-        if(detail.price!=null){
-            this.price=detail.getPrice();
+        Double price = Double.valueOf((String) mapRequestBody.get("price"));
+        if (price != null) {
+            this.price = price;
+            //write recalculate price
         }
-        if(!detail.storage.isEmpty()){
-            this.storage=detail.getStorage();
+        String storage = (String) mapRequestBody.get("storage");
+        if (!storage.isEmpty()) {
+            this.storage = storage;
         }
         return this;
     }
