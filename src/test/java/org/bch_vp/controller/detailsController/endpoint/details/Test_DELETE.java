@@ -38,10 +38,10 @@ public class Test_DELETE extends AbstractTest {
         Detail detail = new Detail("det","type","prod",23,2.0,"stor");
         String inputJson = super.mapToJson(detail);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
-
+                .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
+        assertEquals(0, detailServiceImpl.findAll().size());
     }
 }

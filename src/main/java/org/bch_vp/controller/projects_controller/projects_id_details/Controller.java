@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 endPoint:
     ../projects/{id}/details
 */
-@RestController(value = "/details/id/projects")
+@RestController(value = "/projects/id/details")
 public class Controller {
     @Autowired
     private ProjectServiceImpl projectServiceImpl;

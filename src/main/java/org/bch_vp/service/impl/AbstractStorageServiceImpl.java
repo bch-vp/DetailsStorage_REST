@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
@@ -79,6 +80,19 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     @Override
     public boolean deleteAllEntities() {
         flushAndClear();
+        entityRepository.findAll()
+                .stream()
+                .map(Entity::getDetailsInfo)
+                .forEach(detailInfos -> {
+                    detailInfos
+                            .stream()
+                            .forEach(detailInfo -> {
+                                if (entityClass.getSimpleName().equals("Project")) {
+                                    detailInfo.getDetail().addAvailableDetails(detailInfo.getQuantityDetailsUsed());
+                                }
+                                detailinfoRepository.delete(detailInfo);
+                            });
+                });
         entityRepository.deleteAll();
         flushAndClear();
         return entityRepository.findAll().isEmpty();

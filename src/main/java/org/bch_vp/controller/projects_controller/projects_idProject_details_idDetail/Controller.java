@@ -21,7 +21,7 @@ import java.util.HashMap;
 endPoint:
     ../projects/{idProject}/details/{idDetail}
  */
-@RestController(value = "/details/idDetail/projects/idProject")
+@RestController(value = "/projects/idProject/details/idDetail")
 public class Controller {
 
     @Autowired
