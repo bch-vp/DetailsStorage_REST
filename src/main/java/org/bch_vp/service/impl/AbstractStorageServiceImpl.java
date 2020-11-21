@@ -3,6 +3,8 @@ package org.bch_vp.service.impl;
 import org.bch_vp.entity.*;
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;
@@ -99,7 +101,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     }
 
     @Override //rewrite!!!!!!!
-    public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException {
+    public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException {
         flushAndClear();
         HashMap mapRequestBody= JsonUtil.mapFromJson(jsonRequestBody, HashMap.class);
         Entity entity = entityRepository.findById(id)

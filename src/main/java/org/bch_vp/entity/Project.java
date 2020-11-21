@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -17,8 +19,6 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 public class Project extends AbstractEntity {
-
-
 
     @NotBlank(message = "Project name is required")
     private String projectName;
@@ -83,8 +83,29 @@ public class Project extends AbstractEntity {
 
 
     @Override// rewrite
-    public AbstractEntity update(Map<String, Object> mapRequestBody) {
-        return null;
+    public AbstractEntity update(Map<String, Object> mapRequestBody) throws QuantityOfDetailsException, PriceNotCorrectException {
+        String projectName = (String) mapRequestBody.get("projectName");
+        if (projectName != null && !projectName.isEmpty()) {
+            this.projectName = projectName;
+        }
+        String type = (String) mapRequestBody.get("type");
+        if (type != null &&!type.isEmpty()) {
+            this.type = type;
+        }
+        String quantity = (String) mapRequestBody.get("quantity");
+        if(quantity != null && !quantity.isEmpty()) {
+            if (quantity.matches("^[0-9]+$") && Integer.parseInt(quantity)>0) {
+                this.quantity = Integer.valueOf(quantity);
+                //write recalculate price
+            } else {
+                throw new PriceNotCorrectException();
+            }
+        }
+        String storage = (String) mapRequestBody.get("storage");
+        if (storage != null &&!storage.isEmpty()) {
+            this.storage = storage;
+        }
+        return this;
     }
 
     @Override

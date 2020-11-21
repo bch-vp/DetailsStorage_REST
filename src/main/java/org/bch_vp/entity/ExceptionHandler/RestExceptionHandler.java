@@ -15,6 +15,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -70,6 +72,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IOException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(IOException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Request body can't be empty or API can't parse json", ex);
+        return new ResponseEntity<>(apiError, BAD_REQUEST);
+    }
+
     @ExceptionHandler(QuantityOfDetailsException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(QuantityOfDetailsException ex,
                                                             WebRequest request) {
@@ -89,6 +98,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValidException ex,
                                                             WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Id mustn't be presented for POST", ex);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PriceNotCorrectException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(PriceNotCorrectException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Price is not correct", ex);
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 

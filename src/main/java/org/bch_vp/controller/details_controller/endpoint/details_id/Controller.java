@@ -2,6 +2,7 @@ package org.bch_vp.controller.details_controller.endpoint.details_id;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
@@ -47,8 +48,8 @@ public class Controller {
     }
 
     @PutMapping(value = "/details/{id}")
-    public ResponseEntity<?> updateDetail (@PathVariable("id") Long id,
-                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException {
+    public ResponseEntity<?> updateDetail(@PathVariable("id") Long id,
+                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException {
         /*
         If everything is OK: API will update detail and return JSON(of this updated detail), HttpStatus.OK
         In other cases API will send:

@@ -2,6 +2,7 @@ package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
+import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.IdDetailInfo;
@@ -9,11 +10,13 @@ import org.bch_vp.entity.Project;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.DetailInfoService;
+import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -28,13 +31,36 @@ public class DetailInfoServiceImpl implements DetailInfoService {
     private EntityManager entityManager;
 
     @Override
-    public void addQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) throws EntityNotFoundException {
+    public boolean addQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException {
         flushAndClear();
+        HashMap mapRequestBody= JsonUtil.mapFromJson(jsonQuantityRequestBody, HashMap.class);
+        Detail detail = detailRepository.findById(idDetail)
+                .orElseThrow(()->new EntityNotFoundException(Detail.class));
+        projectRepository.findById(idProject)
+                .orElseThrow(()->new EntityNotFoundException(Project.class));
         DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
-                .orElseThrow(()->new EntityNotFoundException(DetailInfo.class));
-        detailInfo.getDetail().subtractAvailableDetails(quantity);
-        detailInfo.addQuantityofDetailsUsed(quantity);
+                .orElseThrow(DetailInfoNotFoundException::new);
+        String quantity = String.valueOf(mapRequestBody.get("quantity"));
+        if(quantity != null && !quantity.isEmpty()) {
+            if (quantity.matches("^[0-9]+$")
+                    && Integer.parseInt(quantity)>0
+                    && Integer.parseInt(quantity)<=detailInfo.getDetail().getQuantityOfAvailable()) {
+                detail.subtractAvailableDetails(Integer.valueOf(quantity));
+                detailInfo.addQuantityofDetailsUsed(Integer.valueOf(quantity));
+                //write recalculate price
+            } else {
+                throw new QuantityOfDetailsException();
+            }
+        }else{
+            throw new IOException();
+        }
+        Integer quantityExpected = detailInfo.getQuantityDetailsUsed();
         flushAndClear();
+        return detailinfoRepository
+                .findById(new IdDetailInfo(idDetail,idProject))
+                .get()
+                .getQuantityDetailsUsed()
+                .equals(quantityExpected);
     }
 
     @Override
@@ -44,12 +70,14 @@ public class DetailInfoServiceImpl implements DetailInfoService {
                 .orElseThrow(()->new EntityNotFoundException(Project.class));
         Detail detail = detailRepository.findById(idDetail)
                 .orElseThrow(()->new EntityNotFoundException(Detail.class));
-        if (quantityDetailsUsed > detail.getQuantityOfAvailable() || quantityDetailsUsed<0) {
+        if (quantityDetailsUsed > detail.getQuantityOfAvailable() || quantityDetailsUsed<1) {
             throw new QuantityOfDetailsException();
         }
         detail.subtractAvailableDetails(quantityDetailsUsed);
         DetailInfo detailInfo = new DetailInfo(quantityDetailsUsed, detail, project);
         detailinfoRepository.save(detailInfo);
+       // detailRepository.save(detail);
+   //     projectRepository.save(project);
         flushAndClear();
         return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject)).isPresent();
     }
@@ -69,13 +97,13 @@ public class DetailInfoServiceImpl implements DetailInfoService {
     }
 
     @Override
-    public void subtractQuantityOfDetailsInProject(Integer quantity, Long idDetail, Long idProject) throws EntityNotFoundException {
-        flushAndClear();
-        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
-                .orElseThrow(()->new EntityNotFoundException(Project.class));
-        detailInfo.getDetail().addAvailableDetails(quantity);
-        detailInfo.subtractQuantityofDetailsUsed(quantity);
-        flushAndClear();
+    public void subtractQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException {
+//        flushAndClear();
+//        DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
+//                .orElseThrow(()->new EntityNotFoundException(Project.class));
+//        detailInfo.getDetail().addAvailableDetails(quantity);
+//        detailInfo.subtractQuantityofDetailsUsed(quantity);
+//        flushAndClear();
     }
 
     private void flushAndClear(){

@@ -51,7 +51,7 @@ public class Controller {
                                                 @PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException, IOException {
         /*
-        Method where you can add detail to project(which already exists) with quantity of details...
+        Method where you can add detail to project(which already exists) with quantity of details(quantity > 0 && quantity < quantityOfAvailable)
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)

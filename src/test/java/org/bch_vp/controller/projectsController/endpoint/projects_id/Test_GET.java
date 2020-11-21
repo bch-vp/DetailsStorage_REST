@@ -1,4 +1,5 @@
-package org.bch_vp.controller.projectsController.endpoint.projects;
+package org.bch_vp.controller.projectsController.endpoint.projects_id;
+
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
@@ -8,6 +9,7 @@ import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.assertEquals;
 
-public class Test_POST extends AbstractTest {
+public class Test_GET extends AbstractTest {
+    @Override
+    @Before
+    public void setUp() {
+        super.setUp();
+    }
 
     @Autowired
     private DetailServiceImpl detailServiceImpl;
@@ -25,13 +32,8 @@ public class Test_POST extends AbstractTest {
     private ProjectServiceImpl projectServiceImpl;
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
-    private String endPoint = "/projects";
 
-    @Override
-    @Before
-    public void setUp() {
-        super.setUp();
-    }
+    private String endPoint="/projects/1";
 
     @Before
     public void fillDataBase() throws QuantityOfDetailsException, EntityNotFoundException {
@@ -56,42 +58,35 @@ public class Test_POST extends AbstractTest {
 
     @Test
     public void test1() throws Exception {
-        Project project=new Project("prpject_3","type" , 1,"storage");
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+        Project projectExpected=new Project("prpject_1","type" , 1,"storage");
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(endPoint)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(201, status);
+        Assert.assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
-        Project projectFromResponse = super.mapFromJson(content, Project.class);
-        assertEquals(project, projectFromResponse);
-        assertEquals(3, projectServiceImpl.findAll().size());
+        Project projectActual = super.mapFromJson(content, Project.class);
+        assertEquals(projectExpected, projectActual);
     }
 
     @Test
     public void test2() throws Exception {
-        Project project=new Project("prpject_3");
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+        Project projectExpected=new Project("prpject_1","type" , 1,"storage");
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/projects/0")
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
+        Assert.assertEquals(404, status);
     }
 
     @Test
     public void test3() throws Exception {
-        Project project=new Project("prpject_3","type" , 1,"storage");
-        project.setId(3L);
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+        Project projectExpected=new Project("prpject_1","type" , 1,"storage");
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/projects/1a")
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
+        Assert.assertEquals(400, status);
     }
+
 }

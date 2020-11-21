@@ -26,7 +26,7 @@ public class Controller {
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
     @GetMapping("/details/{id}/projects")
-    public ResponseEntity<?> getProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+    public ResponseEntity<?> getAllProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send JSON of array(also it can be empty array), which contains projects from detail with {id}, HttpStatus.OK
         In other cases API will send:
@@ -45,7 +45,7 @@ public class Controller {
 
 
     @DeleteMapping("/details/{id}/projects")
-    public ResponseEntity<?> deleteProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
+    public ResponseEntity<?> deleteAllProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:

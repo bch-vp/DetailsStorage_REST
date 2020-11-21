@@ -1,4 +1,4 @@
-package org.bch_vp.controller.projectsController.endpoint.projects;
+package org.bch_vp.controller.projectsController.endpoint.projects_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
@@ -8,6 +8,7 @@ import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.assertEquals;
-
-public class Test_POST extends AbstractTest {
-
+public class Test_DELETE extends AbstractTest {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
     @Autowired
-    private ProjectServiceImpl projectServiceImpl;
-    @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
-    private String endPoint = "/projects";
+    @Autowired
+    private ProjectServiceImpl projectServiceImpl;
 
     @Override
     @Before
@@ -34,7 +31,7 @@ public class Test_POST extends AbstractTest {
     }
 
     @Before
-    public void fillDataBase() throws QuantityOfDetailsException, EntityNotFoundException {
+    public void fillDataBase() throws EntityNotFoundException, QuantityOfDetailsException {
         Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
         Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 
@@ -55,43 +52,44 @@ public class Test_POST extends AbstractTest {
     }
 
     @Test
-    public void test1() throws Exception {
-        Project project=new Project("prpject_3","type" , 1,"storage");
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+    public void testDeleteDetailByCorrectId() throws Exception {
+        String uri = "/projects/1";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(201, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Project projectFromResponse = super.mapFromJson(content, Project.class);
-        assertEquals(project, projectFromResponse);
-        assertEquals(3, projectServiceImpl.findAll().size());
+        Assert.assertEquals(200, status);
+        Assert.assertEquals(1, projectServiceImpl.findAll().size());
+        Assert.assertEquals(2, detailInfoServiceImpl.findAll().size());
     }
 
     @Test
-    public void test2() throws Exception {
-        Project project=new Project("prpject_3");
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+    public void test1DeleteDetailByIncorrectId() throws Exception {
+        String uri = "/projects/0";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
+        Assert.assertEquals(404, status);
     }
 
     @Test
-    public void test3() throws Exception {
-        Project project=new Project("prpject_3","type" , 1,"storage");
-        project.setId(3L);
-        String inputJson = super.mapToJson(project);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(endPoint)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(inputJson)).andReturn();
+    public void test2DeleteDetailByIncorrectId() throws Exception {
+        String uri = "/projects/-3";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(400, status);
+        Assert.assertEquals(404, status);
+    }
+
+    @Test
+    public void test3DeleteDetailByIncorrectId() throws Exception {
+        String uri = "/projects/2a";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(400, status);
     }
 }

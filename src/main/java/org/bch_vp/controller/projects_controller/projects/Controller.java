@@ -21,7 +21,7 @@ public class Controller {
     private ProjectServiceImpl projectServiceImpl;
 
     @GetMapping("/projects")
-    public ResponseEntity<?> getProjects() {
+    public ResponseEntity<?> getAllProjects() {
         /*
         If everything is OK:
             - API will send array(which contains projects), HttpStatus.OK

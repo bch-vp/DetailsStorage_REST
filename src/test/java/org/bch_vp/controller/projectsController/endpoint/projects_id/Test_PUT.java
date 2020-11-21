@@ -1,4 +1,4 @@
-package org.bch_vp.controller.detailsController.endpoint.details_id;
+package org.bch_vp.controller.projectsController.endpoint.projects_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
@@ -20,14 +20,15 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class Test_PUT extends AbstractTest{
+public class Test_PUT extends AbstractTest {
 
     @Autowired
     private DetailServiceImpl detailServiceImpl;
     @Autowired
-    private DetailInfoServiceImpl detailInfoServiceImpl;
-    @Autowired
     private ProjectServiceImpl projectServiceImpl;
+    @Autowired
+    private DetailInfoServiceImpl detailInfoServiceImpl;
+    private String endPoint = "/projects/1";
 
     @Override
     @Before
@@ -36,49 +37,50 @@ public class Test_PUT extends AbstractTest{
     }
 
     @Before
-    public void fillDataBase() throws EntityNotFoundException, QuantityOfDetailsException {
-        Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
-        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
+    public void fillDataBase() throws QuantityOfDetailsException, EntityNotFoundException {
+        Detail detail_1 = new Detail("detail_1", "type", "production", 100, (double) 40, "storage");
+        Long idDetail_1 = detailServiceImpl.saveEntity(detail_1).getId();
 
-        Detail detail_2=new Detail("detail_2", "type","production",200, (double)40, "storage");
-        Long idDetail_2=detailServiceImpl.saveEntity(detail_2).getId();
+        Detail detail_2 = new Detail("detail_2", "type", "production", 200, (double) 40, "storage");
+        Long idDetail_2 = detailServiceImpl.saveEntity(detail_2).getId();
 
-        Project project=new Project("prpject_1","type" , 1,"storage");
-        Long idProject=projectServiceImpl.saveEntity(project).getId();
+        Project project = new Project("prpject_1", "type", 1, "storage");
+        Long idProject = projectServiceImpl.saveEntity(project).getId();
 
         detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
         detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
+
+        Project project_2 = new Project("prpject_2", "type", 1, "storage");
+        Long idProject_2 = projectServiceImpl.saveEntity(project_2).getId();
+
+        detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject_2);
+        detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject_2);
     }
 
     @Test
-    public void testUpdateDetailByCorrectId() throws Exception {
-        String uri = "/details/1";
+    public void test1() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        Detail detail = new Detail("det","type","prod", 100,2.0,"stor");
-        mapRequestBody.put("detailName", "det");
-        mapRequestBody.put("type", "type");
-        mapRequestBody.put("production", "prod");
-        mapRequestBody.put("price", "2.0");
-        mapRequestBody.put("storage", "stor");
+        Project project = new Project("pr-1", "type", 1, "storage");
+        mapRequestBody.put("projectName", "pr-1");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(endPoint)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
-        Detail detailMapFromResponse = super.mapFromJson(content, Detail.class);
-        assertEquals(detail, detailMapFromResponse);
+        Project projectMapFromResponse = super.mapFromJson(content, Project.class);
+        assertEquals(project, projectMapFromResponse);
     }
 
 
     @Test
     public void test2() throws Exception {
-        Detail detail = new Detail("det");
-        String inputJson = super.mapToJson(detail);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        Project project = new Project("prpject_3");
+        String inputJson = super.mapToJson(project);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
@@ -88,9 +90,11 @@ public class Test_PUT extends AbstractTest{
 
     @Test
     public void test3() throws Exception {
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1a")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
+        Project project = new Project("prpject_3", "type", 1, "storage");
+        String inputJson = super.mapToJson(project);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1a")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
         assertEquals(400, status);
@@ -99,10 +103,10 @@ public class Test_PUT extends AbstractTest{
     @Test
     public void test4() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        mapRequestBody.put("price", "pr-1");
+        mapRequestBody.put("quantity", "pr-1");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
@@ -113,10 +117,10 @@ public class Test_PUT extends AbstractTest{
     @Test
     public void test5() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        mapRequestBody.put("price", "1a");
+        mapRequestBody.put("quantity", "1a");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
@@ -127,10 +131,10 @@ public class Test_PUT extends AbstractTest{
     @Test
     public void test6() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        mapRequestBody.put("price", "0");
+        mapRequestBody.put("quantity", "0");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
@@ -141,10 +145,10 @@ public class Test_PUT extends AbstractTest{
     @Test
     public void test7() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        mapRequestBody.put("price", "-2");
+        mapRequestBody.put("quantity", "-2");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
@@ -155,14 +159,14 @@ public class Test_PUT extends AbstractTest{
     @Test
     public void test8() throws Exception {
         Map<String, String> mapRequestBody=new HashMap<>();
-        mapRequestBody.put("price", "2.8");
+        mapRequestBody.put("quantity", "2.8");
 
         String inputJson = super.mapToJson(mapRequestBody);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/details/1")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put("/projects/1")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(400, status);
     }
 }

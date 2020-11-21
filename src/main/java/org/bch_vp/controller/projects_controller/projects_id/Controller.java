@@ -2,6 +2,7 @@ package org.bch_vp.controller.projects_controller.projects_id;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
@@ -48,7 +49,7 @@ public class Controller {
 
     @PutMapping(value = "/projects/{id}")
     public ResponseEntity<?> updateProject(@PathVariable("id") Long id,
-                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException {
+                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException {
         /*
         If everything is OK: API will update project and return JSON(of this updated project), HttpStatus.OK
         In other cases API will send:

@@ -1,10 +1,13 @@
-package org.bch_vp.service.impl;
+package org.bch_vp.service.impl.abstractServiceImpl;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
+import org.bch_vp.service.impl.DetailInfoServiceImpl;
+import org.bch_vp.service.impl.DetailServiceImpl;
+import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

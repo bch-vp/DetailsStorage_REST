@@ -20,7 +20,7 @@ public class Controller {
     private DetailServiceImpl detailServiceImpl;
 
     @GetMapping("/details")
-    public ResponseEntity<?> getDetails() {
+    public ResponseEntity<?> getAllDetails() {
         /*
         If everything is OK:
             - API will send array(which contains details), HttpStatus.OK
