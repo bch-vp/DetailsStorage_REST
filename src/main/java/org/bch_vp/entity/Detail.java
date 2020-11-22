@@ -2,7 +2,8 @@ package org.bch_vp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -81,7 +82,7 @@ public class Detail extends AbstractEntity {
     }
 
     @Override
-    public AbstractEntity update(Map<String, Object> mapRequestBody) throws QuantityOfDetailsException {
+    public AbstractEntity update(Map<String, Object> mapRequestBody) throws NumberOfQuantityException{
         String detailName = (String) mapRequestBody.get("detailName");
         if (detailName != null && !detailName.isEmpty()) {
             this.detailName = detailName;
@@ -95,14 +96,15 @@ public class Detail extends AbstractEntity {
             this.production = production;
         }
         String price = (String) mapRequestBody.get("price");
-        if (price != null && !price.isEmpty()) {
-            if(price.matches("^[+]?\\d*\\.?\\d+$") && Double.parseDouble(price)>0) {
-                this.price = Double.valueOf(price);
+        if (price != null
+                && !price.isEmpty()
+                && price.matches("^[+]?\\d*\\.?\\d+$")
+                && Double.parseDouble(price)>0) {
+            this.price = Double.valueOf(price);
                 //write recalculate price
-            }
-            else{
-                throw new QuantityOfDetailsException();
-            }
+        }
+        else{
+            throw new NumberOfQuantityException(price);
         }
         String storage = (String) mapRequestBody.get("storage");
         if (storage != null &&!storage.isEmpty()) {

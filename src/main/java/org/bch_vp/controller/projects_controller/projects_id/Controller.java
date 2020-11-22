@@ -1,24 +1,18 @@
 package org.bch_vp.controller.projects_controller.projects_id;
 
-import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
+import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
-import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /*
 endPoint:
@@ -49,7 +43,7 @@ public class Controller {
 
     @PutMapping(value = "/projects/{id}")
     public ResponseEntity<?> updateProject(@PathVariable("id") Long id,
-                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException {
+                                           @RequestBody (required = true) String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, NumberOfQuantityException {
         /*
         If everything is OK: API will update project and return JSON(of this updated project), HttpStatus.OK
         In other cases API will send:

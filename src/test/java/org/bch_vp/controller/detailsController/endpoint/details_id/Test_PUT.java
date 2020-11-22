@@ -83,7 +83,7 @@ public class Test_PUT extends AbstractTest{
                 .content(inputJson)).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
-        assertEquals(200, status);
+        assertEquals(400, status);
     }
 
     @Test

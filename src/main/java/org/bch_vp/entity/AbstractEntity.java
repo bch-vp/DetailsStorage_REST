@@ -1,16 +1,10 @@
 package org.bch_vp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
-import org.springframework.context.annotation.Bean;
+import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,5 +20,5 @@ public abstract class AbstractEntity{
 
 //    public abstract Long getId();
     public abstract List<DetailInfo> getDetailsInfo();
-    public abstract AbstractEntity update(Map<String, Object> mapRequestBody) throws QuantityOfDetailsException, PriceNotCorrectException;
+    public abstract AbstractEntity update(Map<String, Object> mapRequestBody) throws NumberOfQuantityException;
 }

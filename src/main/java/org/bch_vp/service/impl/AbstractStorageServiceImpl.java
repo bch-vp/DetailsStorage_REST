@@ -3,7 +3,7 @@ package org.bch_vp.service.impl;
 import org.bch_vp.entity.*;
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
+import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
@@ -16,8 +16,6 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
@@ -101,7 +99,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     }
 
     @Override //rewrite!!!!!!!
-    public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException {
+    public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, NumberOfQuantityException {
         flushAndClear();
         HashMap mapRequestBody= JsonUtil.mapFromJson(jsonRequestBody, HashMap.class);
         Entity entity = entityRepository.findById(id)

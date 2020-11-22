@@ -3,7 +3,6 @@ package org.bch_vp.controller.projects_controller.projects_idProject_details_idD
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
@@ -31,7 +30,7 @@ public class Controller {
     @PutMapping(value = "/projects/{idProject}/details/{idDetail}/add-quantity")
     public ResponseEntity<?> addQuantityOfDetails(@PathVariable("idDetail") Long idDetail,
                                            @PathVariable("idProject") Long idProject,
-                                           @RequestBody(required = true) String jsonQuantityRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, PriceNotCorrectException, DetailInfoNotFoundException {
+                                           @RequestBody(required = true) String jsonQuantityRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException {
         /*
         If everything is OK:
             - API will updated quantity of details in project, HttpStatus.OK
@@ -44,6 +43,23 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
+//        Detail detail_1 = new Detail("detail_1", "type", "production", 100, (double) 40, "storage");
+//        Long idDetail_1 = detailServiceImpl.saveEntity(detail_1).getId();
+//
+//        Detail detail_2 = new Detail("detail_2", "type", "production", 200, (double) 40, "storage");
+//        Long idDetail_2 = detailServiceImpl.saveEntity(detail_2).getId();
+//
+//        Project project = new Project("prpject_1", "type", 1, "storage");
+//        Long idProject1 = projectServiceImpl.saveEntity(project).getId();
+//
+//        detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject1);
+//        detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject1);
+//
+//        Project project_2 = new Project("prpject_2", "type", 1, "storage");
+//        Long idProject_2 = projectServiceImpl.saveEntity(project_2).getId();
+//
+//        detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject_2);
+//        detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject_2);
         return detailInfoServiceImpl.addQuantityOfDetailsInProject(jsonQuantityRequestBody, idDetail, idProject)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

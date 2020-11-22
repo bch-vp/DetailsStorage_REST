@@ -41,18 +41,16 @@ public class DetailInfoServiceImpl implements DetailInfoService {
         DetailInfo detailInfo=detailinfoRepository.findById(new IdDetailInfo(idDetail,idProject))
                 .orElseThrow(DetailInfoNotFoundException::new);
         String quantity = String.valueOf(mapRequestBody.get("quantity"));
-        if(quantity != null && !quantity.isEmpty()) {
-            if (quantity.matches("^[0-9]+$")
-                    && Integer.parseInt(quantity)>0
-                    && Integer.parseInt(quantity)<=detailInfo.getDetail().getQuantityOfAvailable()) {
-                detail.subtractAvailableDetails(Integer.valueOf(quantity));
-                detailInfo.addQuantityofDetailsUsed(Integer.valueOf(quantity));
+        if(quantity != null
+                && !quantity.isEmpty()
+                && quantity.matches("^[0-9]+$")
+                && Integer.parseInt(quantity)>0
+                && Integer.parseInt(quantity)<=detailInfo.getDetail().getQuantityOfAvailable()) {
+            detail.subtractAvailableDetails(Integer.valueOf(quantity));
+            detailInfo.addQuantityofDetailsUsed(Integer.valueOf(quantity));
                 //write recalculate price
-            } else {
-                throw new QuantityOfDetailsException();
-            }
-        }else{
-            throw new IOException();
+        } else {
+            throw new QuantityOfDetailsException(quantity, String.valueOf(detail.getQuantityOfAvailable()));
         }
         Integer quantityExpected = detailInfo.getQuantityDetailsUsed();
         flushAndClear();
@@ -64,23 +62,24 @@ public class DetailInfoServiceImpl implements DetailInfoService {
     }
 
     @Override
-    public boolean joinDetailAndProject(Integer quantityDetailsUsed, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException {
+    public boolean joinDetailAndProject(Integer quantity, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException {
         flushAndClear();
         Project project = projectRepository.findById(idProject)
                 .orElseThrow(()->new EntityNotFoundException(Project.class));
         Detail detail = detailRepository.findById(idDetail)
                 .orElseThrow(()->new EntityNotFoundException(Detail.class));
-        if (quantityDetailsUsed > detail.getQuantityOfAvailable() || quantityDetailsUsed<1) {
-            throw new QuantityOfDetailsException();
+        if (quantity > detail.getQuantityOfAvailable() || quantity<1) {
+            throw new QuantityOfDetailsException(String.valueOf(quantity), String.valueOf(detail.getQuantityOfAvailable()));
         }
-        detail.subtractAvailableDetails(quantityDetailsUsed);
-        DetailInfo detailInfo = new DetailInfo(quantityDetailsUsed, detail, project);
+        detail.subtractAvailableDetails(quantity);
+        DetailInfo detailInfo = new DetailInfo(quantity, detail, project);
         detailinfoRepository.save(detailInfo);
-       // detailRepository.save(detail);
-   //     projectRepository.save(project);
+        // detailRepository.save(detail);
+        // projectRepository.save(project);
         flushAndClear();
         return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject)).isPresent();
     }
+
 
 
     @Override

@@ -58,7 +58,7 @@ public class Test_POST extends AbstractTest {
     public void test1() throws Exception {
         String uri = "/projects/1/details/1";
         Map<String, Object> mapa=new HashMap<>();
-        mapa.put("quantityOfDetails", 30);
+        mapa.put("quantity", "30");
         String inputJson = JsonUtil.mapToJson(mapa);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +78,7 @@ public class Test_POST extends AbstractTest {
     public void test2() throws Exception {
         String uri = "/projects/0/details/1";
         Map<String, Object> mapa=new HashMap<>();
-        mapa.put("quantityOfDetails", 30);
+        mapa.put("quantity", "30");
         String inputJson = JsonUtil.mapToJson(mapa);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -92,7 +92,7 @@ public class Test_POST extends AbstractTest {
     public void test3() throws Exception {
         String uri = "/projects/1/details/0";
         Map<String, Object> mapa=new HashMap<>();
-        mapa.put("quantityOfDetails", 30);
+        mapa.put("quantity", "30");
         String inputJson = JsonUtil.mapToJson(mapa);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -106,7 +106,7 @@ public class Test_POST extends AbstractTest {
     public void test4() throws Exception {
         String uri = "/projects/1/details/1a";
         Map<String, Object> mapa=new HashMap<>();
-        mapa.put("quantityOfDetails", 30);
+        mapa.put("quantity", "30");
         String inputJson = JsonUtil.mapToJson(mapa);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -120,7 +120,21 @@ public class Test_POST extends AbstractTest {
     public void test5() throws Exception {
         String uri = "/projects/1/details/1a";
         Map<String, Object> mapa=new HashMap<>();
-        mapa.put("quantityOfDetails", 1111);
+        mapa.put("quantity", "1111");
+        String inputJson = JsonUtil.mapToJson(mapa);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(inputJson)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(400, status);
+    }
+
+    @Test
+    public void test6() throws Exception {
+        String uri = "/projects/1/details/1a";
+        Map<String, Object> mapa=new HashMap<>();
+        mapa.put("quantity", "2a");
         String inputJson = JsonUtil.mapToJson(mapa);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
                 .accept(MediaType.APPLICATION_JSON_VALUE)

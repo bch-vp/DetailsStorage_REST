@@ -75,14 +75,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IOException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(IOException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "Request body can't be empty or API can't parse json", ex);
-        return new ResponseEntity<>(apiError, BAD_REQUEST);
-    }
-
-    @ExceptionHandler(QuantityOfDetailsException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(QuantityOfDetailsException ex,
-                                                            WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Malformed JSON request. Quantity of details is not correct", ex);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "API can't parse json", ex);
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
@@ -93,7 +86,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, BAD_REQUEST);
     }
 
-
     @ExceptionHandler(IdNotValidException.class)
     protected ResponseEntity<Object> handleEntityNotFoundEx(IdNotValidException ex,
                                                             WebRequest request) {
@@ -101,12 +93,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PriceNotCorrectException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundEx(PriceNotCorrectException ex,
+    @ExceptionHandler(QuantityOfDetailsException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(QuantityOfDetailsException ex,
                                                             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Price is not correct", ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getQuantityMessage(), ex);
         return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NumberOfQuantityException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundEx(NumberOfQuantityException ex,
+                                                            WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getQuantityMessage(), ex);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAllExceptions(Exception ex,

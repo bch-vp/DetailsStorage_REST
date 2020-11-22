@@ -59,8 +59,12 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        Integer quantityOfDetails= (Integer) JsonUtil.mapFromJson(jsonQuantityOfDetails, HashMap.class).get("quantityOfDetails");
-        return detailInfoServiceImpl.joinDetailAndProject(quantityOfDetails, idDetail, idProject)
+        HashMap mapRequestBody= JsonUtil.mapFromJson(jsonQuantityOfDetails, HashMap.class);
+        String quantityString = (String) mapRequestBody.get("quantity");
+        if(!quantityString.matches("^[0-9]+$")){
+            throw new QuantityOfDetailsException(quantityString);
+        }
+        return detailInfoServiceImpl.joinDetailAndProject(Integer.valueOf(quantityString), idDetail, idProject)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }

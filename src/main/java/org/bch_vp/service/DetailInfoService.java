@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DetailInfoService {
-    boolean joinDetailAndProject(Integer countOfDetail, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException;
+    boolean joinDetailAndProject(Integer quantity, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException;
     List<DetailInfo> findAll();
     boolean addQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException;
     DetailInfo findById(Long idDetail, Long idProject) throws EntityNotFoundException;

@@ -73,6 +73,10 @@ public class Test_PUT extends AbstractTest {
         assertEquals(200, status);
 
         assertEquals(Integer.valueOf(10), detailServiceImpl.findEntityById(1L).getQuantityOfAvailable());
+        assertEquals(Integer.valueOf(60), detailInfoServiceImpl.findById(1L, 1L).getQuantityDetailsUsed());
+        Integer quantityOfAllActual = detailInfoServiceImpl.findById(1L, 1L).getQuantityDetailsUsed()
+                + detailInfoServiceImpl.findById(1L, 2L).getQuantityDetailsUsed();
+        assertEquals(Integer.valueOf(90), quantityOfAllActual);
     }
 
     @Test

@@ -1,12 +1,10 @@
 package org.bch_vp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bch_vp.entity.ExceptionHandler.entity.PriceNotCorrectException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -83,7 +81,7 @@ public class Project extends AbstractEntity {
 
 
     @Override// rewrite
-    public AbstractEntity update(Map<String, Object> mapRequestBody) throws QuantityOfDetailsException, PriceNotCorrectException {
+    public AbstractEntity update(Map<String, Object> mapRequestBody) throws NumberOfQuantityException {
         String projectName = (String) mapRequestBody.get("projectName");
         if (projectName != null && !projectName.isEmpty()) {
             this.projectName = projectName;
@@ -98,7 +96,7 @@ public class Project extends AbstractEntity {
                 this.quantity = Integer.valueOf(quantity);
                 //write recalculate price
             } else {
-                throw new PriceNotCorrectException();
+                throw new NumberOfQuantityException(quantity);
             }
         }
         String storage = (String) mapRequestBody.get("storage");
