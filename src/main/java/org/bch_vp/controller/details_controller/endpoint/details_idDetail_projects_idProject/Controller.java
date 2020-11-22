@@ -56,6 +56,7 @@ public class Controller {
             - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
             - JSON about exception: AlreadyHasRelations, HttpStatus.NOT_FOUND(400). It means, that detail alredy contains this project
             - jSON about exception: QuantityOfDetails, HttpStatus.NOT_FOUND(400)
+            - JSON about exception: HttpMessageNotReadableException(RequestBody isn't represented), HttpStatus.BAD_REQUEST(400)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */

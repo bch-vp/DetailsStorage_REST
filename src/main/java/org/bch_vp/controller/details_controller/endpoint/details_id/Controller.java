@@ -49,11 +49,11 @@ public class Controller {
         In other cases API will send:
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
-            - JSON about exception: @Valid detail, BAD_REQUEST(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: HttpMessageNotReadable(RequestBody isn't represented), HttpStatus.BAD_REQUEST(400)
+            - JSON about exception: NumberOfQuantity(Price is not correct), HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-
         return new ResponseEntity<>(detailServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
     }
 
