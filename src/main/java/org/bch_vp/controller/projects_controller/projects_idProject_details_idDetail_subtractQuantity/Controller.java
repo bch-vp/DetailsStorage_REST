@@ -1,10 +1,9 @@
-package org.bch_vp.controller.projects_controller.projects_idProject_details_idDetail_addQuantity;
+package org.bch_vp.controller.projects_controller.projects_idProject_details_idDetail_subtractQuantity;
 
-import org.bch_vp.entity.Detail;
+
 import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
-import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@RestController("/projects/{idProject}/details/{idDetail}/add-quantity")
+@RestController("/projects/{idProject}/details/{idDetail}/subtract-quantity")
 public class Controller {
     @Autowired
     private DetailServiceImpl detailServiceImpl;
@@ -27,7 +26,7 @@ public class Controller {
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
-    @PutMapping(value = "/projects/{idProject}/details/{idDetail}/add-quantity")
+    @PutMapping(value = "/projects/{idProject}/details/{idDetail}/subtract-quantity")
     public ResponseEntity<?> addQuantityOfDetails(@PathVariable("idDetail") Long idDetail,
                                                   @PathVariable("idProject") Long idProject,
                                                   @RequestBody(required = true) String jsonQuantityRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException {
@@ -43,7 +42,7 @@ public class Controller {
             - jSON about exception: converting error {idProject}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        return detailInfoServiceImpl.addQuantityOfDetailsInProject(jsonQuantityRequestBody, idDetail, idProject)
+        return detailInfoServiceImpl.subtractQuantityOfDetailsInProject(jsonQuantityRequestBody, idDetail, idProject)
                 ? new ResponseEntity<>(HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }

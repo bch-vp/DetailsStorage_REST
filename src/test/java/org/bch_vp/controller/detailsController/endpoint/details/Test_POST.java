@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class Test_POST extends AbstractTest {
     }
 
     @Test
-    public void addDetailWhichIsValidCorrect() throws Exception {
+    public void addDetailWhichIsValidCorrect() throws Exception, IdNotValidException {
         String uri = "/details";
         Detail detail = new Detail("det","type","prod",23,2.0,"stor");
         String inputJson = super.mapToJson(detail);

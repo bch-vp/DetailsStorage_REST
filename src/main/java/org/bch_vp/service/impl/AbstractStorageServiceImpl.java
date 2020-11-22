@@ -1,10 +1,7 @@
 package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.*;
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.ExceptionHandler.entity.*;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;
@@ -41,8 +38,18 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
     }
 
     @Override
-    public Entity saveEntity(Entity entity) {
+    public Entity saveEntity(Entity entity) throws IdNotValidException {
         flushAndClear();
+        if(entity instanceof Detail) {
+            Detail detail = (Detail) entity;
+            if (detail.getQuantityOfAvailable() == null) {  //rewrite
+                detail.setQuantityOfAvailable(detail.getQuantityOfAll());
+            }
+
+            if (detail.getId() != null) { // rewrite
+                throw new IdNotValidException();
+            }
+        }
         return entityRepository.save(entity);
     }
 

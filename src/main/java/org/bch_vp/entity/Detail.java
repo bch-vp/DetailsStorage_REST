@@ -133,15 +133,15 @@ public class Detail extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Detail{" +
-                "id=" +
-                ", detailName='" + detailName + '\'' +
-                ", type='" + type + '\'' +
-                ", production='" + production + '\'' +
-                ", quantityOfAll=" + quantityOfAll +
-                ", quantityOfAvailable=" + quantityOfAvailable +
-                ", price=" + price +
-                ", storage='" + storage + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Detail{");
+        sb.append("detailName='").append(detailName).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", production='").append(production).append('\'');
+        sb.append(", quantityOfAll=").append(quantityOfAll);
+        sb.append(", quantityOfAvailable=").append(quantityOfAvailable);
+        sb.append(", price=").append(price);
+        sb.append(", storage='").append(storage).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

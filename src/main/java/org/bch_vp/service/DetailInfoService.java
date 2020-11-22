@@ -12,6 +12,6 @@ public interface DetailInfoService {
     boolean joinDetailAndProject(Integer quantity, Long idDetail, Long idProject) throws QuantityOfDetailsException, EntityNotFoundException;
     List<DetailInfo> findAll();
     boolean addQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException;
+    boolean subtractQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException;
     DetailInfo findById(Long idDetail, Long idProject) throws EntityNotFoundException;
-    void subtractQuantityOfDetailsInProject(String jsonQuantityRequestBody, Long idDetail, Long idProject) throws EntityNotFoundException;
 }

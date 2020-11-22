@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
+import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class Test_GET extends AbstractTest {
     private DetailServiceImpl detailServiceImpl;
 
     @Test
-    public void getDetailsListFromDBWhereTwoDetails() throws Exception {
+    public void getDetailsListFromDBWhereTwoDetails() throws Exception, IdNotValidException {
         Detail detail1 = new Detail("det-1","type","prod",23,2.0,"stor");
         Detail detail2 = new Detail("det-2","type","prod",23,2.0,"stor");
         detailServiceImpl.saveEntity(detail1);

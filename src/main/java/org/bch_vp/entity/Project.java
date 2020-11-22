@@ -17,7 +17,6 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 public class Project extends AbstractEntity {
-
     @NotBlank(message = "Project name is required")
     private String projectName;
     private String type;
@@ -108,12 +107,12 @@ public class Project extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Project{" +
-                "id=" +
-                ", projectName='" + projectName + '\'' +
-                ", type='" + type + '\'' +
-                ", quantity=" + quantity +
-                ", storage='" + storage + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Project{");
+        sb.append("projectName='").append(projectName).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", quantity=").append(quantity);
+        sb.append(", storage='").append(storage).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

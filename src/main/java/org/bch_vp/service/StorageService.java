@@ -1,16 +1,13 @@
 package org.bch_vp.service;
 
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.*;
 import org.bch_vp.entity.AbstractEntity;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface StorageService<Entity extends AbstractEntity, InnerEntity extends AbstractEntity> {
-    Entity saveEntity(Entity detail);
+    Entity saveEntity(Entity detail) throws IdNotValidException;
     boolean deleteEntityById(Long id) throws EntityNotFoundException;
     List<Entity> findAll();
     Entity findEntityById(Long id) throws EntityNotFoundException;

@@ -39,14 +39,6 @@ public class Controller {
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
             - JSON about exception: IdNotValid , HttpStatus.BAD_REQUEST(400)
         */
-
-        if(detail.getQuantityOfAvailable() == null){  //rewrite
-            detail.setQuantityOfAvailable(detail.getQuantityOfAll());
-        }
-
-        if(detail.getId()!=null){ // rewrite
-            throw new IdNotValidException();
-        }
         detail = (Detail) detailServiceImpl.saveEntity(detail);
         return detail!=null
                 ? new ResponseEntity<>(detail,HttpStatus.CREATED)
