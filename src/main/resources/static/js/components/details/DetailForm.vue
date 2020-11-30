@@ -1,59 +1,59 @@
 <template>
-  <v-layout align-start justify-center row >
+  <v-layout align-start justify-center row>
     <form>
-          <v-text-field
-              v-model="detailName"
-              :error-messages="detailNameErrors"
-              :counter="25"
-              label="Detail name (required)"
-              required
-              @input="$v.detailName.$touch()"
-              @blur="$v.detailName.$touch()"
-          ></v-text-field>
-          <v-text-field
-              v-model="type"
-              :error-messages="typeErrors"
-              :counter="25"
-              label="Type"
-              required
-              @input="$v.type.$touch()"
-              @blur="$v.type.$touch()"
-          ></v-text-field>
-          <v-text-field
-              v-model="production"
-              :error-messages="productionErrors"
-              :counter="25"
-              label="Production"
-              required
-              @input="$v.production.$touch()"
-              @blur="$v.production.$touch()"
-          ></v-text-field>
-          <v-text-field
-              v-model="quantity"
-              :error-messages="quantityErrors"
-              :counter="10"
-              label="Quantity (required)"
-              required
-              @input="$v.quantity.$touch()"
-              @blur="$v.quantity.$touch()"
-          ></v-text-field>
-          <v-text-field
-              v-model="price"
-              :error-messages="priceErrors"
-              :counter="10"
-              label="Price (required)"
-              required
-              @input="$v.price.$touch()"
-              @blur="$v.price.$touch()"
-          ></v-text-field>
-          <v-text-field
-              v-model="storage"
-              :error-messages="storageErrors"
-              label="Storage (required)"
-              required
-              @input="$v.storage.$touch()"
-              @blur="$v.storage.$touch()"
-          ></v-text-field>
+      <v-text-field
+          v-model="detailName"
+          :error-messages="detailNameErrors"
+          :counter="25"
+          label="Detail name (required)"
+          required
+          @input="$v.detailName.$touch()"
+          @blur="$v.detailName.$touch()"
+      ></v-text-field>
+      <v-text-field
+          v-model="type"
+          :error-messages="typeErrors"
+          :counter="25"
+          label="Type"
+          required
+          @input="$v.type.$touch()"
+          @blur="$v.type.$touch()"
+      ></v-text-field>
+      <v-text-field
+          v-model="production"
+          :error-messages="productionErrors"
+          :counter="25"
+          label="Production"
+          required
+          @input="$v.production.$touch()"
+          @blur="$v.production.$touch()"
+      ></v-text-field>
+      <v-text-field
+          v-model="quantity"
+          :error-messages="quantityErrors"
+          :counter="10"
+          label="Quantity (required)"
+          required
+          @input="$v.quantity.$touch()"
+          @blur="$v.quantity.$touch()"
+      ></v-text-field>
+      <v-text-field
+          v-model="price"
+          :error-messages="priceErrors"
+          :counter="10"
+          label="Price $ (required)"
+          required
+          @input="$v.price.$touch()"
+          @blur="$v.price.$touch()"
+      ></v-text-field>
+      <v-text-field
+          v-model="storage"
+          :error-messages="storageErrors"
+          label="Storage (required)"
+          required
+          @input="$v.storage.$touch()"
+          @blur="$v.storage.$touch()"
+      ></v-text-field>
 
         <v-btn @click="submit" small flat round color="indigo">submit</v-btn>
         <v-btn @click="clear" outline small fab color="indigo">
@@ -69,11 +69,11 @@ import {required, maxLength, email, numeric} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
-  props:['details'],
+  props: ['details'],
   validations: {
     detailName: {required, maxLength: maxLength(25)},
-    type: { maxLength: maxLength(25)},
-    production: { maxLength: maxLength(25)},
+    type: {maxLength: maxLength(25)},
+    production: {maxLength: maxLength(25)},
     quantity: {required, maxLength: maxLength(10), numeric},
     price: {required, maxLength: maxLength(10), numeric},
     storage: {required},
@@ -113,7 +113,9 @@ export default {
       if (!this.$v.quantity.$dirty) return errors
       !this.$v.quantity.maxLength && errors.push('Quantity must be at most 10 characters long')
       !this.$v.quantity.required && errors.push('Quantity is required.')
-      if(!this.$v.quantity.numeric){ errors.push('Quantity not correct')}
+      if (!this.$v.quantity.numeric) {
+        errors.push('Quantity not correct')
+      }
       return errors
     },
     priceErrors() {
@@ -121,7 +123,9 @@ export default {
       if (!this.$v.price.$dirty) return errors
       !this.$v.price.maxLength && errors.push('Price be at most 10 characters long')
       !this.$v.price.required && errors.push('Price is required.')
-      if(!this.$v.price.numeric){ errors.push('Price not correct')}
+      if (!this.$v.price.numeric) {
+        errors.push('Price not correct')
+      }
       return errors
     },
     storageErrors() {

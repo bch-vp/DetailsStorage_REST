@@ -1,6 +1,6 @@
 <template>
-  <v-btn outline small fab color="indigo" @click="del">
-    <v-icon>delete</v-icon>
+  <v-btn outline small fab color="indigo" @click="deleteDetail">
+    <v-icon>delete_forever</v-icon>
   </v-btn>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   props: ['detail', 'details'],
   methods:{
-    del: function () {
+    deleteDetail: function () {
       this.$resource('/details{/id}').remove({id: this.detail.id}).then(result => {
         this.details.splice(this.details.indexOf(this.detail), 1)
       }, ex => {
@@ -23,5 +23,4 @@ export default {
 </script>
 
 <style>
-
 </style>

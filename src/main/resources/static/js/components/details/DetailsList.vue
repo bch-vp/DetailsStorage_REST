@@ -2,15 +2,16 @@
   <div>
     <v-btn v-on:click="show = !show" flat round>
       <div v-if="!show">
-        <v-icon>add</v-icon>Add detail
+        <v-icon>add</v-icon>
+        Add detail
       </div>
       <div v-if="show">
-        <v-icon>clear</v-icon>Close
+        <v-icon>clear</v-icon>
+        Close
       </div>
     </v-btn>
-    <transition name="slide-fade">
-      <detail-form v-if="show" :details="details"/>
-    </transition>
+
+    <detail-form v-if="show" :details="details"/>
 
     <v-layout align-start justify-center row fill-height>
       <detail-row v-for="detail in details" :detail="detail" :details="details" :key="detail.id"/>
@@ -39,4 +40,5 @@ export default {
 </script>
 
 <style>
+
 </style>
