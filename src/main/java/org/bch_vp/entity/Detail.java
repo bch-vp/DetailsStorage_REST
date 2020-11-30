@@ -19,8 +19,6 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Detail extends AbstractEntity {
 
-
-
     @NotBlank(message="Detail Name is required")
     private String detailName;
     private String type;

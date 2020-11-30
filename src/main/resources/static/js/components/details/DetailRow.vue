@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-5">
+  <v-card class="card deep-orange lighten-3">
     <v-card-text primary-title>
       <b>Id:</b>
       {{ detail.id }} <br>
@@ -14,10 +14,10 @@
       {{ detail.production }} <br>
 
       <b>Quantity of all:</b>
-      {{ detail.quantityOfAll }} <br>
+      <span style="color: forestgreen"> {{ detail.quantityOfAll }}</span> <br>
 
       <b>Quantity of available:</b>
-      {{ detail.quantityOfAvailable }} <br>
+      <span style="color: red"> {{ detail.quantityOfAvailable }} </span> <br>
 
       <b>Price:</b>
       {{ detail.price }} <br>
@@ -27,23 +27,32 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn outline small fab color="indigo">
-        <v-icon>edit</v-icon>
-      </v-btn>
-      <v-btn outline small fab color="indigo">
-        <v-icon>delete</v-icon>
-      </v-btn>
+      <detail-edit :details="details" :detail="detail"/>
+      <detail-delete :details="details" :detail="detail"/>
     </v-card-actions>
   </v-card>
 
 </template>
 
 <script>
+import DetailDelete from 'components/details/DetailDelete.vue'
+import DetailEdit from 'components/details/DetailEdit.vue'
+
 export default {
-  props: ['detail', 'details']
+  components: {DetailDelete, DetailEdit},
+  props: ['detail', 'details'],
+  comments:{
+    DetailDelete,
+    DetailEdit
+  }
 }
 </script>
 
 <style>
-
+.card{
+  margin-top: 30px;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}
 </style>
