@@ -9,14 +9,11 @@ export default {
   props: ['detail', 'details'],
   methods:{
     deleteDetail: function () {
-      this.$resource('/details{/id}').remove({id: this.detail.id}).then(result => {
+      this.$resource('/details/' + this.detail.id).remove().then(result => {
         this.details.splice(this.details.indexOf(this.detail), 1)
       }, ex => {
         alert(ex.status);
       })
-    },
-    save:{
-
     }
   }
 }

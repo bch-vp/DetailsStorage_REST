@@ -2,6 +2,7 @@ package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
+import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.repository.DetailRepository;
 import org.bch_vp.repository.ProjectRepository;
@@ -37,10 +38,28 @@ public class DetailServiceImpl
     }
 
     @Override
-    public Detail addQuantityOfDetails(Long id, Integer quantity) throws EntityNotFoundException {
+    public Detail addQuantityOfDetails(Long id, Integer quantity) throws EntityNotFoundException, QuantityOfDetailsException {
+        if(quantity < 1){
+            throw new QuantityOfDetailsException(String.valueOf(quantity));
+        }
         Detail detail = detailRepository.findById(id)
                 .orElseThrow(()->new EntityNotFoundException(Detail.class));
         detail=detailRepository.save(detail.addQuantityOfDetails(quantity));
+        detailRepository.flush();
+        return detail;
+    }
+
+    @Override
+    public Detail subtractQuantityOfDetails(Long id, Integer quantity) throws EntityNotFoundException, QuantityOfDetailsException {
+        if(quantity < 1){
+            throw new QuantityOfDetailsException(String.valueOf(quantity));
+        }
+        Detail detail = detailRepository.findById(id)
+                .orElseThrow(()->new EntityNotFoundException(Detail.class));
+        if(quantity > detail.getQuantityOfAvailable()){
+            throw new QuantityOfDetailsException(String.valueOf(quantity), String.valueOf(detail.getQuantityOfAvailable()));
+        }
+        detail=detailRepository.save(detail.subtractQuantityOfDetails(quantity));
         detailRepository.flush();
         return detail;
     }

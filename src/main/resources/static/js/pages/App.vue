@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-toolbar dark app>
-      <v-toolbar-title style="color: coral;">DetailStorage</v-toolbar-title>
+      <v-toolbar-title style="color: coral;">DetailsStorage</v-toolbar-title>
       <v-btn flat style="margin-left: 30px" round>Details</v-btn>
       <v-btn flat round>Projects</v-btn>
       <v-spacer></v-spacer>
@@ -35,15 +35,15 @@ export default {
       details: []
     }
   },
-
   created: function () {
     this.$resource('/details').get().then(result =>
-        result.json().then(rows =>
-            rows.forEach(row => {
-              this.details.push(row);
-              this.details.sort((a, b) => -(a.id - b.id));
-            })
-        )
+        result.json().then(details => {
+          details.forEach(detail => {
+            this.details.push(detail)
+            this.details.sort((a, b) => -(a.id - b.id))
+          })
+          this.details.sort((a, b) => -(a.id - b.id))
+        })
     )
   }
 }

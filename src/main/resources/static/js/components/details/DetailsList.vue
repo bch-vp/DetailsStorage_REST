@@ -1,30 +1,36 @@
 <template>
   <div>
-    <v-btn v-on:click="show = !show" flat round>
-      <div v-if="!show">
+    <div v-if="showProjects.show">
+      <projects-from-detail-row :showProjects="showProjects"/>
+    </div>
+
+    <div v-if="!showProjects.show">
+    <v-btn v-on:click="showForm = !showForm" flat round>
+      <div v-if="!showForm">
         <v-icon>add</v-icon>
         Add detail
       </div>
-      <div v-if="show">
+      <div v-if="showForm">
         <v-icon>clear</v-icon>
         Close
       </div>
     </v-btn>
-
-    <detail-form v-if="show" :details="details"/>
-
-    <v-layout align-start justify-center row fill-height>
-      <detail-row v-for="detail in details" :detail="detail" :details="details" :key="detail.id"/>
-    </v-layout>
+      <detail-form v-if="showForm" :details="details"/>
+      <v-layout align-start justify-center row fill-height>
+        <detail-row v-for="detail in details" :detail="detail" :details="details" :showProjects="showProjects"
+                    :key="detail.id"/>
+      </v-layout>
+    </div>
   </div>
 </template>
 
 <script>
 import DetailRow from "components/details/DetailRow.vue"
 import DetailForm from 'components/details/DetailForm.vue'
+import ProjectsFromDetailRow from 'components/details/ProjectsFromDetailRow.vue'
 
 export default {
-  components: {DetailForm, DetailRow},
+  components: {DetailForm, DetailRow, ProjectsFromDetailRow},
   props: ["details"],
   comments: {
     DetailRow,
@@ -32,8 +38,11 @@ export default {
   },
   data: function () {
     return {
-      quantity: 0,
-      show: false
+      showProjects: {
+        show: false,
+        detail: null
+      },
+      showForm: false
     }
   }
 }

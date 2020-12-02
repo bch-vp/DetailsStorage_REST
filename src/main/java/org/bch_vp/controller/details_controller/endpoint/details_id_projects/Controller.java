@@ -1,11 +1,16 @@
 package org.bch_vp.controller.details_controller.endpoint.details_id_projects;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
 import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
+import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +39,44 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        List<Project> projects=detailServiceImpl
+//        List<DetailInfo> list = detailServiceImpl
+//                .findEntityById(id)
+//                .getDetailsInfo();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        ObjectNode objectNode;
+//        ArrayNode arrayNode = objectMapper.createArrayNode();
+//        arrayNode.addPOJO(list.get(0));
+//        ((ObjectNode) arrayNode.get(0)).put("quantityInUsed", "aefaefaefaefaevavaef");
+//
+//
+//        List<Project> projects = detailServiceImpl
+//                .findEntityById(id)
+//                .getDetailsInfo()
+//                .stream()
+//                .map(DetailInfo::getProject)
+//                .collect(Collectors.toList());
+        List<DetailInfo> detailsInfo = detailServiceImpl
                 .findEntityById(id)
-                .getDetailsInfo()
+                .getDetailsInfo();
+        List<Project> projects = detailsInfo
                 .stream()
                 .map(DetailInfo::getProject)
                 .collect(Collectors.toList());
+
+        if (!projects.isEmpty()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode node = objectMapper.valueToTree(projects);
+
+            int i = 0;
+            for (JsonNode objNode : node) {
+                ((ObjectNode) objNode).put("quantityInUsed", detailsInfo.get(i).getQuantityDetailsUsed());
+                System.out.println(objNode);
+            }
+            System.out.println(node.asText());
+            String str = node.toPrettyString();
+            return new ResponseEntity<>(str, HttpStatus.OK);
+
+        }
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 

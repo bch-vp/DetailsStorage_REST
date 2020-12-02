@@ -64,19 +64,25 @@ public class Detail extends AbstractEntity {
         this.storage = storage;
     }
 
-    public Detail addAvailableDetails(Integer quantityOfAvailable){
-        this.quantityOfAvailable+=quantityOfAvailable;
+    public Detail addAvailableDetails(Integer quantity){
+        this.quantityOfAvailable+=quantity;
         return this;
     }
 
-    public Detail addQuantityOfDetails(Integer quantityOfAvailable){
-        this.quantityOfAvailable+=quantityOfAvailable;
-        this.quantityOfAll+=quantityOfAvailable;
+    public Detail addQuantityOfDetails(Integer quantity){
+        this.quantityOfAvailable+=quantity;
+        this.quantityOfAll+=quantity;
         return this;
     }
 
-    public void subtractAvailableDetails(Integer quantityOfAvailable) {
-        this.quantityOfAvailable -= quantityOfAvailable;
+    public Detail subtractQuantityOfDetails(Integer quantity){
+        this.quantityOfAvailable-=quantity;
+        this.quantityOfAll-=quantity;
+        return this;
+    }
+
+    public void subtractAvailableDetails(Integer quantity) {
+        this.quantityOfAvailable -= quantity;
     }
 
     @Override
@@ -93,7 +99,7 @@ public class Detail extends AbstractEntity {
         if (production != null && !production.isEmpty()) {
             this.production = production;
         }
-        String price = (String) mapRequestBody.get("price");
+        String price = String.valueOf(mapRequestBody.get("price"));
         if (price != null
                 && !price.isEmpty()
                 && price.matches("^[+]?\\d*\\.?\\d+$")
