@@ -7,7 +7,6 @@
     <detail-card :showProjects="showProjects" class="my-4"/>
     <b>Projects:</b>
       <span v-if="!projects.length" style="color: red"> empty</span>
-      <span v-else>
        <v-btn @click="showAddProjectsToDetail = !showAddProjectsToDetail" flat round color="indigo">
           <div v-if="!showAddProjectsToDetail">
         <v-icon>add</v-icon>
@@ -18,7 +17,6 @@
        Close
       </div>
     </v-btn>
-      </span>
     <projects-from-detail v-if="!showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"></projects-from-detail>
     <add-projects-from-detail v-if="showAddProjectsToDetail" :projects="projects"/>
   </div>

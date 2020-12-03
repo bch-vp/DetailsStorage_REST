@@ -1,70 +1,43 @@
 <template>
+  <div>
+    <v-btn @click="submit" outline small flat round color="indigo" class="my-3">submit</v-btn>
   <v-layout align-start justify-center row fill-height>
-    <div v-for="project in projects">
-      <v-card class="card ">
-        <v-card-text primary-title>
-
-          <v-checkbox v-model="enabled" hide-details class="shrink mr-2"></v-checkbox>
-          <v-text-field :disabled="!enabled" label="Quantity of details"></v-text-field>
-
-          <b style="color: cornflowerblue"> Quantity of details, which used:
-            <span style="color: darkblue"> {{ project.quantityInUsed }}</span>
-          </b>
-          <br><br>
-
-          <b>length:</b>
-          {{ projectsWhichNotIncludeInDetail.length }} <br>
-
-          <b>Id:</b>
-          {{ project.id }} <br>
-
-          <b>Project name:</b>
-          {{ project.projectName }} <br>
-
-          <b>Type:</b>
-          {{ project.type }} <br>
-
-          <b>Quantity:</b>
-          {{ project.quantity }} <br>
-
-          <b>Storage:</b>
-          {{ project.storage }} <br>
-
-        </v-card-text>
-        <v-card-actions>
-        </v-card-actions>
-      </v-card>
+    <div  v-for="(project, index) in projectsWhichNotIncludeInDetail">
+      <add-project-to-detail-card :index="index" :projectWhichChose="projectWhichChose" :project="project" :projectsWhichNotIncludeInDetail="projectsWhichNotIncludeInDetail"/>
     </div>
   </v-layout>
+  </div>
 </template>
 
 <script>
+import {getIndex} from "util/collections";
+import AddProjectToDetailCard from 'components/details/projectsFromDetail/AddProjectToDetailCard.vue'
+
 export default {
   props: ['projects'],
-  methods: {
-    addProjectsToDetail: function () {
-
-    }
-  },
+  components: {AddProjectToDetailCard},
   data: function () {
     return {
       projectsWhichNotIncludeInDetail: [],
-      enabled: false
+      projectWhichChose:{
+        projects:[],
+        quantity:[]
+      }
+    }
+  },
+  methods:{
+    submit:function (){
+
     }
   },
   created: function () {
     this.$resource('/projects').get().then(result =>
         result.json().then(projectsFromDb => {
-          this.projects.forEach(project => {
-            projectsFromDb.splice(projectsFromDb.indexOf(project), 1)
-          })
-          this. projectsWhichNotIncludeInDetail = projectsFromDb
-          this.projectsWhichNotIncludeInDetail.sort((a, b) => -(a.id - b.id));
-              //
-              // projects.forEach(project => {
-              //   this.projectsWhichNotIncludeInDetail.push(project);
-              // })
-              // this.projectsWhichNotIncludeInDetail.sort((a, b) => -(a.id - b.id));
+              this.projects.forEach(project => {
+                projectsFromDb.splice(getIndex(projectsFromDb, project.id), 1)
+              })
+              this.projectsWhichNotIncludeInDetail = projectsFromDb
+              this.projectsWhichNotIncludeInDetail.sort((a, b) => -(a.id - b.id));
             }
         )
     )

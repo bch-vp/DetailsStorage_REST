@@ -19,7 +19,7 @@
           <v-btn @click="addQuantityOfDetails" outline small flat icon color="indigo">
             <v-icon>add</v-icon>
           </v-btn>
-        <v-btn v-if="showSubtractQuantityOfDetails" @click="subtractQuantityOfDetails" outline small flat icon
+        <v-btn v-if="detail.quantityOfAvailable>0" @click="subtractQuantityOfDetails" outline small flat icon
                color="indigo">
         <v-icon>horizontal_rule</v-icon>
         </v-btn>
@@ -59,11 +59,6 @@ export default {
   components: {
     DetailDelete
   },
-  data: function () {
-    return {
-      showSubtractQuantityOfDetails: true
-    }
-  },
   methods: {
     showProjectsMethod: function () {
       this.showProjects.detail = this.detail
@@ -74,9 +69,6 @@ export default {
       this.$resource('/details/' + this.detail.id + '/addQuantity').update(quantity).then(result => {
         this.detail.quantityOfAll += 1
         this.detail.quantityOfAvailable += 1
-        if (this.detail.quantityOfAvailable !== 0) {
-          this.showSubtractQuantityOfDetails = true
-        }
       }, ex => {
         alert(ex.status);
       })
@@ -87,9 +79,6 @@ export default {
         this.$resource('/details/' + this.detail.id + '/subtractQuantity').update(quantity).then(result => {
           this.detail.quantityOfAll -= 1
           this.detail.quantityOfAvailable -= 1
-          if (this.detail.quantityOfAvailable === 0) {
-            this.showSubtractQuantityOfDetails = false
-          }
         }, ex => {
           alert(ex.status);
         })
