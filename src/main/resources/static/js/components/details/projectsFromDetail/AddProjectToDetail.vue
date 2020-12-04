@@ -26,17 +26,36 @@ export default {
     return {
       projectsWhichNotIncludeInDetail: [],
       projectWhichChose:{
-        projects:[],
+        projectsId:[],
         quantity:[]
       },
       quantityOfAvailable:{
         quantity: this.detail.quantityOfAvailable
       },
+      // quantityArray: this.projectWhichChose.quantity,
       // projectArray: this.projectWhichChose.projects,
       // quantityArray: this.projectWhichChose.quantity,
     }
   },
-  watch:{
+  watch: {
+    projectWhichChose: {
+      deep: true,
+      // We have to move our method to a handler field
+      handler: function () {
+        alert("feaf")
+        //   let finalQuantity = 0
+        //   let i = 0;
+        //   this.projectWhichChose.projectsId.forEach(project => {
+        //     if (typeof project !== null) {
+        //       finalQuantity += this.projectWhichChose.quantity[i]
+        //     }
+        //     i++
+        //   })
+        //   this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
+        // }
+      }
+    }
+  },
     // quantityArray: {
     //   deep: true,
     //   // We have to move our method to a handler field
@@ -67,7 +86,6 @@ export default {
     //     this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
     //   }
     // }
-  },
 
 
   methods:{
