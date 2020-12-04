@@ -2,10 +2,10 @@
   <v-card class="card ">
     <v-card-text primary-title>
 
-      <v-checkbox v-bind:value="project" v-model="projectWhichChose.projects[index]" hide-details ></v-checkbox>
-<!--        <v-text-field :disabled="!projectWhichChose.projects[index]" v-model="projectWhichChose.quantity[index]" label="Quantity of details"></v-text-field>-->
-<!--      <v-slider :disabled="!projectWhichChose.projects[index]" v-model="projectWhichChose.quantity[index]" :min="0" :max="50">-->
-<!--      </v-slider>-->
+      <v-checkbox v-bind:value="project" v-model="projectWhichChose.projects[index]" hide-details></v-checkbox>
+      <!--        <v-text-field :disabled="!projectWhichChose.projects[index]" v-model="projectWhichChose.quantity[index]" label="Quantity of details"></v-text-field>-->
+      <!--      <v-slider :disabled="!projectWhichChose.projects[index]" v-model="projectWhichChose.quantity[index]" :min="0" :max="50">-->
+      <!--      </v-slider>-->
       <v-slider
           v-model="projectWhichChose.quantity[index]"
           :disabled="!projectWhichChose.projects[index]"
@@ -16,27 +16,20 @@
           :max="200"
       ></v-slider>
 
-      <button @click="number.numberr++">
-        hello
-      </button>
+      <b>Id:</b>
+      {{ project.id }} <br>
 
-        <b>length:</b>
-        {{ projectsWhichNotIncludeInDetail.length }} <br>
+      <b>Project name:</b>
+      {{ project.projectName }} <br>
 
-        <b>Id:</b>
-        {{ project.id }} <br>
+      <b>Type:</b>
+      {{ project.type }} <br>
 
-        <b>Project name:</b>
-        {{ project.projectName }} <br>
+      <b>Quantity:</b>
+      {{ project.quantity }} <br>
 
-        <b>Type:</b>
-        {{ project.type }} <br>
-
-        <b>Quantity:</b>
-        {{ project.quantity }} <br>
-
-        <b>Storage:</b>
-        {{ project.storage }} <br>
+      <b>Storage:</b>
+      {{ project.storage }} <br>
 
     </v-card-text>
     <v-card-actions>
@@ -45,13 +38,48 @@
 </template>
 
 <script>
+import {getIndex} from "util/collections";
+
 export default {
-  props: ['projectsWhichNotIncludeInDetail', 'project', 'projectWhichChose', 'index'],
+  props: ['projectsWhichNotIncludeInDetail', 'project', 'projectWhichChose', 'index', 'quantityOfAvailable', 'detail'],
   data: function () {
     return {
       enabled: false,
-      number:{
-        
+      number: {},
+      // quantityArray: this.projectWhichChose.quantity,
+      projectArray: this.projectWhichChose.projects,
+      quantityArray: this.projectWhichChose.quantity,
+    }
+  },
+  watch: {
+    quantityArray: {
+      deep: true,
+      // We have to move our method to a handler field
+      handler: function () {
+        let finalQuantity = 0
+        let i = 0;
+        this.projectWhichChose.projects.forEach(project => {
+          if (typeof project !== null) {
+            finalQuantity += this.projectWhichChose.quantity[i]
+          }
+          i++
+        })
+        this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
+      }
+    },
+    projectArray: {
+      deep: true,
+      // We have to move our method to a handler field
+      handler: function () {
+        let finalQuantity = 0
+        let i = 0;
+        this.projectWhichChose.projects.forEach(project => {
+          if (typeof project === null) {
+            finalQuantity += this.projectWhichChose.quantity[i]
+          }
+          i++
+        })
+        this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
       }
     }
   },
@@ -59,7 +87,7 @@ export default {
     addProjectsToDetail: function () {
 
     }
-  },
+  }
 }
 </script>
 

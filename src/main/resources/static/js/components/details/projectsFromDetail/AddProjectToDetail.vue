@@ -1,9 +1,15 @@
 <template>
   <div>
     <v-btn @click="submit" outline small flat round color="indigo" class="my-3">submit</v-btn>
+    <div class=" font-weight-thin title">
+      Quantity of details, which available:
+      <span class="font-weight-medium" style="color: red">
+        {{quantityOfAvailable.quantity}}
+      </span>
+    </div>
   <v-layout align-start justify-center row fill-height>
     <div  v-for="(project, index) in projectsWhichNotIncludeInDetail">
-      <add-project-to-detail-card :index="index" :projectWhichChose="projectWhichChose" :project="project" :projectsWhichNotIncludeInDetail="projectsWhichNotIncludeInDetail"/>
+      <add-project-to-detail-card :detail="detail" :quantityOfAvailable="quantityOfAvailable" :index="index" :projectWhichChose="projectWhichChose" :project="project" :projectsWhichNotIncludeInDetail="projectsWhichNotIncludeInDetail"/>
     </div>
   </v-layout>
   </div>
@@ -14,7 +20,7 @@ import {getIndex} from "util/collections";
 import AddProjectToDetailCard from 'components/details/projectsFromDetail/AddProjectToDetailCard.vue'
 
 export default {
-  props: ['projects'],
+  props: ['projects', 'detail'],
   components: {AddProjectToDetailCard},
   data: function () {
     return {
@@ -22,12 +28,59 @@ export default {
       projectWhichChose:{
         projects:[],
         quantity:[]
-      }
+      },
+      quantityOfAvailable:{
+        quantity: this.detail.quantityOfAvailable
+      },
+      // projectArray: this.projectWhichChose.projects,
+      // quantityArray: this.projectWhichChose.quantity,
     }
   },
+  watch:{
+    // quantityArray: {
+    //   deep: true,
+    //   // We have to move our method to a handler field
+    //   handler: function () {
+    //     let finalQuantity = 0
+    //     let i = 0;
+    //     this.projectWhichChose.projects.forEach(project => {
+    //       if (typeof project !== null) {
+    //         finalQuantity += this.projectWhichChose.quantity[i]
+    //       }
+    //       i++
+    //     })
+    //     this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
+    //   }
+    // }
+    // projectArray: {
+    //   deep: true,
+    //   // We have to move our method to a handler field
+    //   handler: function () {
+    //     let finalQuantity = 0
+    //     let i = 0;
+    //     this.projectWhichChose.projects.forEach(project => {
+    //       if (typeof project !== null) {
+    //         finalQuantity += this.projectWhichChose.quantity[i]
+    //       }
+    //       i++
+    //     })
+    //     this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
+    //   }
+    // }
+  },
+
+
   methods:{
     submit:function (){
-
+      let finalQuantity = 0
+      let i = 0;
+      this.projectWhichChose.projects.forEach(project => {
+        if(typeof project !== null){
+            finalQuantity+=this.projectWhichChose.quantity[i]
+        }
+        i++
+      })
+      alert(finalQuantity)
     }
   },
   created: function () {

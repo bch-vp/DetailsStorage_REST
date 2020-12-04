@@ -18,17 +18,17 @@
       </div>
     </v-btn>
     <projects-from-detail v-if="!showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"></projects-from-detail>
-    <add-projects-from-detail v-if="showAddProjectsToDetail" :projects="projects"/>
+    <add-projects-to-detail v-if="showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"/>
   </div>
 </template>
 
 <script>
 import DetailCard from 'components/details/projectsFromDetail/DetailCard.vue'
 import ProjectsFromDetail from 'components/details/projectsFromDetail/ProjectsFromDetail.vue'
-import AddProjectsFromDetail from  'components/details/projectsFromDetail/AddProjectToDetail.vue'
+import AddProjectsToDetail from  'components/details/projectsFromDetail/AddProjectToDetail.vue'
 
 export default {
-  components: {DetailCard, ProjectsFromDetail, AddProjectsFromDetail},
+  components: {DetailCard, ProjectsFromDetail, AddProjectsToDetail},
   props: ['showProjects'],
   data: function () {
     return {
