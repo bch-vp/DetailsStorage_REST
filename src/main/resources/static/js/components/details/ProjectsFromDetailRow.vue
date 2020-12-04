@@ -1,39 +1,34 @@
 <template>
   <div>
-    <v-btn v-on:click="showProjects.show = false" flat round>
+    <v-btn v-on:click="showProjects.show = false" outline flat round>
       <v-icon>clear</v-icon>
       Close
     </v-btn>
     <detail-card :showProjects="showProjects" class="my-4"/>
-    <b>Projects:</b>
-      <span v-if="!projects.length" style="color: red"> empty</span>
-       <v-btn @click="showAddProjectsToDetail = !showAddProjectsToDetail" flat round color="indigo">
-          <div v-if="!showAddProjectsToDetail">
-        <v-icon>add</v-icon>
-        Add project to detail
-      </div>
-      <div v-if="showAddProjectsToDetail">
-        <v-icon>clear</v-icon>
-       Close
-      </div>
+    <b v-if="!showAddProjectsToDetail.show">Projects:<span v-if="!projects.length" style="color: red"> empty</span></b>
+    <v-btn @click="showAddProjectsToDetail.show = true" v-if="!showAddProjectsToDetail.show" small outline flat round color="indigo">
+      <v-icon>add</v-icon>Add projects to detail
     </v-btn>
-    <projects-from-detail v-if="!showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"></projects-from-detail>
-    <add-projects-to-detail v-if="showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"/>
+    <projects-from-detail v-if="!showAddProjectsToDetail.show" :projects="projects"
+                          :detail="showProjects.detail"></projects-from-detail>
+    <add-projects-to-detail v-if="showAddProjectsToDetail.show" :showAddProjectsToDetail="showAddProjectsToDetail" :projects="projects" :detail="showProjects.detail"/>
   </div>
 </template>
 
 <script>
 import DetailCard from 'components/details/projectsFromDetail/DetailCard.vue'
 import ProjectsFromDetail from 'components/details/projectsFromDetail/ProjectsFromDetail.vue'
-import AddProjectsToDetail from  'components/details/projectsFromDetail/AddProjectToDetail.vue'
+import AddProjectsToDetail from 'components/details/projectsFromDetail/AddProjectToDetail.vue'
 
 export default {
   components: {DetailCard, ProjectsFromDetail, AddProjectsToDetail},
   props: ['showProjects'],
   data: function () {
     return {
-      showAddProjectsToDetail: false,
-      projects:[]
+      showAddProjectsToDetail: {
+        show: false,
+      },
+      projects: []
     }
   },
   created: function () {

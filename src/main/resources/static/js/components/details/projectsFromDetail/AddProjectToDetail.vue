@@ -1,10 +1,20 @@
 <template>
   <div>
-    <v-btn @click="submit" outline small flat round color="indigo" class="my-3">submit</v-btn>
-    <div class=" font-weight-thin title">
+    <div class="my-3">
+      <v-btn @click="submit" outline small flat round color="indigo" class="my-3">submit</v-btn>
+      <v-btn @click="showAddProjectsToDetail.show = false" v-if="showAddProjectsToDetail.show" outline small flat round
+             color="indigo">
+        <v-icon>close</v-icon>
+        Close
+      </v-btn>
+    </div>
+    <div class=" font-weight-light subheading ">
       Quantity of details, which available:
-      <span class="font-weight-medium" style="color: red">
+      <span v-if="quantityOfAvailable.quantity>=0" class="headline font-weight-regular" style="color: forestgreen">
         {{ quantityOfAvailable.quantity }}
+      </span>
+      <span v-if="quantityOfAvailable.quantity<0" class="headline font-weight-regular" style="color: red">
+        {{ quantityOfAvailable.quantity }} cannot be negative
       </span>
     </div>
     <v-layout align-start justify-center row fill-height>
@@ -22,7 +32,7 @@ import {getIndex} from "util/collections";
 import AddProjectToDetailCard from 'components/details/projectsFromDetail/AddProjectToDetailCard.vue'
 
 export default {
-  props: ['projects', 'detail'],
+  props: ['projects', 'detail', 'showAddProjectsToDetail'],
   components: {AddProjectToDetailCard},
   data: function () {
     return {
@@ -40,40 +50,44 @@ export default {
     projectWhichChose: {
       deep: true,
       handler: function () {
-        let i = 0;
-        this.projectsWhichNotIncludeInDetail.forEach(project => {
-          if (this.projectWhichChose.projectsId[i] === null) {
-            this.projectWhichChose.quantity[i] = 0
+        let i = 0
+        let quantityOfAvailable = 0;
+        this.projectWhichChose.quantity.forEach(quantity => {
+          if (quantity !== 0) {
+            this.projectWhichChose.projectsId[i] = this.projectsWhichNotIncludeInDetail[i]
+            quantityOfAvailable += this.projectWhichChose.quantity[i]
+          } else {
+            this.projectWhichChose.projectsId[i] = null
           }
           i++
         })
-
-        let finalQuantity = 0
-        i = 0;
-        this.projectWhichChose.projectsId.forEach(project => {
-          if (project !== null) {
-            finalQuantity += this.projectWhichChose.quantity[i]
-          }
-          i++
-        })
-        this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - finalQuantity
+        this.quantityOfAvailable.quantity = this.detail.quantityOfAvailable - quantityOfAvailable
       }
     }
   },
   methods: {
     submit: function () {
-      let finalQuantity = 0
-      let i = 0;
-      this.projectWhichChose.projects.forEach(project => {
-        if (typeof project !== null) {
-          finalQuantity += this.projectWhichChose.quantity[i]
-        }
-        i++
-      })
-      alert(finalQuantity)
+      if (this.quantityOfAvailable.quantity >= 0) {
+        let i = 0
+        this.projectWhichChose.projectsId.forEach(projectId => {
+          if (projectId !== null) {
+            let quantityObject = {
+              quantity: String(this.projectWhichChose.quantity[i])
+            }
+            this.$resource('details/' + this.detail.id + '/projects/' + projectId.id).save({}, quantityObject).then(result => {
+              let indexx = getIndex(this.projectsWhichNotIncludeInDetail, projectId.id)
+              this.projects.push(this.projectsWhichNotIncludeInDetail[indexx])
+              this.projects.sort((a, b) => -(a.id - b.id));
+              this.projectsWhichNotIncludeInDetail.splice(indexx, 1)
+            }, ex => {
+              alert(ex.status);
+            })
+          }
+          i++
+        })
+      }
     }
-  }
-  ,
+  },
   created: function () {
     this.$resource('/projects').get().then(result =>
         result.json().then(projectsFromDb => {

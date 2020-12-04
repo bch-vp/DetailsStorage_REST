@@ -5,16 +5,14 @@
     </div>
 
     <div v-if="!showProjects.show">
-    <v-btn v-on:click="showForm = !showForm" flat round>
-      <div v-if="!showForm">
+      <v-btn v-on:click="showForm = !showForm" v-if="!showForm" outline flat round>
         <v-icon>add</v-icon>
         Add detail
-      </div>
-      <div v-if="showForm">
-        <v-icon>clear</v-icon>
+      </v-btn>
+      <v-btn v-on:click="showForm = !showForm" v-if="showForm" outline flat round>
+        <v-icon>close</v-icon>
         Close
-      </div>
-    </v-btn>
+      </v-btn>
       <detail-form v-if="showForm" :details="details"/>
       <v-layout align-start justify-center row fill-height>
         <detail-row v-for="detail in details" :detail="detail" :details="details" :showProjects="showProjects"

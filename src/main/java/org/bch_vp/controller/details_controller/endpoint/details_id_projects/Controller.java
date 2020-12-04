@@ -71,6 +71,7 @@ public class Controller {
             for (JsonNode objNode : node) {
                 ((ObjectNode) objNode).put("quantityInUsed", detailsInfo.get(i).getQuantityDetailsUsed());
                 System.out.println(objNode);
+                i++;
             }
             System.out.println(node.asText());
             String str = node.toPrettyString();

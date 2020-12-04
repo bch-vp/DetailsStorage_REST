@@ -30,23 +30,23 @@ public class Controller {
 
     @GetMapping("/details")
     public ResponseEntity<?> getAllDetails() throws IdNotValidException, QuantityOfDetailsException, EntityNotFoundException {
-//        Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
-//        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
-//
-//        Detail detail_2=new Detail("detail_2", "type","",200, (double)40, "storage");
-//        Long idDetail_2=detailServiceImpl.saveEntity(detail_2).getId();
-//
-//        Project project=new Project("prpject_1","type" , 1,"storage");
-//        Long idProject=projectServiceImpl.saveEntity(project).getId();
-//
-//        detailInfoServiceImpl.joinDetailAndProject(30, idDetail_1, idProject);
-//        detailInfoServiceImpl.joinDetailAndProject(20, idDetail_2, idProject);
-//
-//        Project project_2=new Project("prpject_2","type" , 1,"storage");
-//        Long idProject_2=projectServiceImpl.saveEntity(project_2).getId();
-//
-//        detailInfoServiceImpl.joinDetailAndProject(30,idDetail_1,idProject_2);
-//        detailInfoServiceImpl.joinDetailAndProject(20,idDetail_2,idProject_2);
+        Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
+        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
+
+        Detail detail_2=new Detail("detail_2", "type","",200, (double)40, "storage");
+        Long idDetail_2=detailServiceImpl.saveEntity(detail_2).getId();
+
+        Project project=new Project("prpject_1","type" , 1,"storage");
+        Long idProject=projectServiceImpl.saveEntity(project).getId();
+
+        detailInfoServiceImpl.joinDetailAndProject(31, idDetail_1, idProject);
+        detailInfoServiceImpl.joinDetailAndProject(27, idDetail_2, idProject);
+
+        Project project_2=new Project("prpject_2","type" , 1,"storage");
+        Long idProject_2=projectServiceImpl.saveEntity(project_2).getId();
+
+        detailInfoServiceImpl.joinDetailAndProject(25,idDetail_1,idProject_2);
+        detailInfoServiceImpl.joinDetailAndProject(23,idDetail_2,idProject_2);
         /*
         If everything is OK:
             - API will send array(which contains details), HttpStatus.OK

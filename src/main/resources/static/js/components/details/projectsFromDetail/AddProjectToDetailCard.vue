@@ -1,11 +1,9 @@
 <template>
   <v-card class="card ">
     <v-card-text primary-title>
-
-      <v-checkbox v-bind:value="project.id" v-model="projectWhichChose.projectsId[index]" hide-details></v-checkbox>
       <v-slider
+          style="padding-top: 15px"
           v-model="projectWhichChose.quantity[index]"
-          :disabled="!projectWhichChose.projectsId[index]"
           label="Quantity of details"
           color="deep-orange lighten-2"
           thumb-label="always"
@@ -35,7 +33,6 @@
 </template>
 
 <script>
-import {getIndex} from "util/collections";
 
 export default {
   props: ['projectsWhichNotIncludeInDetail', 'project', 'projectWhichChose', 'index', 'quantityOfAvailable', 'detail'],
