@@ -114,6 +114,7 @@ export default {
         this.$resource('/projects').save({}, project).then(result =>
             result.json().then(data => {
               this.projects.push(data);
+              this.projects.sort((a, b) => -(a.id - b.id))
               this.clear()
             })
         )

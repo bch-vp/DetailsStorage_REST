@@ -154,6 +154,7 @@ export default {
         this.$resource('/details').save({}, detail).then(result =>
             result.json().then(data => {
               this.details.push(data);
+              this.details.sort((a, b) => -(a.id - b.id))
               this.clear()
             })
         )
