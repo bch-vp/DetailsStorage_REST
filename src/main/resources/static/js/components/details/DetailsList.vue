@@ -29,19 +29,26 @@ import ProjectsFromDetailRow from 'components/details/ProjectsFromDetailRow.vue'
 
 export default {
   components: {DetailForm, DetailRow, ProjectsFromDetailRow},
-  props: ["details"],
-  comments: {
-    DetailRow,
-    DetailForm
-  },
   data: function () {
     return {
+      details:[],
       showProjects: {
         show: false,
         detail: null
       },
       showForm: false
     }
+  },
+  created: function () {
+    this.$resource('/details').get().then(result =>
+        result.json().then(details => {
+          details.forEach(detail => {
+            this.details.push(detail)
+            this.details.sort((a, b) => -(a.id - b.id))
+          })
+          this.details.sort((a, b) => -(a.id - b.id))
+        })
+    )
   }
 }
 </script>

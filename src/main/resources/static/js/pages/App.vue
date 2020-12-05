@@ -1,9 +1,16 @@
 <template>
   <v-app>
     <v-toolbar dark app>
-      <v-toolbar-title style="color: coral;">DetailsStorage</v-toolbar-title>
-      <v-btn flat style="margin-left: 30px" round>Details</v-btn>
-      <v-btn flat round>Projects</v-btn>
+      <v-toolbar-title v-if="showDetails" style="color: coral;">DetailsStorage</v-toolbar-title>
+      <v-toolbar-title v-if="showProjects" style="color: greenyellow;">DetailsStorage</v-toolbar-title>
+        <v-btn @click="showDetails=true; showProjects=false" flat style="margin-left: 30px" round>
+          <span v-if="showDetails" class="font-weight-black subheading">Details</span>
+          <span v-else>Details</span>
+        </v-btn>
+        <v-btn @click="showDetails=false; showProjects=true" flat round>
+          <span v-if="showProjects" class="font-weight-black subheading">Projects</span>
+          <span v-else>Projects</span>
+        </v-btn>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn icon href="#/">
@@ -14,7 +21,8 @@
 
     <v-content>
       <v-container>
-        <details-list :details="details"/>
+        <details-list v-if="showDetails" :details="details"/>
+        <projects-list v-if="showProjects"/>
       </v-container>
     </v-content>
 
@@ -24,27 +32,19 @@
 <script>
 
 import DetailsList from "components/details/DetailsList.vue";
+import ProjectsList from "components/projects/ProjectsList.vue";
 
 export default {
-  components: {DetailsList},
+  components: {DetailsList, ProjectsList},
   comments: {
     DetailsList
   },
   data: function () {
     return {
-      details: []
+      details: [],
+      showDetails: true,
+      showProjects: false
     }
-  },
-  created: function () {
-    this.$resource('/details').get().then(result =>
-        result.json().then(details => {
-          details.forEach(detail => {
-            this.details.push(detail)
-            this.details.sort((a, b) => -(a.id - b.id))
-          })
-          this.details.sort((a, b) => -(a.id - b.id))
-        })
-    )
   }
 }
 </script>

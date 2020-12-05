@@ -8,7 +8,7 @@
           color="deep-orange lighten-2"
           thumb-label="always"
           :min="0"
-          :max="200"
+          :max="detail.quantityOfAvailable"
       ></v-slider>
 
       <b>Id:</b>

@@ -89,7 +89,7 @@ public class Project extends AbstractEntity {
         if (type != null &&!type.isEmpty()) {
             this.type = type;
         }
-        String quantity = String.valueOf(mapRequestBody.get("quantity"));
+        String quantity = (String) mapRequestBody.get("quantity");
         if(quantity != null && !quantity.isEmpty()) {
             if (quantity.matches("^[0-9]+$") && Integer.parseInt(quantity)>0) {
                 this.quantity = Integer.valueOf(quantity);

@@ -76,9 +76,13 @@ export default {
             }
             this.$resource('details/' + this.detail.id + '/projects/' + projectId.id).save({}, quantityObject).then(result => {
               let indexx = getIndex(this.projectsWhichNotIncludeInDetail, projectId.id)
+              this.detail.quantityOfAvailable -= parseInt(quantityObject.quantity)
+              this.projectsWhichNotIncludeInDetail[indexx].quantityInUsed = quantityObject.quantity
               this.projects.push(this.projectsWhichNotIncludeInDetail[indexx])
+              // this.projects[indexx].quantityInUsed = this.projectWhichChose.quantity[i]
               this.projects.sort((a, b) => -(a.id - b.id));
               this.projectsWhichNotIncludeInDetail.splice(indexx, 1)
+              this.showAddProjectsToDetail.show = false
             }, ex => {
               alert(ex.status);
             })

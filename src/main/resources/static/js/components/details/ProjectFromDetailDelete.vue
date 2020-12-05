@@ -10,7 +10,8 @@ export default {
   methods:{
     deleteProjectFromDetail: function () {
       this.$resource('details/' + this.detail.id + '/projects/' + this.project.id).remove().then(result => {
-        this.detail.quantityOfAvailable+=this.project.quantityInUsed
+        alert(this.project.quantityInUsed)
+        this.detail.quantityOfAvailable += parseInt(this.project.quantityInUsed)
         this.projects.splice(this.projects.indexOf(this.project), 1)
       }, ex => {
         alert(ex.status);

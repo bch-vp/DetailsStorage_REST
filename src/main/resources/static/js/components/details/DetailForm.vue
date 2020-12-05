@@ -1,66 +1,69 @@
 <template>
-  <v-layout align-start justify-center row>
-    <form>
-      <v-text-field
-          v-model="detailName"
-          :error-messages="detailNameErrors"
-          :counter="25"
-          label="Detail name (required)"
-          required
-          @input="$v.detailName.$touch()"
-          @blur="$v.detailName.$touch()"
-      ></v-text-field>
-      <v-text-field
-          v-model="type"
-          :error-messages="typeErrors"
-          :counter="25"
-          label="Type"
-          required
-          @input="$v.type.$touch()"
-          @blur="$v.type.$touch()"
-      ></v-text-field>
-      <v-text-field
-          v-model="production"
-          :error-messages="productionErrors"
-          :counter="25"
-          label="Production"
-          required
-          @input="$v.production.$touch()"
-          @blur="$v.production.$touch()"
-      ></v-text-field>
-      <v-text-field
-          v-model="quantity"
-          :error-messages="quantityErrors"
-          :counter="10"
-          label="Quantity (required)"
-          required
-          @input="$v.quantity.$touch()"
-          @blur="$v.quantity.$touch()"
-      ></v-text-field>
-      <v-text-field
-          v-model="price"
-          :error-messages="priceErrors"
-          :counter="10"
-          label="Price $ (required)"
-          required
-          @input="$v.price.$touch()"
-          @blur="$v.price.$touch()"
-      ></v-text-field>
-      <v-text-field
-          v-model="storage"
-          :error-messages="storageErrors"
-          label="Storage (required)"
-          required
-          @input="$v.storage.$touch()"
-          @blur="$v.storage.$touch()"
-      ></v-text-field>
-
-        <v-btn @click="submit" small flat round color="indigo">submit</v-btn>
-        <v-btn @click="clear" outline small fab color="indigo">
-          <v-icon>autorenew</v-icon>
-        </v-btn>
-    </form>
-  </v-layout>
+  <v-container>
+    <v-layout row>
+      <v-flex xs8 md4 sm6 offset-xs2 offset-md4 offset-sm3>
+        <v-text-field
+            v-model="detailName"
+            :error-messages="detailNameErrors"
+            :counter="25"
+            label="Detail name (required)"
+            required
+            @input="$v.detailName.$touch()"
+            @blur="$v.detailName.$touch()"
+        ></v-text-field>
+        <v-text-field
+            v-model="type"
+            :error-messages="typeErrors"
+            :counter="25"
+            label="Type"
+            required
+            @input="$v.type.$touch()"
+            @blur="$v.type.$touch()"
+        ></v-text-field>
+        <v-text-field
+            v-model="production"
+            :error-messages="productionErrors"
+            :counter="25"
+            label="Production"
+            required
+            @input="$v.production.$touch()"
+            @blur="$v.production.$touch()"
+        ></v-text-field>
+        <v-text-field
+            v-model="quantity"
+            :error-messages="quantityErrors"
+            :counter="10"
+            label="Quantity (required)"
+            required
+            @input="$v.quantity.$touch()"
+            @blur="$v.quantity.$touch()"
+        ></v-text-field>
+        <v-text-field
+            v-model="price"
+            :error-messages="priceErrors"
+            :counter="10"
+            label="Price $ (required)"
+            required
+            @input="$v.price.$touch()"
+            @blur="$v.price.$touch()"
+        ></v-text-field>
+        <v-text-field
+            v-model="storage"
+            :error-messages="storageErrors"
+            label="Storage (required)"
+            required
+            @input="$v.storage.$touch()"
+            @blur="$v.storage.$touch()"
+        ></v-text-field>
+        <div class="text-xs-center">
+          <v-btn @click="submit" small flat round color="indigo">submit</v-btn>
+          <v-btn @click="clear" outline small fab color="indigo">
+            <v-icon>autorenew</v-icon>
+          </v-btn>
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
