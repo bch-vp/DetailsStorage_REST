@@ -1,4 +1,4 @@
-package org.bch_vp.entity.ExceptionHandler.entity;
+package org.bch_vp.entity.exception_handler.entity;
 
 import lombok.Getter;
 

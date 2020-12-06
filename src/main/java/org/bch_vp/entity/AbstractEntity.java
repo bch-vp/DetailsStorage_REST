@@ -2,7 +2,7 @@ package org.bch_vp.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
+import org.bch_vp.entity.exception_handler.entity.NumberOfQuantityException;
 
 import javax.persistence.*;
 import java.util.List;

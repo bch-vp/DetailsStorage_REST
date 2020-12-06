@@ -2,15 +2,12 @@ package org.bch_vp.controller.details_controller.endpoint.details_id_projects;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
-import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

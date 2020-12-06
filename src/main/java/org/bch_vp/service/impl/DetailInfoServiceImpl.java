@@ -2,9 +2,9 @@ package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.IdDetailInfo;
 import org.bch_vp.entity.Project;
 import org.bch_vp.repository.DetailInfoRepository;
@@ -61,7 +61,6 @@ public class DetailInfoServiceImpl implements DetailInfoService {
                 && Integer.parseInt(quantity)<=detailInfo.getDetail().getQuantityOfAvailable()) {
             detail.subtractAvailableDetails(Integer.valueOf(quantity));
             detailInfo.addQuantityofDetailsUsed(Integer.valueOf(quantity));
-            //write recalculate price
         } else {
             throw new QuantityOfDetailsException(quantity, String.valueOf(detail.getQuantityOfAvailable()));
         }
@@ -98,7 +97,6 @@ public class DetailInfoServiceImpl implements DetailInfoService {
                 && Integer.parseInt(quantity)<=detailInfo.getQuantityDetailsUsed()) {
             detail.addAvailableDetails(Integer.valueOf(quantity));
             detailInfo.subtractQuantityofDetailsUsed(Integer.valueOf(quantity));
-            //write recalculate price
         } else {
             throw new QuantityOfDetailsException(quantity, String.valueOf(detail.getQuantityOfAvailable()));
         }
@@ -117,8 +115,6 @@ public class DetailInfoServiceImpl implements DetailInfoService {
         detail.subtractAvailableDetails(quantity);
         DetailInfo detailInfo = new DetailInfo(quantity, detail, project);
         detailinfoRepository.save(detailInfo);
-        // detailRepository.save(detail);
-        // projectRepository.save(project);
         flushAndClear();
         return detailinfoRepository.findById(new IdDetailInfo(idDetail, idProject)).isPresent();
     }

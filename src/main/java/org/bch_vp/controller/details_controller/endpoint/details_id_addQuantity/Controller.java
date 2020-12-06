@@ -1,8 +1,8 @@
 package org.bch_vp.controller.details_controller.endpoint.details_id_addQuantity;
 
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.NumberOfQuantityException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;

@@ -1,6 +1,6 @@
 package org.bch_vp.service;
 
-import org.bch_vp.entity.ExceptionHandler.entity.*;
+import org.bch_vp.entity.exception_handler.entity.*;
 import org.bch_vp.entity.AbstractEntity;
 
 import java.io.IOException;

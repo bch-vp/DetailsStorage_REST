@@ -1,7 +1,7 @@
 package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.*;
-import org.bch_vp.entity.ExceptionHandler.entity.*;
+import org.bch_vp.entity.exception_handler.entity.*;
 import org.bch_vp.repository.DetailInfoRepository;
 import org.bch_vp.repository.StorageRepository;
 import org.bch_vp.service.StorageService;

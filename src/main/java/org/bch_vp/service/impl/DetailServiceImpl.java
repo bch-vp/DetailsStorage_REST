@@ -1,8 +1,8 @@
 package org.bch_vp.service.impl;
 
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.repository.DetailRepository;
 import org.bch_vp.repository.ProjectRepository;

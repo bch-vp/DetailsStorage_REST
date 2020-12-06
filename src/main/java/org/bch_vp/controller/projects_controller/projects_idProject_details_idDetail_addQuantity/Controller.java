@@ -1,10 +1,8 @@
 package org.bch_vp.controller.projects_controller.projects_idProject_details_idDetail_addQuantity;
 
-import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
-import org.bch_vp.entity.Project;
+import org.bch_vp.entity.exception_handler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;

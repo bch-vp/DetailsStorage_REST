@@ -1,8 +1,8 @@
 package org.bch_vp.controller.projects_controller.projects_id;
 
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.NumberOfQuantityException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -32,7 +32,6 @@ public class Controller {
         /*
         If everything is OK: API will return JSON(of this project), HttpStatus.OK
         In other cases API will send:
-            - HttpStatus.INTERNAL_SERVER_ERROR(500)
             - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
@@ -49,7 +48,7 @@ public class Controller {
         In other cases API will send:
             - HttpStatus.INTERNAL_SERVER_ERROR(500)
             - JSON about exception: EntityNotFound(project) with {id}, HttpStatus.NOT_FOUND(404)
-            - JSON about exception: @Valid project, BAD_REQUEST(404)
+            - JSON about exception: @Valid project, BAD_REQUEST(400)
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */

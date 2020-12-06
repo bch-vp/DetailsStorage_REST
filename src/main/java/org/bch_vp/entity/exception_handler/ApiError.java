@@ -1,4 +1,4 @@
-package org.bch_vp.entity.ExceptionHandler;
+package org.bch_vp.entity.exception_handler;
 
 import java.util.ArrayList;
 import java.util.List;

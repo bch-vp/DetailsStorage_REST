@@ -2,7 +2,7 @@ package org.bch_vp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
+import org.bch_vp.entity.exception_handler.entity.NumberOfQuantityException;
 
 
 import javax.persistence.*;

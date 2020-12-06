@@ -1,13 +1,10 @@
 package org.bch_vp.controller.projects_controller.projects_idProject_details_idDetail;
 
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
-import org.bch_vp.entity.Project;
+import org.bch_vp.entity.exception_handler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
-import org.bch_vp.service.impl.DetailServiceImpl;
 import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.bch_vp.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +49,7 @@ public class Controller {
                                                 @PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException, IOException {
         /*
-        Method where you can add detail to project(which already exists) with quantity of details(quantity > 0 && quantity < quantityOfAvailable)
+        Method where you can add detail to project with quantity of details(quantity > 0 && quantity < quantityOfAvailable)
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)

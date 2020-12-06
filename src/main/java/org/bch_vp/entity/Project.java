@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bch_vp.entity.ExceptionHandler.entity.NumberOfQuantityException;
+import org.bch_vp.entity.exception_handler.entity.NumberOfQuantityException;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

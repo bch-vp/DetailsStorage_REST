@@ -2,8 +2,8 @@ package org.bch_vp.controller.detailsController.endpoint.details_id;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.IdNotValidException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;

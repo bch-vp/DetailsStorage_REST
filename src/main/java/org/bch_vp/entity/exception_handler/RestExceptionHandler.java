@@ -1,8 +1,8 @@
-package org.bch_vp.entity.ExceptionHandler;
+package org.bch_vp.entity.exception_handler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import org.bch_vp.entity.ExceptionHandler.entity.*;
+import org.bch_vp.entity.exception_handler.entity.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

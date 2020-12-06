@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.bch_vp.controller.AbstractTest;
 import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
+import org.bch_vp.entity.exception_handler.entity.IdNotValidException;
 import org.bch_vp.service.impl.DetailServiceImpl;
 import org.junit.Before;
 import org.junit.Test;

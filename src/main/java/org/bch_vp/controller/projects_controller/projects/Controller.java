@@ -1,7 +1,6 @@
 package org.bch_vp.controller.projects_controller.projects;
 
-import org.bch_vp.entity.Detail;
-import org.bch_vp.entity.ExceptionHandler.entity.IdNotValidException;
+import org.bch_vp.entity.exception_handler.entity.IdNotValidException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,9 @@ public class Controller {
     public ResponseEntity<?> deleteAllProjects() {
         /*
         if everything is okay: API will delete project and return HttpStatus.OK
-        In other cases: API will send INTERNAL_SERVER_ERROR(500)
+        In other cases: API will send
+            - HttpStatus.NOT_MODIFIED(304)
+            - HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
         return projectServiceImpl.deleteAllEntities()
                 ? new ResponseEntity<>(HttpStatus.OK)

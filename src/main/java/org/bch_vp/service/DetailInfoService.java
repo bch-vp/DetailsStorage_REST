@@ -1,9 +1,9 @@
 package org.bch_vp.service;
 
 import org.bch_vp.entity.DetailInfo;
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 
 import java.io.IOException;
 import java.util.List;

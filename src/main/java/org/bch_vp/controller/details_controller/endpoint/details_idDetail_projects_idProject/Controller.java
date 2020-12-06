@@ -1,8 +1,8 @@
 package org.bch_vp.controller.details_controller.endpoint.details_idDetail_projects_idProject;
 
-import org.bch_vp.entity.ExceptionHandler.entity.DetailInfoNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
-import org.bch_vp.entity.ExceptionHandler.entity.QuantityOfDetailsException;
+import org.bch_vp.entity.exception_handler.entity.DetailInfoNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.EntityNotFoundException;
+import org.bch_vp.entity.exception_handler.entity.QuantityOfDetailsException;
 import org.bch_vp.entity.Project;
 import org.bch_vp.service.impl.DetailInfoServiceImpl;
 import org.bch_vp.service.impl.DetailServiceImpl;
@@ -49,7 +49,7 @@ public class Controller {
                                                 @PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject) throws QuantityOfDetailsException, EntityNotFoundException, IOException {
         /*
-        Method where you can add project to detail(which already exists) with quantity of detail...
+        Method where you can add project to detail and fill in quantity of this details in project
         If everything is OK: API will send HttpStatus.OK
         In other cases API will send:
             - JSON about exception: EntityNotFound(detail) with {id}, HttpStatus.NOT_FOUND(404)
