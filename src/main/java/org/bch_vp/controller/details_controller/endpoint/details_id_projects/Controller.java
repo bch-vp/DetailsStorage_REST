@@ -39,22 +39,6 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-//        List<DetailInfo> list = detailServiceImpl
-//                .findEntityById(id)
-//                .getDetailsInfo();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        ObjectNode objectNode;
-//        ArrayNode arrayNode = objectMapper.createArrayNode();
-//        arrayNode.addPOJO(list.get(0));
-//        ((ObjectNode) arrayNode.get(0)).put("quantityInUsed", "aefaefaefaefaevavaef");
-//
-//
-//        List<Project> projects = detailServiceImpl
-//                .findEntityById(id)
-//                .getDetailsInfo()
-//                .stream()
-//                .map(DetailInfo::getProject)
-//                .collect(Collectors.toList());
         List<DetailInfo> detailsInfo = detailServiceImpl
                 .findEntityById(id)
                 .getDetailsInfo();
@@ -70,10 +54,8 @@ public class Controller {
             int i = 0;
             for (JsonNode objNode : node) {
                 ((ObjectNode) objNode).put("quantityInUsed", detailsInfo.get(i).getQuantityDetailsUsed());
-                System.out.println(objNode);
                 i++;
             }
-            System.out.println(node.asText());
             String str = node.toPrettyString();
             return new ResponseEntity<>(str, HttpStatus.OK);
 

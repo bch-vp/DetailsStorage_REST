@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if=" showDetails.show">
-      <details-from-project-row :showProjects="showProjects"/>
+      <details-from-project-row :showDetails="showDetails"/>
     </div>
 
     <div v-if="!showDetails.show">
@@ -25,7 +25,7 @@
 <script>
 import ProjectRow from "components/projects/ProjectRow.vue"
 import ProjectForm from 'components/projects/ProjectForm.vue'
-import DetailsFromProjectRow from 'components/projects/DetailsFromProjectRow.vue'
+import  DetailsFromProjectRow from 'components/projects/DetailsFromProjectRow.vue'
 
 export default {
   components: {ProjectForm, ProjectRow, DetailsFromProjectRow},

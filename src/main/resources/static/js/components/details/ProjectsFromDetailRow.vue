@@ -5,7 +5,7 @@
       Close
     </v-btn>
     <detail-card :showProjects="showProjects" class="my-4"/>
-    <b v-if="!showAddProjectsToDetail.show">Projects:<span v-if="!projects.length" style="color: red"> empty</span></b>
+    <b v-if="!showAddProjectsToDetail.show">Projects from detail:<span v-if="!projects.length" style="color: red"> empty</span></b>
     <v-btn @click="showAddProjectsToDetail.show = true" v-if="!showAddProjectsToDetail.show" small outline flat round color="indigo">
       <v-icon>add</v-icon>Add projects to detail
     </v-btn>

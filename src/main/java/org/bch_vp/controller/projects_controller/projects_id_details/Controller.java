@@ -1,5 +1,8 @@
 package org.bch_vp.controller.projects_controller.projects_id_details;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.bch_vp.entity.Detail;
 import org.bch_vp.entity.DetailInfo;
 import org.bch_vp.entity.ExceptionHandler.entity.EntityNotFoundException;
@@ -38,13 +41,27 @@ public class Controller {
             - jSON about exception: converting error {id}, HttpStatus.BAD_REQUEST(400)
             - JSON about exception: unknown error, HttpStatus.INTERNAL_SERVER_ERROR(500)
         */
-        List<Detail> projects=projectServiceImpl
+        List<DetailInfo> detailsInfo = projectServiceImpl
                 .findEntityById(id)
-                .getDetailsInfo()
+                .getDetailsInfo();
+        List<Detail> details = detailsInfo
                 .stream()
                 .map(DetailInfo::getDetail)
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+
+        if (!details.isEmpty()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode node = objectMapper.valueToTree(details);
+
+            int i = 0;
+            for (JsonNode objNode : node) {
+                ((ObjectNode) objNode).put("quantityInUsed", detailsInfo.get(i).getQuantityDetailsUsed());
+                i++;
+            }
+            String str = node.toPrettyString();
+            return new ResponseEntity<>(str, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(details, HttpStatus.OK);
     }
 
 

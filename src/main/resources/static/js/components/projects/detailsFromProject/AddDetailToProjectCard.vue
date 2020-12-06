@@ -12,19 +12,28 @@
       ></v-slider>
 
       <b>Id:</b>
-      {{ project.id }} <br>
+      {{ detail.id }} <br>
 
-      <b>Project name:</b>
-      {{ project.projectName }} <br>
+      <b>Detail name:</b>
+      {{ detail.detailName }} <br>
 
       <b>Type:</b>
-      {{ project.type }} <br>
+      {{ detail.type }} <br>
 
-      <b>Quantity:</b>
-      {{ project.quantity }} <br>
+      <b>Production:</b>
+      {{ detail.production }} <br>
+
+      <b>Quantity of all:</b>
+      <span style="color: forestgreen"> {{ detail.quantityOfAll }} </span>
+
+      <b>Quantity of available:</b>
+      <span style="color: red"> {{ detail.quantityOfAvailable }} </span> <br>
+
+      <b>Price:</b>
+      {{ detail.price }} $<br>
 
       <b>Storage:</b>
-      {{ project.storage }} <br>
+      {{ detail.storage }}
 
     </v-card-text>
     <v-card-actions>
