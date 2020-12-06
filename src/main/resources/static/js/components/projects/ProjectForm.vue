@@ -50,7 +50,7 @@
 
 <script>
 import {validationMixin} from 'vuelidate'
-import {required, maxLength, email, numeric} from 'vuelidate/lib/validators'
+import {required, maxLength} from 'vuelidate/lib/validators'
 
 export default {
   mixins: [validationMixin],
@@ -106,7 +106,7 @@ export default {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         var project = {
-          projectsName: this.projectName,
+          projectName: this.projectName,
           type: this.type,
           quantity: 1,
           storage: this.storage
