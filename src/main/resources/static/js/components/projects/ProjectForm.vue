@@ -58,7 +58,7 @@ export default {
   validations: {
     projectName: {required, maxLength: maxLength(25)},
     type: {maxLength: maxLength(25)},
-    quantity: {required, maxLength: maxLength(10), numeric},
+    // quantity: {required, maxLength: maxLength(10), numeric},
     storage: {required},
   },
 

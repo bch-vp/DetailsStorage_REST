@@ -11,22 +11,6 @@
         <b>Type:</b>
         {{ project.type }} <br>
 
-
-<!--        <b>Quantity:</b>-->
-<!--        <span style="color: forestgreen"> {{ project.quantity }}-->
-<!--          <v-btn @click="addQuantityOfProjects" outline small flat icon color="indigo">-->
-<!--            <v-icon>add</v-icon>-->
-<!--          </v-btn>-->
-<!--        <v-btn v-if="project.quantity>0" @click="subtractQuantityOfProjects" outline small flat icon-->
-<!--               color="indigo">-->
-<!--        <v-icon>horizontal_rule</v-icon>-->
-<!--        </v-btn>-->
-<!--      </span>-->
-<!--        <br>-->
-
-<!--&lt;!&ndash;        <b>Quantity:</b>&ndash;&gt;-->
-<!--&lt;!&ndash;        <span style="color: red"> {{ project.quantity }} </span> <br>&ndash;&gt;-->
-
         <b>Storage:</b>
         {{ project.storage }}
 

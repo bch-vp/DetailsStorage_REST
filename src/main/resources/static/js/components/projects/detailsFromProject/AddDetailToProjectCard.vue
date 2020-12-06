@@ -3,9 +3,9 @@
     <v-card-text primary-title>
       <v-slider
           style="padding-top: 15px"
-          v-model="projectWhichChose.quantity[index]"
+          v-model="detailWhichChose.quantity[index]"
           label="Quantity of details"
-          color="deep-orange lighten-2"
+          color="lime lighten-1"
           thumb-label="always"
           :min="0"
           :max="detail.quantityOfAvailable"
@@ -24,7 +24,7 @@
       {{ detail.production }} <br>
 
       <b>Quantity of all:</b>
-      <span style="color: forestgreen"> {{ detail.quantityOfAll }} </span>
+      <span style="color: forestgreen"> {{ detail.quantityOfAll }} </span> <br>
 
       <b>Quantity of available:</b>
       <span style="color: red"> {{ detail.quantityOfAvailable }} </span> <br>
@@ -44,10 +44,10 @@
 <script>
 
 export default {
-  props: ['projectsWhichNotIncludeInDetail', 'project', 'projectWhichChose', 'index', 'quantityOfAvailable', 'detail'],
+  props: ['detailsWhichNotIncludeInProject', 'detail', 'detailWhichChose', 'index', 'detail'],
   data: function () {
     return {
-      projectsId: this.projectWhichChose.projectsId,
+      detailsId: this.detailWhichChose.detailId,
     }
   },
 }
