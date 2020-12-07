@@ -34,7 +34,6 @@ public class Detail extends AbstractEntity {
     private String storage;
 
     @OneToMany(mappedBy = "detail", fetch = FetchType.EAGER)
-    //@JsonManagedReference(value="user-movement")
     @JsonIgnore
     private List<DetailInfo> detailsInfo = new ArrayList<>();
 
@@ -42,7 +41,6 @@ public class Detail extends AbstractEntity {
         detailsInfo.add(detailInfo);
     }
 
-    //delete!
     public Detail(String detailName) {
         this.detailName = detailName;
     }
@@ -105,7 +103,6 @@ public class Detail extends AbstractEntity {
                 && price.matches("^[+]?\\d*\\.?\\d+$")
                 && Double.parseDouble(price)>0) {
             this.price = Double.valueOf(price);
-                //write recalculate price
         }
         else{
             throw new NumberOfQuantityException(price);

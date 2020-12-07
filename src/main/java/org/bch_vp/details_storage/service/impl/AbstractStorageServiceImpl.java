@@ -42,11 +42,11 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
         flushAndClear();
         if(entity instanceof Detail) {
             Detail detail = (Detail) entity;
-            if (detail.getQuantityOfAvailable() == null) {  //rewrite
+            if (detail.getQuantityOfAvailable() == null) {
                 detail.setQuantityOfAvailable(detail.getQuantityOfAll());
             }
 
-            if (detail.getId() != null) { // rewrite
+            if (detail.getId() != null) {
                 throw new IdNotValidException();
             }
         }
@@ -105,7 +105,7 @@ public abstract class AbstractStorageServiceImpl<Entity extends AbstractEntity,
         return entityRepository.findAll().isEmpty();
     }
 
-    @Override //rewrite!!!!!!!
+    @Override
     public Entity updateEntity(Long id, String jsonRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, NumberOfQuantityException {
         flushAndClear();
         HashMap mapRequestBody= JsonUtil.mapFromJson(jsonRequestBody, HashMap.class);

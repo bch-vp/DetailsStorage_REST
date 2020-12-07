@@ -35,11 +35,6 @@ public class Project extends AbstractEntity {
         detailsInfo.add(detailInfo);
     }
 
-//    int quantityOfDetails= detailMap.getDetails()
-//            .stream()
-//            .mapToInt(DetailForm::getQuantity)
-//            .sum();
-
     public Double calculatePriceOfProject(){
         if(!getDetailsInfo().isEmpty()){
            return getDetailsInfo()
@@ -50,7 +45,6 @@ public class Project extends AbstractEntity {
         return (double)0;
     }
 
-    //delete!
     public Project(String projectName) {
         this.projectName = projectName;
     }
@@ -79,7 +73,7 @@ public class Project extends AbstractEntity {
     }
 
 
-    @Override// rewrite
+    @Override
     public AbstractEntity update(Map<String, Object> mapRequestBody) throws NumberOfQuantityException {
         String projectName = (String) mapRequestBody.get("projectName");
         if (projectName != null && !projectName.isEmpty()) {
@@ -93,7 +87,6 @@ public class Project extends AbstractEntity {
         if(quantity != null && !quantity.isEmpty()) {
             if (quantity.matches("^[0-9]+$") && Integer.parseInt(quantity)>0) {
                 this.quantity = Integer.valueOf(quantity);
-                //write recalculate price
             } else {
                 throw new NumberOfQuantityException(quantity);
             }
