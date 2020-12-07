@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-//@RequestMapping("details")
 public class DetailsController {
 
     @Autowired
@@ -33,25 +32,8 @@ public class DetailsController {
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
-    @GetMapping("/details")
-    public ResponseEntity<?> getAllDetails() throws IdNotValidException, QuantityOfDetailsException, EntityNotFoundException {
-//        Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
-//        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
-//
-//        Detail detail_2=new Detail("detail_2", "type","",200, (double)40, "storage");
-//        Long idDetail_2=detailServiceImpl.saveEntity(detail_2).getId();
-//
-//        Project project=new Project("prpject_1","type" , 1,"storage");
-//        Long idProject=projectServiceImpl.saveEntity(project).getId();
-//
-//        detailInfoServiceImpl.joinDetailAndProject(31, idDetail_1, idProject);
-//        detailInfoServiceImpl.joinDetailAndProject(27, idDetail_2, idProject);
-//
-//        Project project_2=new Project("prpject_2","type" , 1,"storage");
-//        Long idProject_2=projectServiceImpl.saveEntity(project_2).getId();
-//
-//        detailInfoServiceImpl.joinDetailAndProject(25,idDetail_1,idProject_2);
-//        detailInfoServiceImpl.joinDetailAndProject(23,idDetail_2,idProject_2);
+    @GetMapping("details")
+    public ResponseEntity<?> getAllDetails() {
         /*
         If everything is OK:
             - API will send array(which contains details), HttpStatus.OK
@@ -62,7 +44,7 @@ public class DetailsController {
         return new ResponseEntity<>(detailServiceImpl.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/details")
+    @PostMapping("details")
     public ResponseEntity<?> createDetail(@RequestBody @Valid Detail detail) throws IdNotValidException {
         /*
         If everything is OK: API will save detail and return JSON(of this detail), HttpStatus.CREATED(201)
@@ -79,7 +61,7 @@ public class DetailsController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @DeleteMapping("/details")
+    @DeleteMapping("details")
     public ResponseEntity<?> deleteAllDetails() {
         /*
         if everything is okay:
@@ -93,7 +75,7 @@ public class DetailsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @GetMapping("/details/{id}")
+    @GetMapping("details/{id}")
     public ResponseEntity<?> getDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will return JSON(of this detail), HttpStatus.OK
@@ -106,7 +88,7 @@ public class DetailsController {
 
     }
 
-    @PutMapping(value = "/details/{id}")
+    @PutMapping("details/{id}")
     public ResponseEntity<?> updateDetail(@PathVariable("id") Long id,
                                           @RequestBody (required = true) String jsonRequestBody)
             throws EntityNotFoundException, QuantityOfDetailsException, IOException, NumberOfQuantityException {
@@ -123,7 +105,7 @@ public class DetailsController {
         return new ResponseEntity<>(detailServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
     }
 
-    @DeleteMapping("/details/{id}")
+    @DeleteMapping("details/{id}")
     public ResponseEntity<?> deleteDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will delete detail and return HttpStatus.OK
@@ -138,7 +120,7 @@ public class DetailsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @GetMapping("/details/{id}/projects")
+    @GetMapping("details/{id}/projects")
     public ResponseEntity<?> getAllProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send JSON of array(also it can be empty array), which contains projects from detail with {id}, HttpStatus.OK
@@ -172,7 +154,7 @@ public class DetailsController {
     }
 
 
-    @DeleteMapping("/details/{id}/projects")
+    @DeleteMapping("details/{id}/projects")
     public ResponseEntity<?> deleteAllProjectsFromDetail(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
@@ -186,7 +168,7 @@ public class DetailsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @PutMapping(value = "details/{id}/addQuantity")
+    @PutMapping("details/{id}/addQuantity")
     public ResponseEntity<?> addQuantity(@PathVariable("id") Long id,
                                          @RequestBody(required = true) Integer quantity)
             throws EntityNotFoundException, IOException, QuantityOfDetailsException, NumberOfQuantityException {
@@ -203,7 +185,7 @@ public class DetailsController {
         return new ResponseEntity<>(detailServiceImpl.addQuantityOfDetails(id, quantity), HttpStatus.OK);
     }
 
-    @PutMapping(value = "details/{id}/subtractQuantity")
+    @PutMapping("details/{id}/subtractQuantity")
     public ResponseEntity<?> subtractQuantity(@PathVariable("id") Long id,
                                          @RequestBody(required = true) Integer quantity)
             throws EntityNotFoundException, QuantityOfDetailsException {

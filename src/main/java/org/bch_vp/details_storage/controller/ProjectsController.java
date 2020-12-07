@@ -38,7 +38,7 @@ public class ProjectsController {
     @Autowired
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
-    @GetMapping("/projects")
+    @GetMapping("projects")
     public ResponseEntity<?> getAllProjects() {
         /*
         If everything is OK:
@@ -50,7 +50,7 @@ public class ProjectsController {
         return new ResponseEntity<>(projectServiceImpl.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/projects")
+    @PostMapping("projects")
     public ResponseEntity<?> createProject(@RequestBody @Valid Project project) throws IdNotValidException {
         /*
         If everything is OK: API will save project and return JSON(of this project), HttpStatus.CREATED(201)
@@ -67,7 +67,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @DeleteMapping("/projects")
+    @DeleteMapping("projects")
     public ResponseEntity<?> deleteAllProjects() {
         /*
         if everything is okay: API will delete project and return HttpStatus.OK
@@ -80,7 +80,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping("/projects/{id}")
+    @GetMapping("projects/{id}")
     public ResponseEntity<?> getProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will return JSON(of this project), HttpStatus.OK
@@ -93,7 +93,7 @@ public class ProjectsController {
 
     }
 
-    @PutMapping(value = "/projects/{id}")
+    @PutMapping("projects/{id}")
     public ResponseEntity<?> updateProject(@PathVariable("id") Long id,
                                            @RequestBody (required = true) String jsonRequestBody)
             throws EntityNotFoundException, QuantityOfDetailsException, IOException, NumberOfQuantityException {
@@ -109,7 +109,7 @@ public class ProjectsController {
         return new ResponseEntity<>(projectServiceImpl.updateEntity(id, jsonRequestBody), HttpStatus.OK);
     }
 
-    @DeleteMapping("/projects/{id}")
+    @DeleteMapping("projects/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will delete project and return HttpStatus.OK
@@ -124,7 +124,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @GetMapping("/projects/{id}/details")
+    @GetMapping("projects/{id}/details")
     public ResponseEntity<?> getAllDetailsFromProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send JSON of array(also it can be empty array), which contains details from project with {id}, HttpStatus.OK
@@ -157,7 +157,7 @@ public class ProjectsController {
     }
 
 
-    @DeleteMapping("/projects/{id}/details")
+    @DeleteMapping("projects/{id}/details")
     public ResponseEntity<?> deleteAllDetailsFromProject(@PathVariable("id") Long id) throws EntityNotFoundException {
         /*
         If everything is OK: API will send HttpStatus.OK
@@ -171,7 +171,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @GetMapping("/projects/{idProject}/details/{idDetail}")
+    @GetMapping("projects/{idProject}/details/{idDetail}")
     public ResponseEntity<?> getDetailFromProject(@PathVariable(value = "idDetail") Long idDetail,
                                                   @PathVariable("idProject") Long idProject)
             throws EntityNotFoundException, DetailInfoNotFoundException, DetailInfoNotFoundException {
@@ -189,7 +189,7 @@ public class ProjectsController {
         return new ResponseEntity<>(detail, HttpStatus.OK);
     }
 
-    @PostMapping("/projects/{idProject}/details/{idDetail}")
+    @PostMapping("projects/{idProject}/details/{idDetail}")
     public ResponseEntity<?> addDetailToProject(@RequestBody String jsonQuantityOfDetails,
                                                 @PathVariable(value = "idDetail") Long idDetail,
                                                 @PathVariable("idProject") Long idProject)
@@ -215,7 +215,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping("/projects/{idProject}/details/{idDetail}")
+    @DeleteMapping("projects/{idProject}/details/{idDetail}")
     public ResponseEntity<?> deleteDetailFromProject(@PathVariable(value = "idDetail") Long idDetail,
                                                      @PathVariable("idProject") Long idProject)
             throws EntityNotFoundException, DetailInfoNotFoundException {
@@ -234,7 +234,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @PutMapping(value = "/projects/{idProject}/details/{idDetail}/add-quantity")
+    @PutMapping("projects/{idProject}/details/{idDetail}/addQuantity")
     public ResponseEntity<?> addQuantityOfDetails(@PathVariable("idDetail") Long idDetail,
                                                   @PathVariable("idProject") Long idProject,
                                                   @RequestBody(required = true) String jsonQuantityRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException {
@@ -255,7 +255,7 @@ public class ProjectsController {
                 : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @PutMapping(value = "/projects/{idProject}/details/{idDetail}/subtract-quantity")
+    @PutMapping("projects/{idProject}/details/{idDetail}/subtractQuantity")
     public ResponseEntity<?> subtractQuantityOfDetails(@PathVariable("idDetail") Long idDetail,
                                                   @PathVariable("idProject") Long idProject,
                                                   @RequestBody(required = true) String jsonQuantityRequestBody) throws EntityNotFoundException, IOException, QuantityOfDetailsException, DetailInfoNotFoundException {
