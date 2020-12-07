@@ -40,7 +40,7 @@ export default {
     return {
       projectsId: this.projectWhichChose.projectsId,
     }
-  },
+  }
 }
 </script>
 

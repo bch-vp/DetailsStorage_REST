@@ -34,7 +34,7 @@ public class DetailsController {
     private DetailInfoServiceImpl detailInfoServiceImpl;
 
     @GetMapping("/details")
-    public ResponseEntity<?> getAllDetails() {
+    public ResponseEntity<?> getAllDetails() throws IdNotValidException, QuantityOfDetailsException, EntityNotFoundException {
 //        Detail detail_1=new Detail("detail_1", "type","production",100, (double)40, "storage");
 //        Long idDetail_1=detailServiceImpl.saveEntity(detail_1).getId();
 //
